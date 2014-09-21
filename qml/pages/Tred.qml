@@ -25,8 +25,23 @@ Page {
         xhr.open("GET", "https://2ch.hk/"+borda+"/res/"+tred+".json");
         xhr.send();
     }
-    function getNewPosts() {
-        console.log("YOLO")
+    function getNewPosts(count) {
+        var xhr = new XMLHttpRequest();
+        var posti = []
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+                print('HEADERS_RECEIVED');
+            } else if(xhr.readyState === XMLHttpRequest.DONE) {
+                var parsed = JSON.parse(xhr.responseText);
+                if(parsed.length > 0){
+                    page.postiki.push(parsed[0])
+                    page.postiki = page.postiki
+                    getNewPosts(count + 1)
+                }
+            }
+        }
+        xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board="+borda+"&thread="+tred+"&post="+count);
+        xhr.send();
     }
     SilicaListView {
         anchors{
@@ -42,7 +57,7 @@ Page {
             MenuItem {
                 text: "Получить новые посты"
                 onClicked: {
-                    getNewPosts()
+                    getNewPosts(listView.count + 1)
                 }
             }
             MenuItem {
