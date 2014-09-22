@@ -11,7 +11,7 @@ Page {
                 print('HEADERS_RECEIVED');
             } else if(xhr.readyState === XMLHttpRequest.DONE) {
                 var parsed = JSON.parse(xhr.responseText);
-                pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch.hk/"+board+"/index.json", borda: board, pages: parsed.pages.length} )
+                pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch.hk/" + board + "/index.json", borda: board, pages: parsed.pages.length} )
             }
         }
         xhr.open("GET", "https://2ch.hk/" + board + "/index.json");
@@ -29,7 +29,7 @@ Page {
                 width: parent.width
                 placeholderText: "b"
                 focus: true
-                validator: RegExpValidator { regExp: /[a-z]+/ }
+                validator: RegExpValidator {regExp: /[a-z]+/}
                 EnterKey.onClicked: {
                     getBoard(text);
                     parent.focus = true;

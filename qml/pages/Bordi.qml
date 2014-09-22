@@ -72,7 +72,7 @@ Page {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                onClicked: {pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch.hk/"+modelData.id+"/index.json", borda: modelData.id, pages: modelData.pages} )}
+                                onClicked: {pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch.hk/" + modelData.id + "/index.json", borda: modelData.id, pages: modelData.pages} )}
                                 //console.log("YOLO")
                             }
                         }

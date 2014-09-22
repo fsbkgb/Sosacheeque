@@ -22,7 +22,7 @@ Page {
             }
             page.postiki = posti
         }
-        xhr.open("GET", "https://2ch.hk/"+borda+"/res/"+tred+".json");
+        xhr.open("GET", "https://2ch.hk/" + borda + "/res/" + tred + ".json");
         xhr.send();
     }
     function getNewPosts(count) {
@@ -40,7 +40,7 @@ Page {
                 }
             }
         }
-        xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board="+borda+"&thread="+tred+"&post="+count);
+        xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + borda + "&thread=" + tred + "&post=" + count);
         xhr.send();
     }
     SilicaListView {
@@ -132,7 +132,7 @@ Page {
                     height: childrenRect.height
                     Image {
                         id: pic
-                        source: "https://2ch.hk/"+borda+"/"+modelData.thumbnail
+                        source: "https://2ch.hk/" + borda + "/" + modelData.thumbnail
                         width: modelData.tn_width
                         height: modelData.tn_height
                         fillMode: Image.PreserveAspectFit
@@ -145,7 +145,7 @@ Page {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/"+borda+"/"+modelData.path} )}
+                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )}
                             }
                         }
                         Label {
@@ -185,7 +185,7 @@ Page {
                         var brd = link.match(/([a-z]+)/)[1]
                         var trd = link.match(/([0-9]+)/)[1]
                         var pst = link.match(/#([0-9]+)/)[1]
-                        var url = "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board="+brd+"&thread="+trd+"&num="+pst
+                        var url = "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
                         console.log(url)
                         pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd} )
                     }

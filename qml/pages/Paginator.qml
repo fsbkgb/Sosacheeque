@@ -27,9 +27,9 @@ Page {
             }
             onClicked: {
                 if (index == 0)
-                {url = "https://2ch.hk/"+borda+"/index.json"}
+                {url = "https://2ch.hk/" + borda + "/index.json"}
                 else
-                {url = "https://2ch.hk/"+borda+"/"+index+".json"}
+                {url = "https://2ch.hk/" + borda + "/" + index + ".json"}
                 pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages})
             }
         }

@@ -101,7 +101,7 @@ Page {
                     height: childrenRect.height
                     Image {
                         id: pic
-                        source: "https://2ch.hk/"+borda+"/"+modelData.thumbnail
+                        source: "https://2ch.hk/" + borda + "/" + modelData.thumbnail
                         width: modelData.tn_width
                         height: modelData.tn_height
                         fillMode: Image.PreserveAspectFit
@@ -114,7 +114,7 @@ Page {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/"+borda+"/"+modelData.path} )}
+                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )}
                             }
                         }
                         Label {

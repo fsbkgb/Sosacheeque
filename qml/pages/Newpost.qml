@@ -21,6 +21,9 @@ Page {
         xhr.send();
     }
     function postPost() {
+        //var url = "https://posttestserver.com/post.php";
+        var url = "https://2ch.hk/makaba/posting.fcgi?json=1";
+        var params = "task=post&board=" + page.borda + "&thread=" + page.tred + "&comment=" + cmnt.text + "&captcha=" + page.captcha + "&captcha_value_id_06=" + captcha_value.text;
 
         /*var data = {
             task: "post",
@@ -41,12 +44,8 @@ Page {
         }
 
         params = params.join(boundaryMiddle) + boundaryLast;
-
-        var xhr = new XMLHttpRequest();*/
-        var url = "https://2ch.hk/makaba/posting.fcgi?json=1";
-        //var url = "https://posttestserver.com/post.php";
-        var params = "task=post&board=" + page.borda + "&thread=" + page.tred + "&comment=" + cmnt.text + "&captcha=" + page.captcha + "&captcha_value_id_06=" + captcha_value.text;
-        /*xhr.open("POST", url, true);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
         xhr.setRequestHeader('Content-Type','multipart/form-data; boundary=' + boundary);
         xhr.setRequestHeader("Content-length", params.length);
         xhr.setRequestHeader("Connection", "close");
