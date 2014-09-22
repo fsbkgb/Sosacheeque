@@ -3,14 +3,16 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
-    property string path: ""
-    property string borda: ""
+    property string uri: ""
     SilicaWebView {
         id: webview
-        url: "https://2ch.hk/"+borda+"/"+path
+        url: uri
         anchors{
             fill: parent
             topMargin: Theme.paddingLarge * 4
         }
+    }
+    Component.onCompleted: {
+        console.log(url)
     }
 }

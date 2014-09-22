@@ -63,7 +63,7 @@ Page {
             MenuItem {
                 text: "Ответить"
                 onClicked: {
-                    console.log("YOLO")
+                    onClicked: {pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )}
                 }
             }
             MenuItem {
@@ -145,7 +145,19 @@ Page {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {borda: borda, path: modelData.path} )}
+                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/"+borda+"/"+modelData.path} )}
+                            }
+                        }
+                        Label {
+                            id: file
+                            font.pixelSize :Theme.fontSizeTiny
+                            text: modelData.path.match(/\.([a-z]+)/)[1] + ", " + modelData.size + "kB"
+                            width: parent.width
+                            color: Theme.secondaryColor
+                            anchors{
+                                top: parent.top
+                                left: parent.right
+                                leftMargin: 5
                             }
                         }
                     }
