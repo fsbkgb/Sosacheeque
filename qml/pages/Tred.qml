@@ -3,10 +3,12 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
+    property bool loading: false
     property string tred: ""
     property string borda: ""
     property var postiki
     function getPosts() {
+        page.loading = true;
         var xhr = new XMLHttpRequest();
         var posti = []
         xhr.onreadystatechange = function() {
@@ -21,6 +23,7 @@ Page {
                 }
             }
             page.postiki = posti
+            page.loading = false;
         }
         xhr.open("GET", "https://2ch.hk/" + borda + "/res/" + tred + ".json");
         xhr.send();
@@ -43,12 +46,19 @@ Page {
         xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + borda + "&thread=" + tred + "&post=" + count);
         xhr.send();
     }
+    BusyIndicator {
+        anchors.centerIn: parent
+        running: page.loading
+        visible: page.loading
+        size: BusyIndicatorSize.Large
+    }
     SilicaListView {
         anchors{
             fill: parent
         }
         spacing: 16
         id: listView
+        visible: !page.loading
         model: postiki
         header: PageHeader {
             title: borda + "/" + tred

@@ -6,7 +6,9 @@ Page {
     property string url: ""
     property string borda: ""
     property var postiki
+    property bool loading: false
     function getPost() {
+        page.loading = true;
         var xhr = new XMLHttpRequest();
         var posti = []
         xhr.onreadystatechange = function() {
@@ -17,9 +19,16 @@ Page {
                 posti.push(parsed[0]);
             }
             page.postiki = posti
+            page.loading = false;
         }
         xhr.open("GET", url);
         xhr.send();
+    }
+    BusyIndicator {
+        anchors.centerIn: parent
+        running: page.loading
+        visible: page.loading
+        size: BusyIndicatorSize.Large
     }
     SilicaListView {
         anchors{
@@ -28,6 +37,7 @@ Page {
         }
         spacing: 16
         id: listView
+        visible: !page.loading
         model: postiki
         /*header: PageHeader {
             title: borda + "/" + tred

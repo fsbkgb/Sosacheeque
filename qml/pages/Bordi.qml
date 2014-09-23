@@ -4,7 +4,9 @@ import Sailfish.Silica 1.0
 Page {
     id: page
     property var razdely
+    property bool loading: false
     function getBoards() {
+        page.loading = true;
         var xhr = new XMLHttpRequest();
         var categories = []
         xhr.onreadystatechange = function() {
@@ -18,13 +20,21 @@ Page {
                     }
                 }
                 page.razdely = categories
+                page.loading = false;
             }
         }
         xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_boards");
         xhr.send();
     }
+    BusyIndicator {
+        anchors.centerIn: parent
+        running: page.loading
+        visible: page.loading
+        size: BusyIndicatorSize.Large
+    }
     SilicaListView {
         id: listView
+        visible: !page.loading
         model: razdely
         anchors.fill: parent
         header: PageHeader {

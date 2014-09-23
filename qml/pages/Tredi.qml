@@ -7,7 +7,9 @@ Page {
     property string url: ""
     property int pages
     property var trediki
+    property bool loading: false
     function getThreads() {
+        page.loading = true;
         var xhr = new XMLHttpRequest();
         var threads = []
         xhr.onreadystatechange = function() {
@@ -22,9 +24,16 @@ Page {
                 }
             }
             page.trediki = threads
+            page.loading = false;
         }
         xhr.open("GET", url);
         xhr.send();
+    }
+    BusyIndicator {
+        anchors.centerIn: parent
+        running: page.loading
+        visible: page.loading
+        size: BusyIndicatorSize.Large
     }
     SilicaListView {
         anchors{
@@ -32,6 +41,7 @@ Page {
         }
         spacing: 16
         id: listView
+        visible: !page.loading
         model: trediki
         header: PageHeader {
             title: borda
