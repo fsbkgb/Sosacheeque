@@ -22,9 +22,9 @@ Page {
                     var post = lalka[i];
                     threads.push(post);
                 }
+                page.loading = false;
             }
             page.trediki = threads
-            page.loading = false;
         }
         xhr.open("GET", url);
         xhr.send();

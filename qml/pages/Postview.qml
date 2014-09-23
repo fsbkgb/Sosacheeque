@@ -17,9 +17,9 @@ Page {
             } else if(xhr.readyState === XMLHttpRequest.DONE) {
                 var parsed = JSON.parse(xhr.responseText);
                 posti.push(parsed[0]);
+                page.loading = false;
             }
             page.postiki = posti
-            page.loading = false;
         }
         xhr.open("GET", url);
         xhr.send();

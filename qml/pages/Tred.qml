@@ -4,6 +4,7 @@ import Sailfish.Silica 1.0
 Page {
     id: page
     property bool loading: false
+    property bool newpostsloading: false
     property string tred: ""
     property string borda: ""
     property var postiki
@@ -21,14 +22,16 @@ Page {
                     var post = lalka[i];
                     posti.push(post);
                 }
+                page.loading = false;
             }
             page.postiki = posti
-            page.loading = false;
+
         }
         xhr.open("GET", "https://2ch.hk/" + borda + "/res/" + tred + ".json");
         xhr.send();
     }
     function getNewPosts(count) {
+        page.newpostsloading = true;
         var xhr = new XMLHttpRequest();
         var posti = []
         xhr.onreadystatechange = function() {
@@ -41,6 +44,7 @@ Page {
                     page.postiki = page.postiki
                     getNewPosts(count + 1)
                 }
+                page.newpostsloading = false;
             }
         }
         xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + borda + "&thread=" + tred + "&post=" + count);
@@ -205,6 +209,15 @@ Page {
             }
         }
         VerticalScrollDecorator {}
+    }
+    ProgressBar {
+        width: parent.width
+        indeterminate: true
+        visible: page.newpostsloading
+        anchors{
+            bottom: parent.bottom
+            bottomMargin: Theme.paddingLarge * 4
+        }
     }
     Component.onCompleted: {
         getPosts()

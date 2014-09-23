@@ -12,7 +12,4 @@ Page {
             topMargin: Theme.paddingLarge * 4
         }
     }
-    Component.onCompleted: {
-        console.log(url)
-    }
 }
