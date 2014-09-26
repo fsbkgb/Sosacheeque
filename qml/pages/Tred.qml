@@ -32,7 +32,7 @@ Page {
         xhr.open("GET", "https://2ch.hk/" + borda + "/res/" + tred + ".json");
         xhr.send();
     }
-    function getNewPosts(count) {
+    function getNewPosts(count, position) {
         page.newpostsloading = true;
         var xhr = new XMLHttpRequest();
         var posti = []
@@ -43,10 +43,12 @@ Page {
                 var parsed = JSON.parse(xhr.responseText);
                 if(parsed.length > 0){
                     page.postiki.push(parsed[0])
-                    getNewPosts(count + 1)
+                    getNewPosts(count + 1, position)
+                } else {
+                    page.postiki = page.postiki
+                    page.newpostsloading = false;
+                    listView.currentIndex = position
                 }
-                page.postiki = page.postiki
-                page.newpostsloading = false;
             }
         }
         xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + borda + "&thread=" + tred + "&post=" + count);
@@ -73,7 +75,7 @@ Page {
             MenuItem {
                 text: "Получить новые посты"
                 onClicked: {
-                    getNewPosts(listView.count + 1)
+                    getNewPosts(listView.count + 1, listView.count - 1)
                 }
             }
             MenuItem {
