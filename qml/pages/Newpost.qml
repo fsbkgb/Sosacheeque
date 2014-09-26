@@ -21,11 +21,23 @@ Page {
         xhr.send();
     }
     function postPost() {
-        //var url = "https://posttestserver.com/post.php";
+        /*var url = "https://posttestserver.com/post.php";
         var url = "https://2ch.hk/makaba/posting.fcgi?json=1";
         var params = "task=post&board=" + page.borda + "&thread=" + page.tred + "&comment=" + cmnt.text + "&captcha=" + page.captcha + "&captcha_value_id_06=" + captcha_value.text;
 
-        /*var data = {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET","https://2ch.hk/b/",true);
+        xhr.send();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+                print('HEADERS_RECEIVED');
+                print(xhr.getAllResponseHeaders());
+            } else if(xhr.readyState === 3) {
+                console.log(xhr.responseText);
+            }
+        }
+
+        var data = {
             task: "post",
             board: page.borda,
             thread: page.tred,
@@ -44,7 +56,7 @@ Page {
         }
 
         params = params.join(boundaryMiddle) + boundaryLast;
-        var xhr = new XMLHttpRequest();
+        //var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         xhr.setRequestHeader('Content-Type','multipart/form-data; boundary=' + boundary);
         xhr.setRequestHeader("Content-length", params.length);
@@ -56,8 +68,8 @@ Page {
                 status.text = xhr.status;
             }
         }
-        xhr.send(params)*/
-        pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: url+params})
+        xhr.send(params)
+        pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: url+params})*/
     }
     Column {
         id: postform

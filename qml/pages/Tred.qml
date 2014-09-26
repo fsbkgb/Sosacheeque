@@ -24,8 +24,10 @@ Page {
                 }
                 page.loading = false;
             }
-            page.postiki = posti
-
+            if(xhr.readyState === 4) {
+                page.postiki = posti
+                listView.currentIndex = 1
+            }
         }
         xhr.open("GET", "https://2ch.hk/" + borda + "/res/" + tred + ".json");
         xhr.send();
@@ -41,9 +43,9 @@ Page {
                 var parsed = JSON.parse(xhr.responseText);
                 if(parsed.length > 0){
                     page.postiki.push(parsed[0])
-                    page.postiki = page.postiki
                     getNewPosts(count + 1)
                 }
+                page.postiki = page.postiki
                 page.newpostsloading = false;
             }
         }
