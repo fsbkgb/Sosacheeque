@@ -184,7 +184,13 @@ Page {
             Label {
                 id: text
                 textFormat: Text.RichText
-                text: "<style>a:link { color: " + Theme.highlightColor + "; } .unkfunc { color: " + Theme.secondaryHighlightColor + "; } </style>" + modelData.comment
+                text: "<style>
+                           a:link { color: " + Theme.highlightColor + "; }
+                           .unkfunc { color: " + Theme.secondaryHighlightColor + "; }
+                           span.spoiler { color: #747474; }
+                          .s { text-decoration: line-through; }
+                          .u { text-decoration: underline; }
+                      </style>"  + modelData.comment
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
