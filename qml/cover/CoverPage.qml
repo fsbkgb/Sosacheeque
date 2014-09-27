@@ -24,6 +24,11 @@ CoverBackground {
         }
         CoverAction {
             iconSource: "image://theme/icon-cover-favorite"
+            onTriggered: {
+                pageStack.clear()
+                pageStack.push(Qt.resolvedUrl("../pages/Favorites.qml"))
+                mainWindow.activate()
+            }
         }
     }
 }

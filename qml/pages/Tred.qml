@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.LocalStorage 2.0
 import Sailfish.Silica 1.0
 
 Page {
@@ -8,6 +9,30 @@ Page {
     property string tred: ""
     property string borda: ""
     property var postiki
+    property var db: null
+    function openDB() {
+        if(db !== null) return;
+        db = LocalStorage.openDatabaseSync("favdb", "0.1", "Favorites", 100000);
+        try {
+            db.transaction(function(tx){
+                tx.executeSql('CREATE TABLE IF NOT EXISTS favs(board TEXT, thread TEXT, postcount INTEGER)');
+                var table  = tx.executeSql("SELECT * FROM favs");
+                // Seed the table with default values
+                if (table.rows.length === 0) {
+                    tx.executeSql('INSERT INTO favs VALUES(?, ?, ?)', ["aa", "73439", 50]);
+                    console.log('Favorites table added');
+                };
+            });
+        } catch (err) {
+            console.log("Error creating table in database: " + err);
+        };
+    }
+    function saveFav(board, thread, postcount) {
+        openDB();
+        db.transaction( function(tx){
+            tx.executeSql('INSERT OR REPLACE INTO favs VALUES(?, ?, ?)', [board, thread, postcount]);
+        });
+    }
     function getPosts() {
         page.loading = true;
         var xhr = new XMLHttpRequest();
@@ -87,7 +112,7 @@ Page {
             MenuItem {
                 text: "Добавить в избранное"
                 onClicked: {
-                    console.log("YOLO")
+                    saveFav(borda, tred, listView.count)
                 }
             }
         }
@@ -95,13 +120,13 @@ Page {
             MenuItem {
                 text: "Ответить"
                 onClicked: {
-                    console.log("YOLO")
+                    onClicked: {pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )}
                 }
             }
             MenuItem {
                 text: "Добавить в избранное"
                 onClicked: {
-                    console.log("YOLO")
+                    saveFav(borda, tred, listView.count)
                 }
             }
         }
