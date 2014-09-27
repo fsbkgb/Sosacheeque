@@ -39,9 +39,6 @@ Page {
         id: listView
         visible: !page.loading
         model: postiki
-        /*header: PageHeader {
-            title: borda + "/" + tred
-        }*/
         delegate: BackgroundItem {
             id: delegate
             height: (rowrow.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight)
@@ -89,9 +86,7 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: {
-                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/"+modelData.path} )}
-                            }
+                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )
                         }
                         Label {
                             id: file
@@ -115,9 +110,9 @@ Page {
                            a:link { color: " + Theme.highlightColor + "; }
                            .unkfunc { color: " + Theme.secondaryHighlightColor + "; }
                            span.spoiler { color: #747474; }
-                          .s { text-decoration: line-through; }
-                          .u { text-decoration: underline; }
-                      </style>"  + modelData.comment
+                           .s { text-decoration: line-through; }
+                           .u { text-decoration: underline; }
+                       </style>"  + modelData.comment
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
@@ -137,7 +132,6 @@ Page {
                         var trd = link.match(/([0-9]+)/)[1]
                         var pst = link.match(/#([0-9]+)/)[1]
                         var url = "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
-                        console.log(url)
                         pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd} )
                     }
                     else

@@ -49,21 +49,21 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: "Выбрать страницу"
-                onClicked: {pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages} )}
+                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages} )
             }
             MenuItem {
                 text: "Перезагрузить"
-                onClicked: {pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages} )}
+                onClicked: pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages} )
             }
         }
         PushUpMenu {
             MenuItem {
                 text: "Выбрать страницу"
-                onClicked: {pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages} )}
+                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages} )
             }
             MenuItem {
                 text: "Перезагрузить"
-                onClicked: {pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages} )}
+                onClicked: pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages} )
             }
         }
         delegate: BackgroundItem {
@@ -123,9 +123,7 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: {
-                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )}
-                            }
+                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )
                         }
                         Label {
                             id: file
@@ -149,11 +147,10 @@ Page {
                            a:link { color: " + Theme.highlightColor + "; }
                            .unkfunc { color: " + Theme.secondaryHighlightColor + "; }
                            span.spoiler { color: #747474; }
-                          .s { text-decoration: line-through; }
-                          .u { text-decoration: underline; }
-                      </style>" + modelData.posts[0].comment
+                           .s { text-decoration: line-through; }
+                           .u { text-decoration: underline; }
+                       </style>" + modelData.posts[0].comment
                 width: parent.width
-                //maximumLineCount : 10
                 wrapMode: Text.WordWrap
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 anchors{
@@ -163,7 +160,7 @@ Page {
                     leftMargin: 5
                 }
             }
-            onClicked: {pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.thread_num, borda: borda} )}
+            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.thread_num, borda: borda} )
         }
         VerticalScrollDecorator {}
     }

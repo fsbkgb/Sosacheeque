@@ -99,35 +99,25 @@ Page {
         PushUpMenu {
             MenuItem {
                 text: "Получить новые посты"
-                onClicked: {
-                    getNewPosts(listView.count + 1, listView.count - 1)
-                }
+                onClicked: getNewPosts(listView.count + 1, listView.count - 1)
             }
             MenuItem {
                 text: "Ответить"
-                onClicked: {
-                    onClicked: {pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )}
-                }
+                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )
             }
             MenuItem {
                 text: "Добавить в избранное"
-                onClicked: {
-                    saveFav(borda, tred, listView.count)
-                }
+                onClicked: saveFav(borda, tred, listView.count)
             }
         }
         PullDownMenu {
             MenuItem {
                 text: "Ответить"
-                onClicked: {
-                    onClicked: {pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )}
-                }
+                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )
             }
             MenuItem {
                 text: "Добавить в избранное"
-                onClicked: {
-                    saveFav(borda, tred, listView.count)
-                }
+                onClicked: saveFav(borda, tred, listView.count)
             }
         }
         delegate: BackgroundItem {
@@ -187,9 +177,7 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: {
-                                onClicked: {pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )}
-                            }
+                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )
                         }
                         Label {
                             id: file
@@ -213,9 +201,9 @@ Page {
                            a:link { color: " + Theme.highlightColor + "; }
                            .unkfunc { color: " + Theme.secondaryHighlightColor + "; }
                            span.spoiler { color: #747474; }
-                          .s { text-decoration: line-through; }
-                          .u { text-decoration: underline; }
-                      </style>"  + modelData.comment
+                           .s { text-decoration: line-through; }
+                           .u { text-decoration: underline; }
+                       </style>"  + modelData.comment
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor

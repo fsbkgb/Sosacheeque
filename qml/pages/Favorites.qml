@@ -48,7 +48,6 @@ Page {
     SilicaListView {
         anchors{
             fill: parent
-            margins: 16
         }
         id: listView
         model: page.favs
@@ -73,9 +72,7 @@ Page {
                     }
                 }
             }
-            onClicked: {
-                 onClicked: {pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.tred, borda: modelData.borda} )}
-            }
+            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.tred, borda: modelData.borda} )
         }
         VerticalScrollDecorator {}
     }

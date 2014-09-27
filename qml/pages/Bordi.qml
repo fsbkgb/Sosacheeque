@@ -43,9 +43,7 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: "Ввести имя борды"
-                onClicked: {
-                    onClicked: {pageStack.push(Qt.resolvedUrl("Chooseboard.qml") )}
-                }
+                onClicked: pageStack.push(Qt.resolvedUrl("Chooseboard.qml") )
             }
         }
         delegate: BackgroundItem {
@@ -81,15 +79,11 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: {
-                                onClicked: {pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch.hk/" + modelData.id + "/index.json", borda: modelData.id, pages: modelData.pages} )}
-                                //console.log("YOLO")
-                            }
+                            onClicked: pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch.hk/" + modelData.id + "/index.json", borda: modelData.id, pages: modelData.pages} )
                         }
                     }
                 }
             }
-
         }
         VerticalScrollDecorator {}
     }
