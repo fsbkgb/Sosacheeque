@@ -45,6 +45,10 @@ Page {
                 text: "Ввести имя борды"
                 onClicked: pageStack.push(Qt.resolvedUrl("Chooseboard.qml") )
             }
+            MenuItem {
+                text: "Избранное"
+                onClicked: pageStack.replace(Qt.resolvedUrl("Favorites.qml") )
+            }
         }
         delegate: BackgroundItem {
             id: delegate
