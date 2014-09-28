@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
 import Sailfish.Silica 1.0
+import "../js/db.js" as DB
 
 Page {
     id: page
@@ -8,26 +9,10 @@ Page {
     property string tred: ""
     property int pc
     property var favs
-    property var db: null
-    function openDB() {
-        if(db !== null) return;
-        db = LocalStorage.openDatabaseSync("favdb2", "0.1", "Favorites", 100000);
-        try {
-            db.transaction(function(tx){
-                tx.executeSql('CREATE TABLE IF NOT EXISTS favs(board TEXT, thread TEXT, postcount INTEGER, thumb TEXT, subj TEXT, timestamp INTEGER UNIQUE)');
-                var table  = tx.executeSql("SELECT * FROM favs");
-                if (table.rows.length === 0) {
-                    tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?, ?, ?)', ["mobi", "266094", 1, "https://2ch.hk/mobi/thumb/266094/1398715403880s.gif", "В лесу родилась Jollaчка", 1398715403]);
-                    console.log('Favorites table added');
-                };
-            });
-        } catch (err) {
-            console.log("Error creating table in database: " + err);
-        };
-    }
+    property var db
     function loadFav() {
         var favs = []
-        openDB();
+        DB.openDB();
         db.transaction(function(tx) {
             var rs = tx.executeSql('SELECT * FROM favs ORDER BY board ASC, thread ASC');
             for(var i = 0; i < rs.rows.length; i++) {
@@ -38,7 +23,7 @@ Page {
     }
     function delFav(board, thread) {
         var favs = []
-        openDB();
+        DB.openDB(db);
         db.transaction(function(tx) {
             var rs = tx.executeSql('DELETE FROM favs WHERE board = ? AND thread = ?;', [board, thread]);
             loadFav();
