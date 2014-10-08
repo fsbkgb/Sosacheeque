@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import QtQuick.LocalStorage 2.0
 import Sailfish.Silica 1.0
 import "../js/db.js" as DB
 
@@ -9,10 +8,22 @@ Page {
     property string tred: ""
     property int pc
     property var favs
-    property var db
+    property var seting
+    function loadSett() {
+        var setts = []
+        var db = DB.getDatabase();
+        db.transaction(function(tx) {
+            var rs = tx.executeSql('SELECT * FROM settings');
+            for(var i = 0; i < rs.rows.length; i++) {
+                setts.push({"key" : rs.rows.item(i).key, "value" : rs.rows.item(i).value})
+                //console.log(rs.rows.item(i).key + ": " + rs.rows.item(i).value)
+            }
+            page.seting = setts
+        });
+    }
     function loadFav() {
         var favs = []
-        DB.openDB();
+        var db = DB.getDatabase();
         db.transaction(function(tx) {
             var rs = tx.executeSql('SELECT * FROM favs ORDER BY board ASC, thread ASC');
             for(var i = 0; i < rs.rows.length; i++) {
@@ -23,7 +34,7 @@ Page {
     }
     function delFav(board, thread) {
         var favs = []
-        DB.openDB(db);
+        var db = DB.getDatabase();
         db.transaction(function(tx) {
             var rs = tx.executeSql('DELETE FROM favs WHERE board = ? AND thread = ?;', [board, thread]);
             loadFav();
@@ -50,7 +61,7 @@ Page {
             height: pic.implicitHeight > (text.implicitHeight + url.implicitHeight) ? pic.implicitHeight : (text.implicitHeight + url.implicitHeight)
             Image {
                 id: pic
-                source: modelData.tmb
+                source: "https://2ch." + page.seting[0].value + "/" + modelData.borda + "/" + modelData.tmb
                 anchors {
                     left: parent.left
                     leftMargin: Theme.paddingSmall
@@ -91,11 +102,12 @@ Page {
                 }
                 onClicked: delFav(modelData.borda, modelData.tred)
             }
-            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.tred, borda: modelData.borda} )
+            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.tred, borda: modelData.borda, domen: page.seting[0].value} )
         }
         VerticalScrollDecorator {}
     }
     Component.onCompleted: {
+        loadSett()
         loadFav()
     }
 }

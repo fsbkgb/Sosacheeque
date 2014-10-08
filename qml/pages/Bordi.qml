@@ -1,10 +1,24 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import "../js/db.js" as DB
 
 Page {
     id: page
     property var razdely
     property bool loading: false
+    property var seting
+    function loadSett() {
+        var setts = []
+        var db = DB.getDatabase();
+        db.transaction(function(tx) {
+            var rs = tx.executeSql('SELECT * FROM settings');
+            for(var i = 0; i < rs.rows.length; i++) {
+                setts.push({"key" : rs.rows.item(i).key, "value" : rs.rows.item(i).value})
+                //console.log(rs.rows.item(i).key + ": " + rs.rows.item(i).value)
+            }
+            page.seting = setts
+        });
+    }
     function getBoards() {
         page.loading = true;
         var xhr = new XMLHttpRequest();
@@ -23,7 +37,7 @@ Page {
                 page.loading = false;
             }
         }
-        xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_boards");
+        xhr.open("GET", "https://2ch." + page.seting[0].value + "/makaba/mobile.fcgi?task=get_boards");
         xhr.send();
     }
     BusyIndicator {
@@ -42,8 +56,12 @@ Page {
         }
         PullDownMenu {
             MenuItem {
+                text: "Настройки"
+                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml") )
+            }
+            MenuItem {
                 text: "Ввести имя борды"
-                onClicked: pageStack.push(Qt.resolvedUrl("Chooseboard.qml") )
+                onClicked: pageStack.push(Qt.resolvedUrl("Chooseboard.qml"), {domen: page.seting[0].value} )
             }
             MenuItem {
                 text: "Избранное"
@@ -83,7 +101,7 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch.hk/" + modelData.id + "/index.json", borda: modelData.id, pages: modelData.pages} )
+                            onClicked: pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch." + page.seting[0].value + "/" + modelData.id + "/index.json", borda: modelData.id, pages: modelData.pages, domen: page.seting[0].value} )
                         }
                     }
                 }
@@ -92,6 +110,8 @@ Page {
         VerticalScrollDecorator {}
     }
     Component.onCompleted: {
+        DB.openDB()
+        loadSett()
         getBoards()
     }
 }

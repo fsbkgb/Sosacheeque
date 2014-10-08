@@ -1,5 +1,4 @@
 import QtQuick 2.0
-import QtQuick.LocalStorage 2.0
 import Sailfish.Silica 1.0
 import "../js/db.js" as DB
 
@@ -9,10 +8,11 @@ Page {
     property bool newpostsloading: false
     property string tred: ""
     property string borda: ""
+    property string domen: ""
     property var postiki
     property var db
     function saveFav(board, thread, postcount, thumb, subject, timestamp) {
-        DB.openDB();
+        var db = DB.getDatabase();
         db.transaction( function(tx){
             tx.executeSql('INSERT OR REPLACE INTO favs VALUES(?, ?, ?, ?, ?, ?)', [board, thread, postcount, thumb, subject, timestamp]);
         });
@@ -38,7 +38,7 @@ Page {
                 listView.currentIndex = 1
             }
         }
-        xhr.open("GET", "https://2ch.hk/" + borda + "/res/" + tred + ".json");
+        xhr.open("GET", "https://2ch." + domen + "/" + borda + "/res/" + tred + ".json");
         xhr.send();
     }
     function getNewPosts(count, position) {
@@ -60,7 +60,7 @@ Page {
                 }
             }
         }
-        xhr.open("GET", "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + borda + "&thread=" + tred + "&post=" + count);
+        xhr.open("GET", "https://2ch." + domen + "/makaba/mobile.fcgi?task=get_thread&board=" + borda + "&thread=" + tred + "&post=" + count);
         xhr.send();
     }
     BusyIndicator {
@@ -91,7 +91,7 @@ Page {
             }
             MenuItem {
                 text: "Добавить в избранное"
-                onClicked: saveFav(borda, tred, listView.count, postiki[0].files ? "https://2ch.hk/" + borda + "/" + postiki[0].files[0].thumbnail : "", postiki[0].subject ? postiki[0].subject : postiki[0].comment, postiki[0].timestamp)
+                onClicked: saveFav(borda, tred, listView.count, postiki[0].files ? postiki[0].files[0].thumbnail : "", postiki[0].subject ? postiki[0].subject : postiki[0].comment, postiki[0].timestamp)
             }
         }
         PullDownMenu {
@@ -101,7 +101,7 @@ Page {
             }
             MenuItem {
                 text: "Добавить в избранное"
-                onClicked: saveFav(borda, tred, listView.count, postiki[0].files ? "https://2ch.hk/" + borda + "/" + postiki[0].files[0].thumbnail : "", postiki[0].subject ? postiki[0].subject : postiki[0].comment, postiki[0].timestamp)
+                onClicked: saveFav(borda, tred, listView.count, postiki[0].files ? postiki[0].files[0].thumbnail : "", postiki[0].subject ? postiki[0].subject : postiki[0].comment, postiki[0].timestamp)
             }
         }
         delegate: BackgroundItem {
@@ -149,7 +149,7 @@ Page {
                     height: childrenRect.height
                     Image {
                         id: pic
-                        source: "https://2ch.hk/" + borda + "/" + modelData.thumbnail
+                        source: "https://2ch." + domen + "/" + borda + "/" + modelData.thumbnail
                         width: modelData.tn_width
                         height: modelData.tn_height
                         fillMode: Image.PreserveAspectFit
@@ -161,7 +161,7 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )
+                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
                         }
                         Label {
                             id: file
@@ -206,9 +206,9 @@ Page {
                         var brd = link.match(/([a-z]+)/)[1]
                         var trd = link.match(/([0-9]+)/)[1]
                         var pst = link.match(/#([0-9]+)/)[1]
-                        var url = "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
+                        var url = "https://2ch." + domen + "/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
                         console.log(url)
-                        pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd} )
+                        pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd, domen: domen} )
                     }
                     else
                         {console.log(link)}

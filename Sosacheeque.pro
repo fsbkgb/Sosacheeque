@@ -34,7 +34,8 @@ OTHER_FILES += qml/Sosacheeque.qml \
     README.md \
     qml/pages/Newpost.qml \
     qml/pages/Favorites.qml \
-    qml/js/db.js
+    qml/js/db.js \
+    qml/pages/Settings.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

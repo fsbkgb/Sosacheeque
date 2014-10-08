@@ -5,6 +5,7 @@ Page {
     id: page
     property string url: ""
     property string borda: ""
+    property string domen: ""
     property var postiki
     property bool loading: false
     function getPost() {
@@ -74,7 +75,7 @@ Page {
                     height: childrenRect.height
                     Image {
                         id: pic
-                        source: "https://2ch.hk/" + borda + "/"+modelData.thumbnail
+                        source: "https://2ch.hk/" + borda + "/" + modelData.thumbnail
                         width: modelData.tn_width
                         height: modelData.tn_height
                         fillMode: Image.PreserveAspectFit
@@ -86,7 +87,7 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )
+                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
                         }
                         Label {
                             id: file
@@ -131,8 +132,8 @@ Page {
                         var brd = link.match(/([a-z]+)/)[1]
                         var trd = link.match(/([0-9]+)/)[1]
                         var pst = link.match(/#([0-9]+)/)[1]
-                        var url = "https://2ch.hk/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
-                        pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd} )
+                        var url = "https://2ch." + domen + "/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
+                        pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd, domen: domen} )
                     }
                     else
                         {console.log(link)}

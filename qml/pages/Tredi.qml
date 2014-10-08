@@ -5,6 +5,7 @@ Page {
     id: page
     property string borda: ""
     property string url: ""
+    property string domen: ""
     property int pages
     property var trediki
     property bool loading: false
@@ -49,7 +50,7 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: "Выбрать страницу"
-                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages} )
+                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages, domen: domen} )
             }
             MenuItem {
                 text: "Перезагрузить"
@@ -59,7 +60,7 @@ Page {
         PushUpMenu {
             MenuItem {
                 text: "Выбрать страницу"
-                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages} )
+                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages, domen: domen} )
             }
             MenuItem {
                 text: "Перезагрузить"
@@ -111,7 +112,7 @@ Page {
                     height: childrenRect.height
                     Image {
                         id: pic
-                        source: "https://2ch.hk/" + borda + "/" + modelData.thumbnail
+                        source: "https://2ch." + domen + "/" + borda + "/" + modelData.thumbnail
                         width: modelData.tn_width
                         height: modelData.tn_height
                         fillMode: Image.PreserveAspectFit
@@ -123,7 +124,7 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch.hk/" + borda + "/" + modelData.path} )
+                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
                         }
                         Label {
                             id: file
@@ -160,7 +161,7 @@ Page {
                     leftMargin: 5
                 }
             }
-            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.thread_num, borda: borda} )
+            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.thread_num, borda: borda, domen: domen} )
         }
         VerticalScrollDecorator {}
     }

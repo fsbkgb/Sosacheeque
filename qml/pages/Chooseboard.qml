@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
+    property string domen: ""
     function getBoard(board) {
         var xhr = new XMLHttpRequest();
         var categories = []
@@ -11,10 +12,10 @@ Page {
                 print('HEADERS_RECEIVED');
             } else if(xhr.readyState === XMLHttpRequest.DONE) {
                 var parsed = JSON.parse(xhr.responseText);
-                pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch.hk/" + board + "/index.json", borda: board, pages: parsed.pages.length} )
+                pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: "https://2ch." + domen + "/" + board + "/index.json", borda: board, pages: parsed.pages.length, domen: domen} )
             }
         }
-        xhr.open("GET", "https://2ch.hk/" + board + "/index.json");
+        xhr.open("GET", "https://2ch." + domen + "/" + board + "/index.json");
         xhr.send();
     }
     SilicaFlickable {

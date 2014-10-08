@@ -5,6 +5,7 @@ Page {
     id: page
     property string borda: ""
     property string url: ""
+    property string domen: ""
     property int pages
 
     SilicaListView {
@@ -27,10 +28,10 @@ Page {
             }
             onClicked: {
                 if (index == 0)
-                {url = "https://2ch.hk/" + borda + "/index.json"}
+                {url = "https://2ch." + domen + "/" + borda + "/index.json"}
                 else
-                {url = "https://2ch.hk/" + borda + "/" + index + ".json"}
-                pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages})
+                {url = "https://2ch." + domen + "/" + borda + "/" + index + ".json"}
+                pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages, domen: domen})
             }
         }
         VerticalScrollDecorator {}
