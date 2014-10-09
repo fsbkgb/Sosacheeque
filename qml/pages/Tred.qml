@@ -89,15 +89,11 @@ Page {
                 text: "Ответить"
                 onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )
             }
-            MenuItem {
-                text: "Добавить в избранное"
-                onClicked: saveFav(borda, tred, listView.count, postiki[0].files ? postiki[0].files[0].thumbnail : "", postiki[0].subject ? postiki[0].subject : postiki[0].comment, postiki[0].timestamp)
-            }
         }
         PullDownMenu {
             MenuItem {
-                text: "Ответить"
-                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )
+                text: "Открыть тред в браузере"
+                onClicked: pageStack.push(Qt.openUrlExternally("https://2ch." + domen + "/" + borda + "/res/" + tred + ".html"))
             }
             MenuItem {
                 text: "Добавить в избранное"
