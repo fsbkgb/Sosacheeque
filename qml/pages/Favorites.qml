@@ -102,7 +102,7 @@ Page {
                 }
                 onClicked: delFav(modelData.borda, modelData.tred)
             }
-            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.tred, borda: modelData.borda, domen: page.seting[0].value} )
+            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.tred, borda: modelData.borda, domen: page.seting[0].value, anchor: modelData.pc, fromfav: true} )
         }
         VerticalScrollDecorator {}
     }

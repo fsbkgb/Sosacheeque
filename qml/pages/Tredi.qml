@@ -161,7 +161,7 @@ Page {
                     leftMargin: 5
                 }
             }
-            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.thread_num, borda: borda, domen: domen} )
+            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.thread_num, borda: borda, domen: domen, anchor: 1, fromfav: false} )
         }
         VerticalScrollDecorator {}
     }

@@ -6,9 +6,11 @@ Page {
     id: page
     property bool loading: false
     property bool newpostsloading: false
+    property bool fromfav
     property string tred: ""
     property string borda: ""
     property string domen: ""
+    property int anchor
     property var postiki
     property var db
     function saveFav(board, thread, postcount, thumb, subject, timestamp) {
@@ -17,7 +19,7 @@ Page {
             tx.executeSql('INSERT OR REPLACE INTO favs VALUES(?, ?, ?, ?, ?, ?)', [board, thread, postcount, thumb, subject, timestamp]);
         });
     }
-    function getPosts() {
+    function getPosts(position) {
         page.loading = true;
         var xhr = new XMLHttpRequest();
         var posti = []
@@ -35,13 +37,16 @@ Page {
             }
             if(xhr.readyState === 4) {
                 page.postiki = posti
-                listView.currentIndex = 1
+                listView.currentIndex = position
+                if(fromfav) {
+                    saveFav(borda, tred, posti.length - 1, posti[0].files ? posti[0].files[0].thumbnail : "", posti[0].subject ? posti[0].subject : posti[0].comment, posti[0].timestamp)
+                }
             }
         }
         xhr.open("GET", "https://2ch." + domen + "/" + borda + "/res/" + tred + ".json");
         xhr.send();
     }
-    function getNewPosts(count, position) {
+    function getNewPosts(count, position, ffav, board, thread, postcount, thumb, subject, timestamp) {
         page.newpostsloading = true;
         var xhr = new XMLHttpRequest();
         var posti = []
@@ -52,11 +57,14 @@ Page {
                 var parsed = JSON.parse(xhr.responseText);
                 if(parsed.length > 0){
                     page.postiki.push(parsed[0])
-                    getNewPosts(count + 1, position)
+                    getNewPosts(count + 1, position, ffav, board, thread, postcount, thumb, subject, timestamp)
                 } else {
                     page.postiki = page.postiki
                     page.newpostsloading = false;
                     listView.currentIndex = position
+                    if(ffav){
+                        saveFav(board, thread, count - 2, thumb, subject, timestamp)
+                    }
                 }
             }
         }
@@ -83,7 +91,7 @@ Page {
         PushUpMenu {
             MenuItem {
                 text: "Получить новые посты"
-                onClicked: getNewPosts(listView.count + 1, listView.count - 1)
+                onClicked: getNewPosts(listView.count + 1, listView.count - 1, fromfav, borda, tred, listView.count, postiki[0].files ? postiki[0].files[0].thumbnail : "", postiki[0].subject ? postiki[0].subject : postiki[0].comment, postiki[0].timestamp)
             }
             MenuItem {
                 text: "Ответить"
@@ -223,6 +231,6 @@ Page {
         }
     }
     Component.onCompleted: {
-        getPosts()
+        getPosts(anchor)
     }
 }
