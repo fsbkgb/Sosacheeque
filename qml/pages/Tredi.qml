@@ -124,7 +124,14 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                            onClicked: {
+                                if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
+                                    //webm
+                                }
+                                else{
+                                    pageStack.push(Qt.resolvedUrl("Image.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                                }
+                            }
                         }
                         Label {
                             id: file
