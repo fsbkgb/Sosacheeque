@@ -37,10 +37,13 @@ OTHER_FILES += qml/Sosacheeque.qml \
     qml/js/db.js \
     qml/pages/Settings.qml \
     qml/pages/Image.qml \
-    qml/pages/Webm.qml
+    qml/pages/Webm.qml \
+    translations/Sosacheeque-ua.ts \
+    translations/Sosacheeque-ru.ts
 
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
-TRANSLATIONS += translations/Sosacheeque-de.ts
+TRANSLATIONS += translations/Sosacheeque-ru.ts
+TRANSLATIONS += translations/Sosacheeque-ua.ts
 
