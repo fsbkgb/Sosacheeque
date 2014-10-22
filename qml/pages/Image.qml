@@ -33,7 +33,7 @@ Page {
                 }
             }
         }
-        Component { id: failedLoading; Label { text: "Error loading image" } }
+        Component { id: failedLoading; Label { text: "Ошибка" } }
     }
     AnimatedImage {
         id: imageItem
