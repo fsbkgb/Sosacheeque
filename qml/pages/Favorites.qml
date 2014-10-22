@@ -52,6 +52,10 @@ Page {
         }
         PullDownMenu {
             MenuItem {
+                text: "Настройки"
+                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml") )
+            }
+            MenuItem {
                 text: "Список борд"
                 onClicked: pageStack.replace(Qt.resolvedUrl("Bordi.qml") )
             }
