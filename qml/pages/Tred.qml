@@ -108,121 +108,145 @@ Page {
                 onClicked: saveFav(borda, tred, listView.count, postiki[0].files ? postiki[0].files[0].thumbnail : "", postiki[0].subject ? postiki[0].subject : postiki[0].comment, postiki[0].timestamp)
             }
         }
-        delegate: BackgroundItem {
-            id: delegate
-            height: (rowrow.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight)
-            Text {
-                id: postnum
-                text: modelData.num
-                color: Theme.highlightColor
-                anchors {
-                    right: parent.right
-                    rightMargin: 5
+        delegate: Item {
+            property Item contextMenu
+            id: myListItem
+            property bool menuOpen: contextMenu != null && contextMenu.parent === myListItem
+            width: ListView.view.width
+            height: menuOpen ? contextMenu.height + content.height : content.height
+            BackgroundItem {
+                id: content
+                height: (rowrow.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight)
+                Text {
+                    id: postnum
+                    text: modelData.num
+                    color: Theme.highlightColor
+                    anchors {
+                        right: parent.right
+                        rightMargin: 5
+                    }
                 }
-            }
-            Text {
-                id: postdate
-                text: modelData.date
-                font.pixelSize :Theme.fontSizeTiny
-                color: Theme.secondaryColor
-                anchors {
-                    top: postnum.bottom
-                    right: parent.right
-                    rightMargin: 5
+                Text {
+                    id: postdate
+                    text: modelData.date
+                    font.pixelSize :Theme.fontSizeTiny
+                    color: Theme.secondaryColor
+                    anchors {
+                        top: postnum.bottom
+                        right: parent.right
+                        rightMargin: 5
+                    }
                 }
-            }
-            Text {
-                id: postcount
-                text: "#"+index
-                font.pixelSize :Theme.fontSizeTiny
-                color: Theme.secondaryHighlightColor
-                anchors {
-                    left: parent.left
-                    leftMargin: 5
+                Text {
+                    id: postcount
+                    text: "#"+index
+                    font.pixelSize :Theme.fontSizeTiny
+                    color: Theme.secondaryHighlightColor
+                    anchors {
+                        left: parent.left
+                        leftMargin: 5
+                    }
                 }
-            }
-            Column {
-                id:rowrow
-                anchors {
-                    top: postdate.bottom
-                }
-                spacing: 5
-                Repeater {
-                    id: attachments
-                    model: modelData.files
-                    height: childrenRect.height
-                    Image {
-                        id: pic
-                        source: "https://2ch." + domen + "/" + borda + "/" + modelData.thumbnail
-                        width: modelData.tn_width
-                        height: modelData.tn_height
-                        fillMode: Image.PreserveAspectFit
-                        smooth: true
-                        anchors {
-                            topMargin: 5
-                            left: parent.left
-                            leftMargin: 5
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
-                                    pageStack.push(Qt.resolvedUrl("Webm.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
-                                }
-                                else{
-                                    pageStack.push(Qt.resolvedUrl("Image.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                Column {
+                    id:rowrow
+                    anchors {
+                        top: postdate.bottom
+                    }
+                    spacing: 5
+                    Repeater {
+                        id: attachments
+                        model: modelData.files
+                        height: childrenRect.height
+                        Image {
+                            id: pic
+                            source: "https://2ch." + domen + "/" + borda + "/" + modelData.thumbnail
+                            width: modelData.tn_width
+                            height: modelData.tn_height
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
+                            anchors {
+                                topMargin: 5
+                                left: parent.left
+                                leftMargin: 5
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
+                                        pageStack.push(Qt.resolvedUrl("Webm.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                                    }
+                                    else{
+                                        pageStack.push(Qt.resolvedUrl("Image.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                                    }
                                 }
                             }
-                        }
-                        Label {
-                            id: file
-                            font.pixelSize :Theme.fontSizeTiny
-                            text: modelData.path.match(/\.([a-z]+)/)[1] + ", " + modelData.size + "kB"
-                            width: parent.width
-                            color: Theme.secondaryColor
-                            anchors{
-                                top: parent.top
-                                left: parent.right
-                                leftMargin: 5
+                            Label {
+                                id: file
+                                font.pixelSize :Theme.fontSizeTiny
+                                text: modelData.path.match(/\.([a-z]+)/)[1] + ", " + modelData.size + "kB"
+                                width: parent.width
+                                color: Theme.secondaryColor
+                                anchors{
+                                    top: parent.top
+                                    left: parent.right
+                                    leftMargin: 5
+                                }
                             }
                         }
                     }
                 }
-            }
-            Label {
-                id: text
-                textFormat: Text.RichText
-                text: "<style>
+                Label {
+                    id: text
+                    textFormat: Text.RichText
+                    text: "<style>
                            a:link { color: " + Theme.highlightColor + "; }
                            .unkfunc { color: " + Theme.secondaryHighlightColor + "; }
                            span.spoiler { color: #747474; }
                            .s { text-decoration: line-through; }
                            .u { text-decoration: underline; }
                        </style>"  + modelData.comment
-                width: parent.width
-                wrapMode: Text.WordWrap
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                anchors{
-                    top: postdate.bottom
-                    topMargin: rowrow.height
-                    left: parent.left
-                    leftMargin: 5
-                }
-                onLinkActivated: {
-                    var extlink = new RegExp(/^http/)
-                    var intlink = new RegExp(/^\/[a-z]+\/res\/[0-9]+\.html#[0-9]+/)
-                    if (link.match(extlink))
-                        {Qt.openUrlExternally(link)}
-                    else if (link.match(intlink)){
-                        var brd = link.match(/([a-z]+)/)[1]
-                        var trd = link.match(/([0-9]+)/)[1]
-                        var pst = link.match(/#([0-9]+)/)[1]
-                        var url = "https://2ch." + domen + "/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
-                        console.log(url)
-                        pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd, domen: domen} )
+                    width: parent.width
+                    wrapMode: Text.WordWrap
+                    color: content.highlighted ? Theme.highlightColor : Theme.primaryColor
+                    anchors{
+                        top: postdate.bottom
+                        topMargin: rowrow.height
+                        left: parent.left
+                        leftMargin: 5
                     }
-                    else
+                    onLinkActivated: {
+                        var extlink = new RegExp(/^http/)
+                        var intlink = new RegExp(/^\/[a-z]+\/res\/[0-9]+\.html#[0-9]+/)
+                        if (link.match(extlink))
+                        {Qt.openUrlExternally(link)}
+                        else if (link.match(intlink)){
+                            var brd = link.match(/([a-z]+)/)[1]
+                            var trd = link.match(/([0-9]+)/)[1]
+                            var pst = link.match(/#([0-9]+)/)[1]
+                            var url = "https://2ch." + domen + "/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
+                            console.log(url)
+                            pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd, domen: domen} )
+                        }
+                        else
                         {console.log(link)}
+                    }
+                }
+                onPressAndHold: {
+                    if (!contextMenu)
+                        contextMenu = contextMenuComponent.createObject(listView)
+                    contextMenu.show(myListItem)
+                }
+            }
+        }
+        Component {
+            id: contextMenuComponent
+            ContextMenu {
+                MenuItem {
+                    text: "Смотреть ответы"
+                    onClicked: remove()
+                }
+                MenuItem {
+                    text: "Ответить"
                 }
             }
         }
