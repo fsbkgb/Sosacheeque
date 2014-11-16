@@ -95,7 +95,7 @@ Page {
             }
             MenuItem {
                 text: "Ответить"
-                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )
+                //onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {borda: borda, tred: tred, uri: "https://2ch." + domen + "/contacts.html"} )
             }
         }
         PullDownMenu {

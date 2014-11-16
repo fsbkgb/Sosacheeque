@@ -47,3 +47,5 @@ CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/Sosacheeque-ru.ts
 TRANSLATIONS += translations/Sosacheeque-ua.ts
 
+HEADERS +=
+

@@ -79,7 +79,7 @@ Page {
         }
         Button {
            text: "Ответ"
-           onClicked: {postPost()}
+           onClicked: postPost()
            anchors {
                right: parent.right
                rightMargin: Theme.paddingLarge
