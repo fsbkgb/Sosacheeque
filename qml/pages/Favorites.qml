@@ -60,7 +60,7 @@ Page {
                 onClicked: pageStack.replace(Qt.resolvedUrl("Bordi.qml") )
             }
         }
-        delegate: ListItem {
+        delegate: BackgroundItem {
             id: delegate
             height: pic.implicitHeight > (text.implicitHeight + url.implicitHeight) ? pic.implicitHeight : (text.implicitHeight + url.implicitHeight)
             Image {
@@ -70,33 +70,33 @@ Page {
                     left: parent.left
                     leftMargin: Theme.paddingSmall
                 }
-                Label {
-                    id: url
-                    text: modelData.borda + "/" + modelData.tred
-                    width: parent.width
-                    font.pixelSize :Theme.fontSizeTiny
-                    color: Theme.secondaryHighlightColor
-                    anchors {
-                        left: parent.right
-                        leftMargin: Theme.paddingSmall
-                    }
-
+            }
+            Label {
+                id: url
+                text: modelData.borda + "/" + modelData.tred
+                width: parent.width
+                font.pixelSize :Theme.fontSizeTiny
+                color: Theme.secondaryHighlightColor
+                anchors {
+                    left: pic.right
+                    leftMargin: Theme.paddingSmall
                 }
-                Label {
-                    id: text
-                    text: modelData.text
-                    width: page.width - 2 * Theme.paddingSmall - parent.width
-                    font.pixelSize :Theme.fontSizeExtraSmall
-                    color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                    maximumLineCount: 1
-                    horizontalAlignment: Text.AlignLeft
-                    truncationMode: TruncationMode.Fade
-                    anchors {
-                        left: parent.right
-                        leftMargin: Theme.paddingSmall
-                        top: url.bottom
-                        topMargin: Theme.paddingSmall
-                    }
+
+            }
+            Label {
+                id: text
+                text: modelData.text
+                width: page.width - 2 * Theme.paddingSmall - parent.width
+                font.pixelSize :Theme.fontSizeExtraSmall
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                maximumLineCount: 1
+                horizontalAlignment: Text.AlignLeft
+                truncationMode: TruncationMode.Fade
+                anchors {
+                    left: pic.right
+                    leftMargin: Theme.paddingSmall
+                    top: url.bottom
+                    topMargin: Theme.paddingSmall
                 }
             }
             IconButton {
