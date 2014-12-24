@@ -4,48 +4,84 @@ import Sailfish.Silica 1.0
 Page {
     id: imagePage
     allowedOrientations : Orientation.All
-    property string uri: ""
-    Loader {
-        id: busyIndicatorLoader
-        anchors.centerIn: parent
-        sourceComponent: {
-            switch (imageItem.status) {
-            case Image.Loading: return busyIndicatorComponent
-            case Image.Error: return failedLoading
-            default: return undefined
-            }
-        }
-        Component {
-            id: busyIndicatorComponent
-
-            Item {
-                width: busyIndicator.width
-                height: busyIndicator.height
-                BusyIndicator {
-                    id: busyIndicator
-                    size: BusyIndicatorSize.Large
-                    running: true
-                }
-                Label {
-                    anchors.centerIn: parent
-                    font.pixelSize: Theme.fontSizeSmall
-                    text: Math.round(imageItem.progress * 100) + "%"
-                }
-            }
-        }
-        Component { id: failedLoading; Label { text: "Ошибка" } }
-    }
-    AnimatedImage {
-        id: imageItem
-        source: uri
-        fillMode: Image.PreserveAspectFit
-        smooth: true
+    property alias uri: imageItem.source
+    SilicaFlickable {
+        id: picFlick
+        contentWidth: width
+        contentHeight: height
         anchors.fill: parent
+        pressDelay: 0
+        function _fit() {
+            contentX = 0
+            contentY = 0
+            contentWidth = width
+            contentHeight = height
+        }
+        Loader {
+            id: busyIndicatorLoader
+            anchors.centerIn: parent
+            sourceComponent: {
+                switch (imageItem.status) {
+                case Image.Loading: return busyIndicatorComponent
+                case Image.Error: return failedLoading
+                default: return undefined
+                }
+            }
+            Component {
+                id: busyIndicatorComponent
+                Item {
+                    width: busyIndicator.width
+                    height: busyIndicator.height
+                    BusyIndicator {
+                        id: busyIndicator
+                        size: BusyIndicatorSize.Large
+                        running: true
+                    }
+                    Label {
+                        anchors.centerIn: parent
+                        font.pixelSize: Theme.fontSizeSmall
+                        text: Math.round(imageItem.progress * 100) + "%"
+                    }
+                }
+            }
+            Component { id: failedLoading; Label { text: "Ошибка" } }
+        }
         PinchArea {
-            anchors.fill: parent
-            pinch.target: parent
-            pinch.minimumScale: 1
-            pinch.maximumScale: 4
+            width: Math.max(picFlick.contentWidth, picFlick.width)
+            height: Math.max(picFlick.contentHeight, picFlick.height)
+            property real initialWidth
+            property real initialHeight
+            onPinchStarted: {
+                initialWidth = picFlick.contentWidth
+                initialHeight = picFlick.contentHeight
+            }
+            onPinchUpdated: {
+                picFlick.contentX += pinch.previousCenter.x - pinch.center.x
+                picFlick.contentY += pinch.previousCenter.y - pinch.center.y
+
+                var newWidth = Math.max(initialWidth * pinch.scale, picFlick.width)
+                var newHeight = Math.max(initialHeight * pinch.scale, picFlick.height)
+
+                newWidth = Math.min(newWidth, picFlick.width * 3)
+                newHeight = Math.min(newHeight, picFlick.height * 3)
+
+                picFlick.resizeContent(newWidth, newHeight, pinch.center)
+            }
+            onPinchFinished: {
+                picFlick.returnToBounds()
+            }
+        }
+        Item {
+            width: picFlick.contentWidth
+            height: picFlick.contentHeight
+            smooth: !(picFlick.movingVertically || picFlick.movingHorizontally)
+            anchors.centerIn: parent
+            AnimatedImage {
+                id: imageItem
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+                anchors.fill: parent
+            }
         }
     }
 }
