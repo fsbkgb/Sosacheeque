@@ -75,7 +75,7 @@ Page {
                     height: childrenRect.height
                     Image {
                         id: pic
-                        source: "https://2ch.hk/" + borda + "/" + modelData.thumbnail
+                        source: "https://2ch." + domen + "/" + borda + "/" + modelData.thumbnail
                         width: modelData.tn_width
                         height: modelData.tn_height
                         fillMode: Image.PreserveAspectFit
