@@ -10,22 +10,16 @@
 #   - translation filenames have to be changed
 
 # The name of your application
-TARGET = Sosacheeque
+TARGET = harbour-sosacheeque
 
 CONFIG += sailfishapp
 
-SOURCES += src/Sosacheeque.cpp
+SOURCES += \
+    src/harbour-sosacheeque.cpp
 
-OTHER_FILES += qml/Sosacheeque.qml \
+OTHER_FILES += \
     qml/cover/CoverPage.qml \
-    rpm/Sosacheeque.changes.in \
-    rpm/Sosacheeque.spec \
-    rpm/Sosacheeque.yaml \
     translations/*.ts \
-    Sosacheeque.desktop \
-    qml/pages/Bordi.qml \
-    qml/pages/Tredi.qml \
-    qml/pages/Tred.qml \
     qml/pages/Paginator.qml \
     qml/pages/Webview.qml \
     qml/images/abu.png \
@@ -36,16 +30,31 @@ OTHER_FILES += qml/Sosacheeque.qml \
     qml/pages/Favorites.qml \
     qml/js/db.js \
     qml/pages/Settings.qml \
-    qml/pages/Image.qml \
-    qml/pages/Webm.qml \
-    translations/Sosacheeque-ua.ts \
-    translations/Sosacheeque-ru.ts
+    qml/pages/SaveFile.qml \
+    qml/harbour-sosacheeque.qml \
+    harbour-sosacheeque.desktop \
+    translations/harbour-sosacheeque-ru.ts \
+    translations/harbour-sosacheeque-ua.ts \
+    qml/pages/Boardlist.qml \
+    qml/pages/Imageview.qml \
+    qml/pages/Thread.qml \
+    qml/pages/Threads.qml \
+    qml/pages/Webmview.qml \
+    qml/js/boards.js \
+    qml/js/settings.js \
+    rpm/harbour-sosacheeque.changes.in \
+    rpm/harbour-sosacheeque.spec \
+    rpm/harbour-sosacheeque.yaml \
+    qml/js/favorites.js \
+    qml/js/threads.js \
+    qml/js/posts.js \
+    qml/js/newpost.js
 
 # to disable building translations every time, comment out the
 # following CONFIG line
 CONFIG += sailfishapp_i18n
-TRANSLATIONS += translations/Sosacheeque-ru.ts
-TRANSLATIONS += translations/Sosacheeque-ua.ts
+TRANSLATIONS += translations/harbour-sosacheeque-ru.ts
+TRANSLATIONS += translations/harbour-sosacheeque-ua.ts
 
 HEADERS +=
 

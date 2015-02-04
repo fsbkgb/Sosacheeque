@@ -18,7 +18,7 @@ CoverBackground {
             iconSource: "image://theme/icon-cover-refresh"
             onTriggered: {
                 pageStack.clear()
-                pageStack.push(Qt.resolvedUrl("../pages/Bordi.qml"))
+                pageStack.push(Qt.resolvedUrl("../pages/Boardlist.qml"))
                 mainWindow.activate()
             }
         }

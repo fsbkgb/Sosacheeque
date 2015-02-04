@@ -1,11 +1,12 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 
 Page {
     id: page
     property string uri: ""
-    property string tred: ""
-    property string borda: ""
+    property string thread: ""
+    property string board: ""
+
     SilicaWebView {
         id: webview
         url: uri
@@ -16,8 +17,8 @@ Page {
         }
     }
     Button {
-       text: "Продолжить"
-       onClicked: pageStack.replace(Qt.resolvedUrl("Newpost.qml"), {borda: borda, tred: tred} )
+       text: qsTr("Forward")
+       onClicked: pageStack.replace(Qt.resolvedUrl("Newpost.qml"), {board: board, thread: thread} )
        anchors {
            bottom: parent.bottom
        }

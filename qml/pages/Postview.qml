@@ -1,30 +1,15 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
+import "../js/posts.js" as Posts
 
 Page {
     id: page
     property string url: ""
-    property string borda: ""
-    property string domen: ""
-    property var postiki
+    property string board: ""
+    property string domain: ""
+    property var posts
     property bool loading: false
-    function getPost() {
-        page.loading = true;
-        var xhr = new XMLHttpRequest();
-        var posti = []
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                print('HEADERS_RECEIVED');
-            } else if(xhr.readyState === XMLHttpRequest.DONE) {
-                var parsed = JSON.parse(xhr.responseText);
-                posti.push(parsed[0]);
-                page.loading = false;
-            }
-            page.postiki = posti
-        }
-        xhr.open("GET", url);
-        xhr.send();
-    }
+
     BusyIndicator {
         anchors.centerIn: parent
         running: page.loading
@@ -39,10 +24,12 @@ Page {
         spacing: 16
         id: listView
         visible: !page.loading
-        model: postiki
+        model: posts
+
         delegate: BackgroundItem {
             id: delegate
             height: (rowrow.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight)
+
             Text {
                 id: postnum
                 text: modelData.num
@@ -69,13 +56,15 @@ Page {
                     top: postdate.bottom
                 }
                 spacing: 5
+
                 Repeater {
                     id: attachments
                     model: modelData.files
                     height: childrenRect.height
+
                     Image {
                         id: pic
-                        source: "https://2ch." + domen + "/" + borda + "/" + modelData.thumbnail
+                        source: "https://2ch." + domain + "/" + board + "/" + modelData.thumbnail
                         width: modelData.tn_width
                         height: modelData.tn_height
                         fillMode: Image.PreserveAspectFit
@@ -85,14 +74,15 @@ Page {
                             left: parent.left
                             leftMargin: 5
                         }
+
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
                                 if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
-                                    pageStack.push(Qt.resolvedUrl("Webm.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                                    pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
                                 }
                                 else{
-                                    pageStack.push(Qt.resolvedUrl("Image.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                                    pageStack.push(Qt.resolvedUrl("Imageview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
                                 }
                             }
                         }
@@ -130,26 +120,12 @@ Page {
                     left: parent.left
                     leftMargin: 5
                 }
-                onLinkActivated: {
-                    var extlink = new RegExp(/^http/)
-                    var intlink = new RegExp(/^\/[a-z]+\/res\/[0-9]+\.html#[0-9]+/)
-                    if (link.match(extlink))
-                        {Qt.openUrlExternally(link)}
-                    else if (link.match(intlink)){
-                        var brd = link.match(/([a-z]+)/)[1]
-                        var trd = link.match(/([0-9]+)/)[1]
-                        var pst = link.match(/#([0-9]+)/)[1]
-                        var url = "https://2ch." + domen + "/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
-                        pageStack.push(Qt.resolvedUrl("Postview.qml"), {url: url, borda: brd, domen: domen} )
-                    }
-                    else
-                        {console.log(link)}
-                }
+                onLinkActivated: Posts.parseLinks (link)
             }
         }
         VerticalScrollDecorator {}
     }
     Component.onCompleted: {
-        getPost()
+        Posts.getOne(url)
     }
 }

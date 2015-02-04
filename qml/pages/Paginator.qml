@@ -1,11 +1,11 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 
 Page {
     id: page
-    property string borda: ""
+    property string board: ""
     property string url: ""
-    property string domen: ""
+    property string domain: ""
     property int pages
 
     SilicaListView {
@@ -16,10 +16,12 @@ Page {
         id: listView
         model: pages
         header: PageHeader {
-            title: "Выбрать страницу"
+            title: qsTr("Choose page")
         }
+
         delegate: BackgroundItem {
             id: delegate
+
             Label {
                 id: text
                 text: index
@@ -28,10 +30,10 @@ Page {
             }
             onClicked: {
                 if (index == 0)
-                {url = "https://2ch." + domen + "/" + borda + "/index.json"}
+                {url = "https://2ch." + domain + "/" + board + "/index.json"}
                 else
-                {url = "https://2ch." + domen + "/" + borda + "/" + index + ".json"}
-                pageStack.push(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages, domen: domen})
+                {url = "https://2ch." + domain + "/" + board + "/" + index + ".json"}
+                pageStack.push(Qt.resolvedUrl("Threads.qml"), {url: url, board: board, pages: pages, domain: domain})
             }
         }
         VerticalScrollDecorator {}

@@ -1,10 +1,10 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 import "pages"
 
 ApplicationWindow
 {
-    initialPage: Component { Bordi { } }
+    initialPage: Component { Boardlist { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     id: mainWindow
 }

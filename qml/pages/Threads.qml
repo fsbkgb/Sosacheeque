@@ -1,41 +1,23 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
+import "../js/threads.js" as Threads
 
 Page {
     id: page
-    property string borda: ""
+    property string board: ""
     property string url: ""
-    property string domen: ""
+    property string domain: ""
     property int pages
-    property var trediki
+    property var threads
     property bool loading: false
-    function getThreads() {
-        page.loading = true;
-        var xhr = new XMLHttpRequest();
-        var threads = []
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                print('HEADERS_RECEIVED');
-            } else if(xhr.readyState === XMLHttpRequest.DONE) {
-                var parsed = JSON.parse(xhr.responseText);
-                var lalka = parsed["threads"]
-                for(var i = 0; i < lalka.length; i++) {
-                    var post = lalka[i];
-                    threads.push(post);
-                }
-                page.loading = false;
-            }
-            page.trediki = threads
-        }
-        xhr.open("GET", url);
-        xhr.send();
-    }
+
     BusyIndicator {
         anchors.centerIn: parent
         running: page.loading
         visible: page.loading
         size: BusyIndicatorSize.Large
     }
+
     SilicaListView {
         anchors{
             fill: parent
@@ -43,33 +25,35 @@ Page {
         spacing: 16
         id: listView
         visible: !page.loading
-        model: trediki
+        model: threads
         header: PageHeader {
-            title: borda
+            title: board
         }
+
         PullDownMenu {
             MenuItem {
-                text: "Выбрать страницу"
-                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages, domen: domen} )
+                text: qsTr("Choose page")
+                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {board: board, pages: pages, domain: domain} )
             }
             MenuItem {
-                text: "Перезагрузить"
-                onClicked: pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages} )
+                text: qsTr("Reload page")
+                onClicked: pageStack.replace(Qt.resolvedUrl("Threads.qml"), {url: url, board: board, pages: pages, domain: domain} )
             }
         }
         PushUpMenu {
             MenuItem {
-                text: "Выбрать страницу"
-                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {borda: borda, pages: pages, domen: domen} )
+                text: qsTr("Choose page")
+                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {board: board, pages: pages, domain: domain} )
             }
             MenuItem {
-                text: "Перезагрузить"
-                onClicked: pageStack.replace(Qt.resolvedUrl("Tredi.qml"), {url: url, borda: borda, pages: pages} )
+                text: qsTr("Reload page")
+                onClicked: pageStack.replace(Qt.resolvedUrl("Threads.qml"), {url: url, board: board, pages: pages, domain: domain} )
             }
         }
         delegate: BackgroundItem {
             id: delegate
-            height: (rowrow.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight + 15)
+            height: (threadlist.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight + 15)
+
             Text {
                 id: postnum
                 text: modelData.thread_num
@@ -92,7 +76,7 @@ Page {
             }
             Text {
                 id: postcount
-                text: "Ответов: " + modelData.posts_count
+                text: qsTr("Replies: ") + modelData.posts_count
                 font.pixelSize :Theme.fontSizeTiny
                 color: Theme.secondaryHighlightColor
                 anchors {
@@ -101,18 +85,20 @@ Page {
                 }
             }
             Column {
-                id:rowrow
+                id:threadlist
                 anchors {
                     top: postdate.bottom
                 }
                 spacing: 5
+
                 Repeater {
                     id: attachments
                     model: modelData.posts[0].files
                     height: childrenRect.height
+
                     Image {
                         id: pic
-                        source: "https://2ch." + domen + "/" + borda + "/" + modelData.thumbnail
+                        source: "https://2ch." + domain + "/" + board + "/" + modelData.thumbnail
                         width: modelData.tn_width
                         height: modelData.tn_height
                         fillMode: Image.PreserveAspectFit
@@ -122,14 +108,15 @@ Page {
                             left: parent.left
                             leftMargin: 5
                         }
+
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
                                 if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
-                                    pageStack.push(Qt.resolvedUrl("Webm.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                                    pageStack.push(Qt.resolvedUrl("Webm.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
                                 }
                                 else{
-                                    pageStack.push(Qt.resolvedUrl("Image.qml"), {uri: "https://2ch." + domen + "/" + borda + "/" + modelData.path} )
+                                    pageStack.push(Qt.resolvedUrl("Image.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
                                 }
                             }
                         }
@@ -163,16 +150,16 @@ Page {
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 anchors{
                     top: postdate.bottom
-                    topMargin: rowrow.height
+                    topMargin: threadlist.height
                     left: parent.left
                     leftMargin: 5
                 }
             }
-            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.thread_num, borda: borda, domen: domen, anchor: 1, fromfav: false} )
+            onClicked: pageStack.push(Qt.resolvedUrl("Thread.qml"), {thread: modelData.thread_num, board: board, domain: domain, anchor: 1, fromfav: false} )
         }
         VerticalScrollDecorator {}
     }
     Component.onCompleted: {
-        getThreads()
+        Threads.getAll()
     }
 }

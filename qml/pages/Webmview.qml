@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 import QtMultimedia 5.0
 
@@ -6,6 +6,7 @@ Page{
     id: page
     allowedOrientations : Orientation.All
     property string uri: ""
+
     Loader {
         id: busyIndicatorLoader
         anchors.centerIn: parent
@@ -16,6 +17,7 @@ Page{
             default: return undefined
             }
         }
+
         Component {
             id: busyIndicatorComponent
 
@@ -34,14 +36,19 @@ Page{
                 }*/
             }
         }
-        Component { id: failedLoading; Label { text: "Ошибка" } }
+        Component { id: failedLoading; Label { text: qsTr("Error") } }
     }
     SilicaFlickable {
         anchors.fill: parent
+
         PullDownMenu {
             MenuItem {
-                text: "Открыть в браузере"
+                text: qsTr("Open in browser")
                 onClicked: pageStack.push(Qt.openUrlExternally(uri))
+            }
+            MenuItem {
+                text: qsTr("Save as (to do)")
+                //onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: uri})
             }
         }
         MediaPlayer{

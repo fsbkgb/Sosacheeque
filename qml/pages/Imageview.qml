@@ -1,10 +1,11 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 
 Page {
     id: imagePage
     allowedOrientations : Orientation.All
     property alias uri: imageItem.source
+
     SilicaFlickable {
         id: picFlick
         contentWidth: width
@@ -17,6 +18,13 @@ Page {
             contentWidth = width
             contentHeight = height
         }
+
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Save as (to do)")
+                //onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: uri})
+            }
+        }
         Loader {
             id: busyIndicatorLoader
             anchors.centerIn: parent
@@ -27,11 +35,14 @@ Page {
                 default: return undefined
                 }
             }
+
             Component {
                 id: busyIndicatorComponent
+
                 Item {
                     width: busyIndicator.width
                     height: busyIndicator.height
+
                     BusyIndicator {
                         id: busyIndicator
                         size: BusyIndicatorSize.Large
@@ -44,7 +55,7 @@ Page {
                     }
                 }
             }
-            Component { id: failedLoading; Label { text: "Ошибка" } }
+            Component { id: failedLoading; Label { text: qsTr("Error") } }
         }
         PinchArea {
             width: Math.max(picFlick.contentWidth, picFlick.width)
@@ -76,6 +87,7 @@ Page {
             height: picFlick.contentHeight
             smooth: !(picFlick.movingVertically || picFlick.movingHorizontally)
             anchors.centerIn: parent
+
             AnimatedImage {
                 id: imageItem
                 fillMode: Image.PreserveAspectFit

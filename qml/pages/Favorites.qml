@@ -1,45 +1,17 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 import "../js/db.js" as DB
+import "../js/settings.js" as Settings
+import "../js/favorites.js" as Favorites
 
 Page {
     id: page
-    property string borda: ""
-    property string tred: ""
+    property string board: ""
+    property string thread: ""
     property int pc
     property var favs
-    property var seting
-    function loadSett() {
-        var setts = []
-        var db = DB.getDatabase();
-        db.transaction(function(tx) {
-            var rs = tx.executeSql('SELECT * FROM settings');
-            for(var i = 0; i < rs.rows.length; i++) {
-                setts.push({"key" : rs.rows.item(i).key, "value" : rs.rows.item(i).value})
-                //console.log(rs.rows.item(i).key + ": " + rs.rows.item(i).value)
-            }
-            page.seting = setts
-        });
-    }
-    function loadFav() {
-        var favs = []
-        var db = DB.getDatabase();
-        db.transaction(function(tx) {
-            var rs = tx.executeSql('SELECT * FROM favs ORDER BY board ASC, thread ASC');
-            for(var i = 0; i < rs.rows.length; i++) {
-                favs.push({"borda" : rs.rows.item(i).board, "tred" : rs.rows.item(i).thread, "pc" : rs.rows.item(i).postcount, "tmb" : rs.rows.item(i).thumb, "text" : rs.rows.item(i).subj})
-            }
-            page.favs = favs
-        });
-    }
-    function delFav(board, thread) {
-        var favs = []
-        var db = DB.getDatabase();
-        db.transaction(function(tx) {
-            var rs = tx.executeSql('DELETE FROM favs WHERE board = ? AND thread = ?;', [board, thread]);
-            loadFav();
-        });
-    }
+    property var option
+
     SilicaListView {
         anchors{
             fill: parent
@@ -48,24 +20,26 @@ Page {
         id: listView
         model: page.favs
         header: PageHeader {
-            title: "Избранное"
+            title: qsTr("Favorites")
         }
+
         PullDownMenu {
             MenuItem {
-                text: "Настройки"
+                text: qsTr("Settings")
                 onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml") )
             }
             MenuItem {
-                text: "Список борд"
-                onClicked: pageStack.replace(Qt.resolvedUrl("Bordi.qml") )
+                text: qsTr("Board list")
+                onClicked: pageStack.replace(Qt.resolvedUrl("Boardlist.qml") )
             }
         }
         delegate: BackgroundItem {
             id: delegate
             height: pic.implicitHeight > (text.implicitHeight + url.implicitHeight) ? pic.implicitHeight : (text.implicitHeight + url.implicitHeight)
+
             Image {
                 id: pic
-                source: "https://2ch." + page.seting[0].value + "/" + modelData.borda + "/" + modelData.tmb
+                source: "https://2ch." + page.option[0].value + "/" + modelData.board + "/" + modelData.tmb
                 anchors {
                     left: parent.left
                     leftMargin: Theme.paddingSmall
@@ -73,7 +47,7 @@ Page {
             }
             Label {
                 id: url
-                text: modelData.borda + "/" + modelData.tred
+                text: modelData.board + "/" + modelData.thread
                 width: parent.width
                 font.pixelSize :Theme.fontSizeTiny
                 color: Theme.secondaryHighlightColor
@@ -104,14 +78,14 @@ Page {
                 anchors {
                     right: parent.right
                 }
-                onClicked: delFav(modelData.borda, modelData.tred)
+                onClicked: Favorites.del(modelData.board, modelData.thread)
             }
-            onClicked: pageStack.push(Qt.resolvedUrl("Tred.qml"), {tred: modelData.tred, borda: modelData.borda, domen: page.seting[0].value, anchor: modelData.pc, fromfav: true} )
+            onClicked: pageStack.push(Qt.resolvedUrl("Thread.qml"), {thread: modelData.thread, board: modelData.board, domain: page.option[0].value, anchor: modelData.pc, fromfav: true} )
         }
         VerticalScrollDecorator {}
     }
     Component.onCompleted: {
-        loadSett()
-        loadFav()
+        Settings.load()
+        Favorites.load()
     }
 }

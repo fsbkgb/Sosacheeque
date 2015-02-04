@@ -1,55 +1,40 @@
-import QtQuick 2.0
+import QtQuick 2.1
 import Sailfish.Silica 1.0
 import "../js/db.js" as DB
+import "../js/settings.js" as Settings
 
 Page {
-    property var seting
-    function loadSett() {
-        var setts = []
-        var db = DB.getDatabase();
-        db.transaction(function(tx) {
-            var rs = tx.executeSql('SELECT * FROM settings');
-            for(var i = 0; i < rs.rows.length; i++) {
-                setts.push({"key" : rs.rows.item(i).key, "value" : rs.rows.item(i).value})
-                console.log(rs.rows.item(i).key + ": " + rs.rows.item(i).value)
-            }
-            page.seting = setts
-        });
-    }
-    function saveSett(key, value) {
-        var db = DB.getDatabase();
-        db.transaction( function(tx){
-            tx.executeSql('REPLACE INTO settings VALUES(?, ?)', [key, value]);
-        });
-        loadSett();
-    }
+    property var option
     id: page
+
     SilicaFlickable {
         anchors{
             fill: parent
             topMargin: Theme.paddingLarge * 4
         }
+
         Column {
             id: column
             width: parent.width
+
             ComboBox {
                 id: domain
                 width: page.width
-                label: "Домен"
+                label: qsTr("Domain")
                 currentIndex: -1
                 menu: ContextMenu {
                     MenuItem { text: "hk" }
                     MenuItem { text: "pm" }
                 }
                 onCurrentItemChanged: {
-                    saveSett("domen", currentItem.text)
-                    domain.value = page.seting[0].value
+                    Settings.save("domain", currentItem.text)
+                    domain.value = page.option[0].value
                 }
             }
         }
     }
     Component.onCompleted: {
-        loadSett()
-        domain.value = page.seting[0].value
+        Settings.load()
+        domain.value = page.option[0].value
     }
 }

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=Sosacheeque
-Exec=Sosacheeque
+Icon=harbour-sosacheeque
+Exec=harbour-sosacheeque
 Name=Sosacheeque
