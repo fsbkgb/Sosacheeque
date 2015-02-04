@@ -11,7 +11,7 @@ function openDB() {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS favs(board TEXT, thread TEXT, postcount INTEGER, thumb TEXT, subj TEXT, timestamp INTEGER UNIQUE)');
                     var table1  = tx.executeSql("SELECT * FROM favs");
                     if (table1.rows.length === 0) {
-                        tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?, ?, ?)', ["mobi", "266094", 1, "thumb/266094/1398715403880s.gif", "В лесу родилась Jollaчка", 1398715403]);
+                        tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?, ?, ?)', ["mobi", "450132", 1, "thumb/450132/14224052543470s.jpg", "Jolla&Sailfish", 1422405254]);
                         console.log('Favorites table added');
                     };
                     tx.executeSql('CREATE TABLE IF NOT EXISTS settings(key TEXT UNIQUE, value TEXT)');
