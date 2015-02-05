@@ -27,7 +27,7 @@ function getNew(count, position, ffav, board, thread, postcount, thumb, subject,
             var parsed = JSON.parse(xhr.responseText);
             if(parsed.length > 0){
                 page.posts.push(parsed[0])
-                getNewPosts(count + 1, position, ffav, board, thread, postcount, thumb, subject, timestamp)
+                getNew(count + 1, position, ffav, board, thread, postcount, thumb, subject, timestamp)
             } else {
                 page.posts = page.posts
                 page.newpostsloading = false;
