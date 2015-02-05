@@ -101,7 +101,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View replies (to do)</source>
+        <source>View replies</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

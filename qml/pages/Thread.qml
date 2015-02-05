@@ -170,7 +170,7 @@ Page {
                 }
                 onPressAndHold: {
                     if (!contextMenu)
-                        contextMenu = contextMenuComponent.createObject(listView)
+                        contextMenu = contextMenuComponent.createObject(listView, {post_num: modelData.num})
                     contextMenu.show(myListItem)
                 }
             }
@@ -179,8 +179,11 @@ Page {
             id: contextMenuComponent
 
             ContextMenu {
+                property var post_num
+
                 MenuItem {
-                    text: qsTr("View replies (to do)")
+                    text: qsTr("View replies")
+                    onClicked: Posts.getReplies (post_num, posts, page.thread, page.board, page.domain)
                 }
                 MenuItem {
                     text: qsTr("Reply (to do)")

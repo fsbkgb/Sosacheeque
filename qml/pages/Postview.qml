@@ -7,7 +7,9 @@ Page {
     property string url: ""
     property string board: ""
     property string domain: ""
-    property var posts
+    property string trd: ""
+    property var postnums
+    property var posts: []
     property bool loading: false
 
     BusyIndicator {
@@ -126,6 +128,6 @@ Page {
         VerticalScrollDecorator {}
     }
     Component.onCompleted: {
-        Posts.getOne(url)
+        Posts.getPosts(posts, 0, postnums, trd, board, domain)
     }
 }

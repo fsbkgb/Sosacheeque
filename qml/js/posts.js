@@ -1,19 +1,24 @@
-function getOne(url) {
+function getPosts(posti, count, postnums, trd, board, domain) {
     page.loading = true;
     var xhr = new XMLHttpRequest();
-    var posti = []
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
             print('HEADERS_RECEIVED');
         } else if(xhr.readyState === XMLHttpRequest.DONE) {
             var parsed = JSON.parse(xhr.responseText);
             posti.push(parsed[0]);
-            page.loading = false;
+            posti.sort(function(a,b) { return parseInt(a.num) - parseInt(b.num) } );
+            page.posts = posti;
         }
-        page.posts = posti
     }
-    xhr.open("GET", url);
+    xhr.open("GET", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + trd + "&num=" + postnums[count]);
     xhr.send();
+    count++
+    if (count < postnums.length) {
+        getPosts (posti, count, postnums, trd, board, domain);
+    } else {
+        page.loading = false;
+    }
 }
 
 function getNew(count, position, ffav, board, thread, postcount, thumb, subject, timestamp) {
@@ -51,10 +56,26 @@ function parseLinks (link) {
         var brd = link.match(/([a-z]+)/)[1]
         var trd = link.match(/([0-9]+)/)[1]
         var pst = link.match(/#([0-9]+)/)[1]
-        var url = "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + brd + "&thread=" + trd + "&num=" + pst
-        console.log(url)
-        pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {url: url, board: brd, domain: domain} )
+        var postnums = []
+        postnums.push(pst)
+        pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {postnums: postnums, trd: trd, board: brd, domain: domain} )
     }
     else
     {console.log(link)}
+}
+
+function getReplies (postnum, posts, trd, brd, domain) {
+    console.log(postnum)
+    console.log(posts.length)
+    var linkregxp = 'data-num="' + postnum + '"'
+    var postnums = []
+    postnums.push(postnum)
+    console.log(linkregxp)
+    for (var i = 0; i < posts.length; i++) {
+        if (posts[i].comment.match(linkregxp)) {
+            postnums.push(posts[i].num)
+        }
+    }
+    console.log(postnums)
+    pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {postnums: postnums, trd: trd, board: brd, domain: domain} )
 }
