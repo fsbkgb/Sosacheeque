@@ -40,7 +40,7 @@ function getOne (position) {
             page.posts = posti
             listView.currentIndex = position
             if(fromfav) {
-                saveFav(board, thread, posti.length - 1, posti[0].files ? posti[0].files[0].thumbnail : "", posti[0].subject ? posti[0].subject : posti[0].comment, posti[0].timestamp)
+                Favorites.save(board, thread, posti.length - 1, posti[0].files ? posti[0].files[0].thumbnail : "", posti[0].subject ? posti[0].subject : posti[0].comment, posti[0].timestamp)
             }
         }
     }

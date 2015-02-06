@@ -38,7 +38,7 @@ function getNew(count, position, ffav, board, thread, postcount, thumb, subject,
                 page.newpostsloading = false;
                 listView.currentIndex = position
                 if(ffav){
-                    saveFav(board, thread, count - 2, thumb, subject, timestamp)
+                    Favorites.save(board, thread, count - 2, thumb, subject, timestamp)
                 }
             }
         }
@@ -61,6 +61,7 @@ function parseLinks (link) {
         pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {postnums: postnums, trd: trd, board: brd, domain: domain} )
     }
     else
+    {console.log(link)}
 }
 
 function getReplies (postnum, posts, trd, brd, domain) {
