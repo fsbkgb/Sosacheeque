@@ -1,4 +1,4 @@
-function getPosts(posti, count, postnums, trd, board, domain) {
+function getPosts(posti, count, postnums, trd, board, domain, thread) {
     page.loading = true;
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -15,7 +15,7 @@ function getPosts(posti, count, postnums, trd, board, domain) {
     xhr.send();
     count++
     if (count < postnums.length) {
-        getPosts (posti, count, postnums, trd, board, domain);
+        getPosts (posti, count, postnums, trd, board, domain, thread);
     } else {
         page.loading = false;
     }
@@ -61,21 +61,16 @@ function parseLinks (link) {
         pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {postnums: postnums, trd: trd, board: brd, domain: domain} )
     }
     else
-    {console.log(link)}
 }
 
 function getReplies (postnum, posts, trd, brd, domain) {
-    console.log(postnum)
-    console.log(posts.length)
     var linkregxp = 'data-num="' + postnum + '"'
     var postnums = []
     postnums.push(postnum)
-    console.log(linkregxp)
     for (var i = 0; i < posts.length; i++) {
         if (posts[i].comment.match(linkregxp)) {
             postnums.push(posts[i].num)
         }
     }
-    console.log(postnums)
-    pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {postnums: postnums, trd: trd, board: brd, domain: domain} )
+    pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {postnums: postnums, trd: trd, board: brd, domain: domain, thread: posts} )
 }

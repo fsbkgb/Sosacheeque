@@ -69,6 +69,17 @@
     </message>
 </context>
 <context>
+    <name>Postview</name>
+    <message>
+        <source>View replies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply (to do)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SaveFile</name>
     <message>
         <source>Save</source>
