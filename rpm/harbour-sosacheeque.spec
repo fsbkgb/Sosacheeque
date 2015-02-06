@@ -16,8 +16,8 @@ Summary:    My SailfishOS Sosach Reader
 Version:    0.1
 Release:    1
 Group:      Qt/Qt
-License:    LICENSE
-URL:        http://example.org/
+License:    WTFPL
+URL:        https://github.com/fsbkgb/Sosacheeque
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  harbour-sosacheeque.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
@@ -28,7 +28,7 @@ BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  desktop-file-utils
 
 %description
-Short description of my SailfishOS Application
+2ch.hk client for SailfishOS
 
 
 %prep
