@@ -27,7 +27,7 @@ Page {
         visible: !page.loading
         model: threads
         header: PageHeader {
-            title: board
+            title: "/" + board + "/"
         }
 
         PullDownMenu {
@@ -113,10 +113,10 @@ Page {
                             anchors.fill: parent
                             onClicked: {
                                 if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
-                                    pageStack.push(Qt.resolvedUrl("Webm.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
+                                    pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
                                 }
                                 else{
-                                    pageStack.push(Qt.resolvedUrl("Image.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
+                                    pageStack.push(Qt.resolvedUrl("Imageview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
                                 }
                             }
                         }

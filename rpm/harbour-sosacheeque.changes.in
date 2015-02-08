@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* 8-02-2015 0.1-2
+- починены: просмотр ответов и открытие картинок со страницы доски
+
 * 6-02-2015 0.1-1
 - Scrubbed the deck
 - Hoisted the sails
