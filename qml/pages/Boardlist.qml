@@ -34,10 +34,6 @@ Page {
                 text: qsTr("Enter board name")
                 onClicked: pageStack.push(Qt.resolvedUrl("Chooseboard.qml"), {domain: page.option[0].value} )
             }
-            MenuItem {
-                text: qsTr("Favorites")
-                onClicked: pageStack.replace(Qt.resolvedUrl("Favorites.qml") )
-            }
         }
         delegate: BackgroundItem {
             id: delegate
@@ -87,5 +83,10 @@ Page {
         DB.openDB()
         Settings.load()
         Boards.getAll()
+    }
+    onStatusChanged: {
+        if (status === PageStatus.Active && pageStack.depth === 1) {
+            pageStack.pushAttached(Qt.resolvedUrl("Favorites.qml") );
+        }
     }
 }

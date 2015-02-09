@@ -28,10 +28,6 @@ Page {
                 text: qsTr("Settings")
                 onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml") )
             }
-            MenuItem {
-                text: qsTr("Board list")
-                onClicked: pageStack.replace(Qt.resolvedUrl("Boardlist.qml") )
-            }
         }
         delegate: BackgroundItem {
             id: delegate
@@ -87,5 +83,10 @@ Page {
     Component.onCompleted: {
         Settings.load()
         Favorites.load()
+    }
+    onStatusChanged: {
+        if (status === PageStatus.Active && pageStack.depth === 1) {
+            pageStack.pushAttached(Qt.resolvedUrl("Boardlist.qml") );
+        }
     }
 }

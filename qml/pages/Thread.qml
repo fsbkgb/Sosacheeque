@@ -64,7 +64,7 @@ Page {
 
             BackgroundItem {
                 id: content
-                height: (pics.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight)
+                height: (pics.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight + Theme.paddingLarge)
 
                 Text {
                     id: postnum
@@ -73,6 +73,25 @@ Page {
                     anchors {
                         right: parent.right
                         rightMargin: 5
+                    }
+                    Rectangle {
+                        id: hr
+                        width: page.width - parent.width - Theme.paddingLarge * 2
+                        height: 2
+                        border.color: Theme.secondaryHighlightColor
+                        border.width: 1
+                        radius: 1
+                        anchors {
+                            right: parent.left
+                            top: parent.verticalCenter
+                            rightMargin: Theme.paddingLarge
+                        }
+                    }
+                    OpacityRampEffect {
+                        sourceItem: hr
+                        slope: 1.7
+                        offset: 0.4
+                        direction: OpacityRamp.RightToLeft
                     }
                 }
                 Text {
@@ -94,6 +113,7 @@ Page {
                     anchors {
                         left: parent.left
                         leftMargin: 5
+                        verticalCenter: postnum.verticalCenter
                     }
                 }
                 Column {

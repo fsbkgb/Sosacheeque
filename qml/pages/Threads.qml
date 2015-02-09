@@ -52,7 +52,7 @@ Page {
         }
         delegate: BackgroundItem {
             id: delegate
-            height: (threadlist.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight + 15)
+            height: (threadlist.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight + Theme.paddingLarge)
 
             Text {
                 id: postnum
@@ -61,6 +61,25 @@ Page {
                 anchors {
                     right: parent.right
                     rightMargin: 5
+                }
+                Rectangle {
+                    id: hr
+                    width: page.width - parent.width - Theme.paddingLarge * 2
+                    height: 2
+                    border.color: Theme.secondaryHighlightColor
+                    border.width: 1
+                    radius: 1
+                    anchors {
+                        right: parent.left
+                        top: parent.verticalCenter
+                        rightMargin: Theme.paddingLarge
+                    }
+                }
+                OpacityRampEffect {
+                    sourceItem: hr
+                    slope: 1.7
+                    offset: 0.2
+                    direction: OpacityRamp.RightToLeft
                 }
             }
             Text {
@@ -80,6 +99,7 @@ Page {
                 font.pixelSize :Theme.fontSizeTiny
                 color: Theme.secondaryHighlightColor
                 anchors {
+                    verticalCenter: postnum.verticalCenter
                     left: parent.left
                     leftMargin: 5
                 }
@@ -138,13 +158,7 @@ Page {
             Label {
                 id: text
                 textFormat: Text.RichText
-                text: "<style>
-                           a:link { color: " + Theme.highlightColor + "; }
-                           .unkfunc { color: " + Theme.secondaryHighlightColor + "; }
-                           span.spoiler { color: #747474; }
-                           .s { text-decoration: line-through; }
-                           .u { text-decoration: underline; }
-                       </style>" + modelData.posts[0].comment
+                text: ""
                 width: parent.width
                 wrapMode: Text.WordWrap
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
@@ -153,6 +167,16 @@ Page {
                     topMargin: threadlist.height
                     left: parent.left
                     leftMargin: 5
+                }
+                Component.onCompleted: {
+                    var op = "<style>
+                                a:link { color: " + Theme.highlightColor + "; }
+                                .unkfunc { color: " + Theme.secondaryHighlightColor + "; }
+                                span.spoiler { color: #747474; }
+                                .s { text-decoration: line-through; }
+                                .u { text-decoration: underline; }
+                              </style>" + modelData.posts[0].comment
+                    text.text = Threads.truncateOP(op)
                 }
             }
             onClicked: pageStack.push(Qt.resolvedUrl("Thread.qml"), {thread: modelData.thread_num, board: board, domain: domain, anchor: 1, fromfav: false} )

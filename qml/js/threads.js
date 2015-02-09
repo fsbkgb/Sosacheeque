@@ -47,3 +47,11 @@ function getOne (position) {
     xhr.open("GET", "https://2ch." + domain + "/" + board + "/res/" + thread + ".json");
     xhr.send();
 }
+
+function truncateOP (text){
+    if (text.length>700){
+        return(text.substr(0,699)+'&hellip;')
+    } else {
+        return(text)
+    }
+}

@@ -22,7 +22,7 @@ Page {
     SilicaListView {
         anchors{
             fill: parent
-            topMargin: Theme.paddingLarge * 4
+            topMargin: Theme.paddingLarge * 1.5
         }
         spacing: 16
         id: listView
@@ -47,6 +47,25 @@ Page {
                     anchors {
                         right: parent.right
                         rightMargin: 5
+                    }
+                    Rectangle {
+                        id: hr
+                        width: page.width - parent.width - Theme.paddingLarge * 2
+                        height: 2
+                        border.color: Theme.secondaryHighlightColor
+                        border.width: 1
+                        radius: 1
+                        anchors {
+                            right: parent.left
+                            top: parent.verticalCenter
+                            rightMargin: Theme.paddingLarge
+                        }
+                    }
+                    OpacityRampEffect {
+                        sourceItem: hr
+                        slope: 1.7
+                        offset: 0.45
+                        direction: OpacityRamp.RightToLeft
                     }
                 }
                 Text {

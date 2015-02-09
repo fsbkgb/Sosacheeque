@@ -15,10 +15,6 @@
         <source>Enter board name</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Favorites</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Favorites</name>
@@ -28,10 +24,6 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Board list</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
