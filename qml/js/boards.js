@@ -9,7 +9,9 @@ function getAll() {
             var parsed = JSON.parse(xhr.responseText);
             for (var category in parsed) {
                 if (parsed.hasOwnProperty(category)) {
-                    categories.push(parsed[category])
+                    if (page.option[1].value === "hide" & category === "Пользовательские") {} else {
+                        categories.push(parsed[category])
+                    }
                 }
             }
             page.categories = categories

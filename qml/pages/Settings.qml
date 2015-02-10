@@ -31,10 +31,21 @@ Page {
                     domain.value = page.option[0].value
                 }
             }
+            TextSwitch {
+                id: userboards
+                checked: false
+                text: "Show user boards"
+                onCheckedChanged: {
+                    Settings.save("userboards", checked ? "show" : "hide" );
+                }
+            }
         }
     }
     Component.onCompleted: {
         Settings.load()
         domain.value = page.option[0].value
+        if (page.option[1].value === "show") {
+            userboards.checked = true
+        }
     }
 }
