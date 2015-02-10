@@ -4,7 +4,6 @@ import "../js/posts.js" as Posts
 
 Page {
     id: page
-    property string url: ""
     property string board: ""
     property string domain: ""
     property string trd: ""
@@ -152,8 +151,9 @@ Page {
                     onLinkActivated: Posts.parseLinks (link)
                 }
                 onPressAndHold: {
+                    var replies = Posts.getReplies(modelData.num, page.thread)
                     if (!contextMenu)
-                        contextMenu = contextMenuComponent.createObject(listView, {post_num: modelData.num})
+                        contextMenu = contextMenuComponent.createObject(listView, {replies: replies})
                     contextMenu.show(myListItem)
                 }
             }
@@ -162,11 +162,12 @@ Page {
             id: contextMenuComponent
 
             ContextMenu {
-                property var post_num
+                property var replies
 
                 MenuItem {
+                    visible: replies[1] > 0
                     text: qsTr("View replies")
-                    onClicked: Posts.getReplies (post_num, page.thread, page.trd, page.board, page.domain)
+                    onClicked: pageStack.push(Qt.resolvedUrl("Postview.qml"), {postnums: replies, trd: trd, board: board, domain: domain, thread: thread} )
                 }
                 MenuItem {
                     text: qsTr("Reply (to do)")

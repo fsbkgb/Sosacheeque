@@ -64,7 +64,7 @@ function parseLinks (link) {
     {console.log(link)}
 }
 
-function getReplies (postnum, posts, trd, brd, domain) {
+function getReplies (postnum, posts) {
     var linkregxp = 'data-num="' + postnum + '"'
     var postnums = []
     postnums.push(postnum)
@@ -73,5 +73,5 @@ function getReplies (postnum, posts, trd, brd, domain) {
             postnums.push(posts[i].num)
         }
     }
-    pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {postnums: postnums, trd: trd, board: brd, domain: domain, thread: posts} )
+    return postnums
 }
