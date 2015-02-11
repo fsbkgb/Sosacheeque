@@ -159,7 +159,7 @@ Page {
                 id: text
                 textFormat: Text.RichText
                 text: ""
-                width: parent.width
+                width: parent.width - 10
                 wrapMode: Text.WordWrap
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 anchors{

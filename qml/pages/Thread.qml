@@ -192,7 +192,7 @@ Page {
                            .s { text-decoration: line-through; }
                            .u { text-decoration: underline; }
                        </style>"  + modelData.comment
-                    width: parent.width
+                    width: parent.width - 10
                     wrapMode: Text.WordWrap
                     color: content.highlighted ? Theme.highlightColor : Theme.primaryColor
                     anchors{
