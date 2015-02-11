@@ -93,6 +93,21 @@ Page {
                         offset: 0.4
                         direction: OpacityRamp.RightToLeft
                     }
+                    GlassItem {
+                        id: replychecker
+                        color: Theme.highlightColor
+                        visible: false
+                        falloffRadius: 0.2
+                        radius: 0.1
+                        cache: false
+                        anchors.verticalCenter: parent.bottom
+                        anchors.horizontalCenter: parent.right
+                        Component.onCompleted: {
+                            if(Posts.checkReplies(modelData.num, posts) === true){
+                                visible = true
+                            }
+                        }
+                    }
                 }
                 Text {
                     id: postdate

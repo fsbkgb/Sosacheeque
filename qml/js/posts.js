@@ -75,3 +75,12 @@ function getReplies (postnum, posts) {
     }
     return postnums
 }
+
+function checkReplies (postnum, posts) {
+    var linkregxp = 'data-num="' + postnum + '"'
+    for (var i = 0; i < posts.length; i++) {
+        if (posts[i].comment.match(linkregxp))
+            return true
+    }
+}
+
