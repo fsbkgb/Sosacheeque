@@ -6,6 +6,9 @@ import "../js/settings.js" as Settings
 Page {
     property var option
     id: page
+    PageHeader {
+        title: qsTr("Settings")
+    }
 
     SilicaFlickable {
         anchors{
