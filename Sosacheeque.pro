@@ -48,6 +48,7 @@ OTHER_FILES += \
     qml/js/favorites.js \
     qml/js/threads.js \
     qml/js/posts.js \
+    qml/py/newpost.py \
     qml/js/newpost.js
 
 # to disable building translations every time, comment out the

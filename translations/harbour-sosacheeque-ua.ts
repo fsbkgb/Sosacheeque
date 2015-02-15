@@ -41,15 +41,19 @@
 <context>
     <name>Newpost</name>
     <message>
-        <source>Reply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Comment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Verification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New post</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -109,6 +113,10 @@
     </message>
     <message>
         <source>View replies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

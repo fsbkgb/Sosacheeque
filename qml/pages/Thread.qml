@@ -41,8 +41,8 @@ Page {
                 onClicked: Posts.getNew(listView.count + 1, listView.count - 1, fromfav, board, thread, listView.count, posts[0].files ? posts[0].files[0].thumbnail : "", posts[0].subject ? posts[0].subject : posts[0].comment, posts[0].timestamp)
             }
             MenuItem {
-                text: qsTr("Reply (to do)")
-                //onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {board: board, thread: thread, uri: "https://2ch." + domain + "/contacts.html"} )
+                text: qsTr("Reply")
+                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread } )
             }
         }
         PullDownMenu {
