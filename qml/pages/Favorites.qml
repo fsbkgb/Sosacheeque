@@ -56,7 +56,7 @@ Page {
             Label {
                 id: text
                 text: modelData.text
-                width: page.width - 2 * Theme.paddingSmall - parent.width
+                width: page.width - Theme.paddingLarge - pic.width
                 font.pixelSize :Theme.fontSizeExtraSmall
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 maximumLineCount: 1
@@ -73,6 +73,7 @@ Page {
                 icon.source: "image://theme/icon-m-clear"
                 anchors {
                     right: parent.right
+                    verticalCenter: url.verticalCenter
                 }
                 onClicked: Favorites.del(modelData.board, modelData.thread)
             }
