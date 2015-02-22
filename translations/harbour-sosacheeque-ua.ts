@@ -100,10 +100,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reply (to do)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Open in browser</source>
         <translation type="unfinished"></translation>
     </message>

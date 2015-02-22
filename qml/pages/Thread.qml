@@ -206,7 +206,7 @@ Page {
                 onPressAndHold: {
                     var replies = Posts.getReplies(modelData.num, page.posts)
                     if (!contextMenu)
-                        contextMenu = contextMenuComponent.createObject(listView, {replies: replies})
+                        contextMenu = contextMenuComponent.createObject(listView, {replies: replies, comm: ">>" + modelData.num})
                     contextMenu.show(myListItem)
                 }
             }
@@ -216,6 +216,7 @@ Page {
 
             ContextMenu {
                 property var replies
+                property var comm
 
                 MenuItem {
                     visible: replies[1] > 0
@@ -223,7 +224,8 @@ Page {
                     onClicked: pageStack.push(Qt.resolvedUrl("Postview.qml"), {postnums: replies, trd: thread, board: board, domain: domain, thread: posts} )
                 }
                 MenuItem {
-                    text: qsTr("Reply (to do)")
+                    text: qsTr("Reply")
+                    onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: comm } )
                 }
             }
         }

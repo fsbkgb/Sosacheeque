@@ -9,6 +9,7 @@ Page {
     property string board: ""
     property string captcha: ""
     property string domain: ""
+    property string comment: ""
 
     SilicaFlickable {
         anchors.fill: parent
@@ -107,6 +108,7 @@ Page {
                 width: parent.width
                 height: 350
                 placeholderText: qsTr("Comment")
+                text: comment
                 EnterKey.onClicked: parent.focus = true
             }
             Image {
