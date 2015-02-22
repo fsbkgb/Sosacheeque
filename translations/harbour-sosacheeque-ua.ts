@@ -115,6 +115,10 @@
         <source>Reply</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Reply with quote</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Threads</name>
