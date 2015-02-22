@@ -12,9 +12,8 @@ Page {
 
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: postform.height + Theme.paddingLarge
+        contentHeight: postform.implicitHeight + Theme.paddingLarge * 3
 
-        VerticalScrollDecorator {}
         PageHeader {
             title: qsTr("New post")
         }
@@ -25,22 +24,83 @@ Page {
                 topMargin: Theme.paddingLarge * 4
             }
 
-            Button {
-                text: qsTr("Send")
-                onClicked: {
-                    py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text], function(response) {
-                        var x = JSON.parse(response)
-                        if (x.Error === null){
-                            status.text = x.Status
-                        } else {
-                            status.text = x.Reason
-                        }
-                    });
-                }
+            ListModel { id: fileList }
+
+            Row {
+                spacing: Theme.paddingLarge
                 anchors {
-                    right: parent.right
-                    rightMargin: Theme.paddingLarge
+                    left: parent.left
+                    leftMargin: Theme.paddingLarge
                 }
+                IconButton {
+                    icon.source: "image://theme/icon-m-image"
+                    onClicked: {
+                        if (fileList.count < 4) {
+                            var imagePicker = pageStack.push("Sailfish.Pickers.ImagePickerPage");
+                            imagePicker.selectedContentChanged.connect(function() {
+                                var a = imagePicker.selectedContent
+                                var path = a.toString().substr(7)
+                                fileList.append({"filepath": path})
+                            })
+                        }
+                    }
+                    Image {
+                        source: "image://theme/icon-s-attach"
+                    }
+                }
+                IconButton {
+                    icon.source: "image://theme/icon-m-video"
+                    onClicked: {
+                        if (fileList.count < 4) {
+                            var videoPicker = pageStack.push("Sailfish.Pickers.VideoPickerPage");
+                            videoPicker.selectedContentChanged.connect(function() {
+                                var a = videoPicker.selectedContent
+                                var path = a.toString().substr(7)
+                                fileList.append({"filepath": path})
+                            })
+                        }
+                    }
+                    Image {
+                        source: "image://theme/icon-s-attach"
+                    }
+                }
+                Button {
+                    text: qsTr("Send")
+                    onClicked: {
+                        indicator.visible = true
+                        status.visible = false
+                        var file_1 = (fileList.get(0) ? fileList.get(0).filepath : "")
+                        var file_2 = (fileList.get(1) ? fileList.get(1).filepath : "")
+                        var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
+                        var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
+                        py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, file_1, file_2, file_3, file_4], function(response) {
+                            console.log(response)
+                            var x = JSON.parse(response)
+                            indicator.visible = false
+                            status.visible = true
+                            if (x.Error === null){
+                                status.text = x.Status
+                            } else {
+                                status.text = x.Reason
+                            }
+                        });
+                    }
+                }
+            }
+            BusyIndicator {
+                id: indicator
+                visible: false
+                running: true
+                size: BusyIndicatorSize.Medium
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            Label {
+                id: status
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.paddingLarge
+                }
+                text: ""
             }
             TextArea {
                 id: cmnt
@@ -52,8 +112,8 @@ Page {
             Image {
                 id: yaca
                 source: "https://captcha.yandex.net/image?key=" + captcha
-                width: 200
-                height: 60
+                width: 234
+                height: 70
                 anchors {
                     left: parent.left
                     leftMargin: Theme.paddingLarge
@@ -74,15 +134,19 @@ Page {
                 placeholderText: qsTr("Verification")
                 EnterKey.onClicked: parent.focus = true
             }
-            Label {
-                id: status
-                anchors {
-                    left: parent.left
-                    leftMargin: Theme.paddingLarge
+            Repeater {
+                model: fileList
+                TextField {
+                    width: parent.width
+                    text: modelData
+                    readOnly: true
+                    onClicked: {
+                        fileList.remove(index)
+                    }
                 }
-                text: ""
             }
         }
+        VerticalScrollDecorator {}
         Component.onCompleted: {
             NewPost.getCaptcha(domain)
         }
