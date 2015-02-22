@@ -134,6 +134,10 @@
         <source>Replies: </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New thread</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Webmview</name>

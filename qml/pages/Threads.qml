@@ -39,6 +39,10 @@ Page {
                 text: qsTr("Reload page")
                 onClicked: pageStack.replace(Qt.resolvedUrl("Threads.qml"), {url: url, board: board, pages: pages, domain: domain} )
             }
+            MenuItem {
+                text: qsTr("New thread")
+                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: "0", comment: "" } )
+            }
         }
         PushUpMenu {
             MenuItem {

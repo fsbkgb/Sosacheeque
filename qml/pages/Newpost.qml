@@ -81,6 +81,9 @@ Page {
                             status.visible = true
                             if (x.Error === null){
                                 status.text = x.Status
+                                if (thread === "0" ) {
+                                    pageStack.replace(Qt.resolvedUrl("Thread.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false} )
+                                }
                             } else {
                                 status.text = x.Reason
                             }
@@ -95,12 +98,11 @@ Page {
                 size: BusyIndicatorSize.Medium
                 anchors.horizontalCenter: parent.horizontalCenter
             }
-            Label {
+            TextField {
                 id: status
-                anchors {
-                    left: parent.left
-                    leftMargin: Theme.paddingLarge
-                }
+                visible: false
+                readOnly: true
+                width: parent.width
                 text: ""
             }
             TextArea {
