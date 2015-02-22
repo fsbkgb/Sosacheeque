@@ -168,7 +168,7 @@ Page {
                 onPressAndHold: {
                     var replies = Posts.getReplies(modelData.num, page.thread)
                     if (!contextMenu)
-                        contextMenu = contextMenuComponent.createObject(listView, {replies: replies})
+                        contextMenu = contextMenuComponent.createObject(listView, {replies: replies, comm: ">>" + modelData.num, quote: modelData.comment})
                     contextMenu.show(myListItem)
                 }
             }
@@ -178,6 +178,8 @@ Page {
 
             ContextMenu {
                 property var replies
+                property var comm
+                property var quote
 
                 MenuItem {
                     visible: replies[1] > 0
@@ -185,7 +187,15 @@ Page {
                     onClicked: pageStack.push(Qt.resolvedUrl("Postview.qml"), {postnums: replies, trd: trd, board: board, domain: domain, thread: thread} )
                 }
                 MenuItem {
-                    text: qsTr("Reply (to do)")
+                    text: qsTr("Reply")
+                    onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: trd, comment: comm } )
+                }
+                MenuItem {
+                    text: qsTr("Reply with quote")
+                    onClicked: {
+                        var q = comm + "\r\n>" + quote.replace(/<br>/g, "\r\n>").replace(/<\/?[^>]+>/g, "")
+                        pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: trd, comment: q } )
+                    }
                 }
             }
         }
