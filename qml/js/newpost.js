@@ -12,3 +12,8 @@ function getCaptcha(domain) {
     xhr.open("GET", "https://2ch." + domain + "/makaba/captcha.fcgi");
     xhr.send();
 }
+
+function insertTag (start, end, open, close) {
+    cmnt.text = cmnt.text.substr(0, start) + open + cmnt.text.substr(start)
+    cmnt.text = cmnt.text.substr(0, end + (open).length) + close + cmnt.text.substr(end + (open).length)
+}

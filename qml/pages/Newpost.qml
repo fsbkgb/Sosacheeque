@@ -26,7 +26,145 @@ Page {
             }
 
             ListModel { id: fileList }
+            Row {
+                id: buttons
 
+                Button {
+                    width: Math.floor(page.width / 5)
+                    Text {
+                        text: "<b>B</b>"
+                        textFormat: Text.RichText
+                        color: Theme.primaryColor
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                    onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[B]", "[/B]")
+                }
+                Button {
+                    width: Math.floor(page.width / 5)
+                    Text {
+                        text: "<i>I</i>"
+                        textFormat: Text.RichText
+                        color: Theme.primaryColor
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                    onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[I]", "[/I]")
+                }
+                Button {
+                    width: Math.floor(page.width / 5)
+                    Text {
+                        text: "<u>U</u>"
+                        textFormat: Text.RichText
+                        color: Theme.primaryColor
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                    onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[U]", "[/U]")
+                }
+                Button {
+                    width: Math.floor(page.width / 5)
+                    Text {
+                        text: "<s>S</s>"
+                        textFormat: Text.RichText
+                        color: Theme.primaryColor
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+                    onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[S]", "[/S]")
+                }
+                Button {
+                    width: Math.floor(page.width / 5)
+                    Rectangle {
+                        color: "#BBBBBB"
+                        anchors {
+                            bottom: parent.verticalCenter
+                            top: parent.top
+                            left: parent.left
+                            right: parent.right
+                            bottomMargin: Theme.paddingSmall
+                            topMargin: Theme.paddingSmall
+                            leftMargin: Theme.paddingLarge
+                            rightMargin: Theme.paddingLarge
+                        }
+                    }
+                    onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[SPOILER]", "[/SPOILER]")
+                }
+            }
+            TextArea {
+                id: cmnt
+                width: parent.width
+                height: 350
+                placeholderText: qsTr("Comment")
+                text: comment
+            }
+            BusyIndicator {
+                id: indicator
+                visible: false
+                running: true
+                size: BusyIndicatorSize.Medium
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+            TextField {
+                id: status
+                visible: false
+                readOnly: true
+                width: parent.width
+                text: ""
+            }
+            Row {
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.paddingLarge
+                }
+
+                Image {
+                    id: yaca
+                    source: "https://captcha.yandex.net/image?key=" + captcha
+                    width: 234
+                    height: 70
+
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            onClicked: {
+                                NewPost.getCaptcha(domain)
+                            }
+                        }
+                    }
+                }
+                Button {
+                    text: qsTr("Send")
+                    width: page.width - yaca.width - Theme.paddingLarge
+                    onClicked: {
+                        indicator.visible = true
+                        status.visible = false
+                        enabled = false
+                        var file_1 = (fileList.get(0) ? fileList.get(0).filepath : "")
+                        var file_2 = (fileList.get(1) ? fileList.get(1).filepath : "")
+                        var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
+                        var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
+                        py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, file_1, file_2, file_3, file_4], function(response) {
+                            console.log(response)
+                            var x = JSON.parse(response)
+                            indicator.visible = false
+                            status.visible = true
+                            enabled = true
+                            if (x.Error === null){
+                                status.text = x.Status
+                                if (thread === "0" ) {
+                                    pageStack.replace(Qt.resolvedUrl("Thread.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false} )
+                                }
+                            } else {
+                                status.text = x.Reason
+                            }
+                        });
+                    }
+                }
+            }
+            TextField {
+                id: captcha_value
+                width: parent.width
+                placeholderText: qsTr("Verification")
+                EnterKey.onClicked: parent.focus = true
+            }
             Row {
                 spacing: Theme.paddingLarge
                 anchors {
@@ -65,77 +203,6 @@ Page {
                         source: "image://theme/icon-s-attach"
                     }
                 }
-                Button {
-                    text: qsTr("Send")
-                    onClicked: {
-                        indicator.visible = true
-                        status.visible = false
-                        var file_1 = (fileList.get(0) ? fileList.get(0).filepath : "")
-                        var file_2 = (fileList.get(1) ? fileList.get(1).filepath : "")
-                        var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
-                        var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
-                        py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, file_1, file_2, file_3, file_4], function(response) {
-                            console.log(response)
-                            var x = JSON.parse(response)
-                            indicator.visible = false
-                            status.visible = true
-                            if (x.Error === null){
-                                status.text = x.Status
-                                if (thread === "0" ) {
-                                    pageStack.replace(Qt.resolvedUrl("Thread.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false} )
-                                }
-                            } else {
-                                status.text = x.Reason
-                            }
-                        });
-                    }
-                }
-            }
-            BusyIndicator {
-                id: indicator
-                visible: false
-                running: true
-                size: BusyIndicatorSize.Medium
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-            TextField {
-                id: status
-                visible: false
-                readOnly: true
-                width: parent.width
-                text: ""
-            }
-            TextArea {
-                id: cmnt
-                width: parent.width
-                height: 350
-                placeholderText: qsTr("Comment")
-                text: comment
-            }
-            Image {
-                id: yaca
-                source: "https://captcha.yandex.net/image?key=" + captcha
-                width: 234
-                height: 70
-                anchors {
-                    left: parent.left
-                    leftMargin: Theme.paddingLarge
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        onClicked: {
-                            NewPost.getCaptcha(domain)
-                        }
-                    }
-                }
-            }
-            TextField {
-                id: captcha_value
-                width: parent.width
-                placeholderText: qsTr("Verification")
-                EnterKey.onClicked: parent.focus = true
             }
             Repeater {
                 model: fileList
