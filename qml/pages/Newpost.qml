@@ -111,7 +111,6 @@ Page {
                 height: 350
                 placeholderText: qsTr("Comment")
                 text: comment
-                EnterKey.onClicked: parent.focus = true
             }
             Image {
                 id: yaca
