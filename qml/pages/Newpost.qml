@@ -22,7 +22,7 @@ Page {
             id: postform
             anchors{
                 fill: parent
-                topMargin: Theme.paddingLarge * 4
+                topMargin: Theme.paddingLarge * 6
             }
 
             ListModel { id: fileList }
