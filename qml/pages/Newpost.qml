@@ -13,7 +13,7 @@ Page {
 
     SilicaFlickable {
         anchors.fill: parent
-        contentHeight: postform.implicitHeight + Theme.paddingLarge * 3
+        contentHeight: postform.implicitHeight + Theme.paddingLarge * 6
 
         PageHeader {
             title: qsTr("New post")
@@ -120,7 +120,6 @@ Page {
                     width: 234
                     height: 70
 
-
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -161,6 +160,7 @@ Page {
             }
             TextField {
                 id: captcha_value
+                inputMethodHints: Qt.ImhFormattedNumbersOnly
                 width: parent.width
                 placeholderText: qsTr("Verification")
                 EnterKey.onClicked: parent.focus = true
