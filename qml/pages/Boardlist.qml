@@ -71,7 +71,7 @@ Page {
                         }
                         MouseArea {
                             anchors.fill: parent
-                            onClicked: pageStack.push(Qt.resolvedUrl("Threads.qml"), {url: "https://2ch." + page.option[0].value + "/" + modelData.id + "/index.json", board: modelData.id, pages: modelData.pages, domain: page.option[0].value} )
+                            onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {url: "https://2ch." + page.option[0].value + "/" + modelData.id + "/index.json", board: modelData.id, pages: modelData.pages, domain: page.option[0].value, state: "board"} )
                         }
                     }
                 }

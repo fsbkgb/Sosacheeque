@@ -21,10 +21,8 @@ OTHER_FILES += \
     qml/cover/CoverPage.qml \
     translations/*.ts \
     qml/pages/Paginator.qml \
-    qml/pages/Webview.qml \
     qml/images/abu.png \
     qml/pages/Chooseboard.qml \
-    qml/pages/Postview.qml \
     README.md \
     qml/pages/Newpost.qml \
     qml/pages/Favorites.qml \
@@ -37,8 +35,6 @@ OTHER_FILES += \
     translations/harbour-sosacheeque-ua.ts \
     qml/pages/Boardlist.qml \
     qml/pages/Imageview.qml \
-    qml/pages/Thread.qml \
-    qml/pages/Threads.qml \
     qml/pages/Webmview.qml \
     qml/js/boards.js \
     qml/js/settings.js \
@@ -49,7 +45,8 @@ OTHER_FILES += \
     qml/js/threads.js \
     qml/js/posts.js \
     qml/py/newpost.py \
-    qml/js/newpost.js
+    qml/js/newpost.js \
+    qml/pages/Posts.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

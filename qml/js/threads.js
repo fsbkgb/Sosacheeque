@@ -1,5 +1,4 @@
 function getAll() {
-    page.loading = true;
     var xhr = new XMLHttpRequest();
     var threads = []
     xhr.onreadystatechange = function() {
@@ -14,14 +13,14 @@ function getAll() {
             }
             page.loading = false;
         }
-        page.threads = threads
+        page.parsedposts = threads
+        listView.model = page.parsedposts
     }
     xhr.open("GET", url);
     xhr.send();
 }
 
 function getOne (position) {
-    page.loading = true;
     var xhr = new XMLHttpRequest();
     var posti = []
     xhr.onreadystatechange = function() {
@@ -37,7 +36,8 @@ function getOne (position) {
             page.loading = false;
         }
         if(xhr.readyState === 4) {
-            page.posts = posti
+            page.parsedposts = posti
+            listView.model = page.parsedposts
             listView.currentIndex = position
             if(fromfav) {
                 Favorites.save(board, thread, posti.length - 1, posti[0].files ? posti[0].files[0].thumbnail : "", posti[0].subject ? posti[0].subject : posti[0].comment, posti[0].timestamp)

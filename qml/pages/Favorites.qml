@@ -77,7 +77,7 @@ Page {
                 }
                 onClicked: Favorites.del(modelData.board, modelData.thread)
             }
-            onClicked: pageStack.push(Qt.resolvedUrl("Thread.qml"), {thread: modelData.thread, board: modelData.board, domain: page.option[0].value, anchor: modelData.pc, fromfav: true} )
+            onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {thread: modelData.thread, board: modelData.board, domain: page.option[0].value, anchor: modelData.pc, fromfav: true, state: "thread"} )
         }
         VerticalScrollDecorator {}
     }

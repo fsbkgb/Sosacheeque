@@ -65,9 +65,33 @@
     </message>
 </context>
 <context>
-    <name>Postview</name>
+    <name>Posts</name>
     <message>
-        <source>View replies</source>
+        <source>Choose page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reload page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replies: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open in browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Get new posts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -75,7 +99,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>View replies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Reply with quote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replies</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -98,52 +130,6 @@
     </message>
 </context>
 <context>
-    <name>Thread</name>
-    <message>
-        <source>Get new posts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open in browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to favorites</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>View replies</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reply</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reply with quote</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Threads</name>
-    <message>
-        <source>Choose page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reload page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Replies: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New thread</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Webmview</name>
     <message>
         <source>Error</source>
@@ -155,13 +141,6 @@
     </message>
     <message>
         <source>Save as (to do)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Webview</name>
-    <message>
-        <source>Forward</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

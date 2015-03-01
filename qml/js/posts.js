@@ -1,5 +1,4 @@
 function getPosts(posti, count, postnums, trd, board, domain, thread) {
-    page.loading = true;
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
@@ -8,7 +7,8 @@ function getPosts(posti, count, postnums, trd, board, domain, thread) {
             var parsed = JSON.parse(xhr.responseText);
             posti.push(parsed[0]);
             posti.sort(function(a,b) { return parseInt(a.num) - parseInt(b.num) } );
-            page.posts = posti;
+            page.parsedreplies = posti;
+            listView.model = page.parsedreplies;
         }
     }
     xhr.open("GET", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + trd + "&num=" + postnums[count]);
@@ -31,10 +31,11 @@ function getNew(count, position, ffav, board, thread, postcount, thumb, subject,
         } else if(xhr.readyState === XMLHttpRequest.DONE) {
             var parsed = JSON.parse(xhr.responseText);
             if(parsed.length > 0){
-                page.posts.push(parsed[0])
+                page.parsedposts.push(parsed[0])
                 getNew(count + 1, position, ffav, board, thread, postcount, thumb, subject, timestamp)
             } else {
-                page.posts = page.posts
+                page.parsedposts = page.parsedposts
+                listView.model = page.parsedposts
                 page.newpostsloading = false;
                 listView.currentIndex = position
                 if(ffav){
@@ -58,7 +59,7 @@ function parseLinks (link) {
         var pst = link.match(/#([0-9]+)/)[1]
         var postnums = []
         postnums.push(pst)
-        pageStack.push(Qt.resolvedUrl("../pages/Postview.qml"), {postnums: postnums, trd: trd, board: brd, domain: domain, thread: posts} )
+        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {postnums: postnums, thread: trd, board: brd, domain: domain, parsedposts: parsedposts} )
     }
     else
     {console.log(link)}

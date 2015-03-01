@@ -33,7 +33,7 @@ Page {
                 {url = "https://2ch." + domain + "/" + board + "/index.json"}
                 else
                 {url = "https://2ch." + domain + "/" + board + "/" + index + ".json"}
-                pageStack.push(Qt.resolvedUrl("Threads.qml"), {url: url, board: board, pages: pages, domain: domain})
+                pageStack.push(Qt.resolvedUrl("Posts.qml"), {url: url, board: board, pages: pages, domain: domain, state: "board"})
             }
         }
         VerticalScrollDecorator {}

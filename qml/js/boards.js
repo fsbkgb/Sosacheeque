@@ -30,7 +30,7 @@ function getOne(board) {
             print('HEADERS_RECEIVED');
         } else if(xhr.readyState === XMLHttpRequest.DONE) {
             var parsed = JSON.parse(xhr.responseText);
-            pageStack.replace(Qt.resolvedUrl("../pages/Threads.qml"), {url: "https://2ch." + domain + "/" + board + "/index.json", board: board, pages: parsed.pages.length, domain: domain} )
+            pageStack.replace(Qt.resolvedUrl("../pages/Posts.qml"), {url: "https://2ch." + domain + "/" + board + "/index.json", board: board, pages: parsed.pages.length, domain: domain, state: "board"} )
         }
     }
     xhr.open("GET", "https://2ch." + domain + "/" + board + "/index.json");
