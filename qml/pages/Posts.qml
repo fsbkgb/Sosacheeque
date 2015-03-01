@@ -48,6 +48,7 @@ Page {
         }
 
         PullDownMenu {
+            visible: page.state === "board" || "thread"
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
@@ -75,6 +76,7 @@ Page {
             }
         }
         PushUpMenu {
+            visible: page.state === "board" || "thread"
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
@@ -88,7 +90,7 @@ Page {
             MenuItem {
                 visible: page.state === "thread" ? true : false
                 text: qsTr("Get new posts")
-                onClicked: Posts.getNew(listView.count + 1, listView.count - 1, fromfav, board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
+                onClicked: Posts.getNew(listView.count + 1, listView.count, fromfav, board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
             }
             MenuItem {
                 visible: page.state === "thread" ? true : false
