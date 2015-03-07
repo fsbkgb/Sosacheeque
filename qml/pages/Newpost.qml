@@ -116,7 +116,6 @@ Page {
 
                 Image {
                     id: yaca
-                    source: "https://captcha.yandex.net/image?key=" + captcha
                     width: 234
                     height: 70
 
@@ -127,6 +126,13 @@ Page {
                                 NewPost.getCaptcha(domain)
                             }
                         }
+                    }
+                    BusyIndicator {
+                        id: capchaindicator
+                        visible: false
+                        running: true
+                        size: BusyIndicatorSize.Medium
+                        anchors.horizontalCenter: parent.horizontalCenter
                     }
                 }
                 Button {
@@ -153,6 +159,11 @@ Page {
                                 }
                             } else {
                                 status.text = x.Reason
+                                if (x.Error === -5) {
+                                    NewPost.getCaptcha(domain)
+                                    captcha_value.text = ""
+                                    captcha_value.focus = true
+                                }
                             }
                         });
                     }
