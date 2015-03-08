@@ -49,7 +49,7 @@ Page {
         }
 
         PullDownMenu {
-            visible: page.state === "board" || "thread"
+            visible: page.state ? true : false
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
@@ -77,7 +77,7 @@ Page {
             }
         }
         PushUpMenu {
-            visible: page.state === "board" || "thread"
+            visible: page.state ? true : false
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
