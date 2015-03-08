@@ -132,8 +132,8 @@ Page {
                     }
                     OpacityRampEffect {
                         sourceItem: hr
-                        slope: 1.7
-                        offset: 0.2
+                        slope: 1.66
+                        offset: 0.25
                         direction: OpacityRamp.RightToLeft
                     }
                     GlassItem {
