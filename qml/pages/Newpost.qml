@@ -156,6 +156,10 @@ Page {
                                 status.text = x.Status
                                 if (thread === "0" ) {
                                     pageStack.replace(Qt.resolvedUrl("Posts.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false, state: "thread"} )
+                                } else {
+                                    var mainPage = pageStack.find(function(page) { return page.objectName == "mainPage"; })
+                                    mainPage.refreshthread()
+                                    pageStack.navigateBack()
                                 }
                             } else {
                                 status.text = x.Reason

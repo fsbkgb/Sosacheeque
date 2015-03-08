@@ -7,6 +7,7 @@ import "../js/favorites.js" as Favorites
 
 Page {
     id: page
+    objectName: "mainPage"
     property string board: ""
     property string thread: ""
     property string url: ""
@@ -90,7 +91,7 @@ Page {
             MenuItem {
                 visible: page.state === "thread" ? true : false
                 text: qsTr("Get new posts")
-                onClicked: Posts.getNew(listView.count + 1, listView.count, fromfav, board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
+                onClicked: refreshthread ()
             }
             MenuItem {
                 visible: page.state === "thread" ? true : false
@@ -340,5 +341,9 @@ Page {
             Posts.getPosts(parsedreplies, 0, postnums, thread, board, domain, parsedposts)
         }
 
+    }
+
+    function refreshthread () {
+        Posts.getNew(listView.count + 1, listView.count, fromfav, board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
     }
 }
