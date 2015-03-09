@@ -15,6 +15,8 @@ function save(board, thread, postcount, thumb, subject, timestamp) {
     db.transaction( function(tx){
         tx.executeSql('INSERT OR REPLACE INTO favs VALUES(?, ?, ?, ?, ?, ?)', [board, thread, postcount, thumb, subject, timestamp]);
     });
+    var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
+    favsPage.loadfavs()
 }
 
 function del(board, thread) {

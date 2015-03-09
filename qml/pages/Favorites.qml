@@ -6,6 +6,7 @@ import "../js/favorites.js" as Favorites
 
 Page {
     id: page
+    objectName: "favsPage"
     property string board: ""
     property string thread: ""
     property int pc
@@ -81,13 +82,15 @@ Page {
         }
         VerticalScrollDecorator {}
     }
-    Component.onCompleted: {
-        Settings.load()
-        Favorites.load()
-    }
+    Component.onCompleted: loadfavs ()
     onStatusChanged: {
         if (status === PageStatus.Active && pageStack.depth === 1) {
             pageStack.pushAttached(Qt.resolvedUrl("Boardlist.qml") );
         }
+    }
+
+    function loadfavs () {
+        Settings.load()
+        Favorites.load()
     }
 }

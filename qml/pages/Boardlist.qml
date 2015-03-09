@@ -6,6 +6,7 @@ import "../js/settings.js" as Settings
 
 Page {
     id: page
+    objectName: "boardsPage"
     property var categories
     property bool loading: false
     property var option
@@ -79,14 +80,16 @@ Page {
         }
         VerticalScrollDecorator {}
     }
-    Component.onCompleted: {
-        DB.openDB()
-        Settings.load()
-        Boards.getAll()
-    }
+    Component.onCompleted: loadlist()
     onStatusChanged: {
         if (status === PageStatus.Active && pageStack.depth === 1) {
             pageStack.pushAttached(Qt.resolvedUrl("Favorites.qml") );
         }
+    }
+
+    function loadlist () {
+        DB.openDB()
+        Settings.load()
+        Boards.getAll()
     }
 }

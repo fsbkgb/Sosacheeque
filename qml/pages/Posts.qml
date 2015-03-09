@@ -340,7 +340,6 @@ Page {
         } else {
             Posts.getPosts(parsedreplies, 0, postnums, thread, board, domain, parsedposts)
         }
-
     }
 
     function refreshthread () {

@@ -40,6 +40,8 @@ function getNew(count, position, ffav, board, thread, postcount, thumb, subject,
                 listView.positionViewAtIndex(position, ListView.End)
                 if(ffav){
                     Favorites.save(board, thread, count - 2, thumb, subject, timestamp)
+                    var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
+                    favsPage.loadfavs()
                 }
             }
         }
@@ -84,4 +86,3 @@ function checkReplies (postnum, posts) {
             return true
     }
 }
-

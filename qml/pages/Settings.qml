@@ -32,6 +32,7 @@ Page {
                 onCurrentItemChanged: {
                     Settings.save("domain", currentItem.text)
                     domain.value = page.option[0].value
+                    updatepages ()
                 }
             }
             TextSwitch {
@@ -40,6 +41,7 @@ Page {
                 text: "Show user boards"
                 onCheckedChanged: {
                     Settings.save("userboards", checked ? "show" : "hide" );
+                    updatepages ()
                 }
             }
         }
@@ -50,5 +52,12 @@ Page {
         if (page.option[1].value === "show") {
             userboards.checked = true
         }
+    }
+
+    function updatepages () {
+        var boardsPage = pageStack.find(function(page) { return page.objectName == "boardsPage"; })
+        var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
+        boardsPage.loadlist()
+        favsPage.loadfavs()
     }
 }

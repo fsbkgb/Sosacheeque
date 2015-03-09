@@ -41,6 +41,8 @@ function getOne (position) {
             listView.positionViewAtIndex(position, ListView.End)
             if(fromfav) {
                 Favorites.save(board, thread, posti.length - 1, posti[0].files ? posti[0].files[0].thumbnail : "", posti[0].subject ? posti[0].subject : posti[0].comment, posti[0].timestamp)
+                var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
+                favsPage.loadfavs()
             }
         }
     }
