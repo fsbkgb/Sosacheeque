@@ -108,7 +108,7 @@ Page {
 
             BackgroundItem {
                 id: content
-                height: (threadlist.implicitHeight + text.implicitHeight + postnum.implicitHeight + postdate.implicitHeight + Theme.paddingLarge)
+                height: (thumbs.height + posttext.height + postnum.height + postdate.height + Theme.paddingLarge)
 
                 Text {
                     id: postnum
@@ -191,31 +191,42 @@ Page {
                             postcount.text = "#"+index}
                     }
                 }
-                Column {
-                    id:threadlist
+                Row {
+                    id:thumbs
                     anchors {
                         top: postdate.bottom
+                        left: parent.left
+                        leftMargin: 5
+                        topMargin: 5
                     }
                     spacing: 5
 
                     Repeater {
                         id: attachments
                         model: modelData.posts[0].files
-                        height: childrenRect.height
 
-                        Image {
-                            id: pic
-                            source: "https://2ch." + domain + "/" + board + "/" + modelData.thumbnail
-                            width: modelData.tn_width
-                            height: modelData.tn_height
-                            fillMode: Image.PreserveAspectFit
-                            smooth: true
-                            anchors {
-                                topMargin: 5
-                                left: parent.left
-                                leftMargin: 5
+                        Item {
+                            id: container
+                            width: Math.floor((page.width - 5 * thumbs.spacing) / 4)
+                            height: modelData.tn_height > Math.floor((page.width - 5 * thumbs.spacing) / 4) ? Math.floor((page.width - 5 * thumbs.spacing) / 4) + file.height + Theme.paddingMedium : modelData.tn_height + Theme.paddingMedium
+                            Column {
+                                Image {
+                                    id: pic
+                                    source: "https://2ch." + domain + "/" + board + "/" + modelData.thumbnail
+                                    width: modelData.tn_width > Math.floor((page.width - 5 * thumbs.spacing) / 4) ? Math.floor((page.width - 5 * thumbs.spacing) / 4) : modelData.tn_width
+                                    height: modelData.tn_height > Math.floor((page.width - 5 * thumbs.spacing) / 4) ? Math.floor((page.width - 5 * thumbs.spacing) / 4) : modelData.tn_height
+                                    fillMode: Image.PreserveAspectFit
+                                    smooth: true
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                }
+                                Label {
+                                    id: file
+                                    font.pixelSize :Theme.fontSizeTiny
+                                    text: modelData.path.match(/\.([a-z]+)/)[1] + ", " + modelData.size + "kB"
+                                    color: Theme.secondaryColor
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                }
                             }
-
                             MouseArea {
                                 anchors.fill: parent
                                 onClicked: {
@@ -227,18 +238,6 @@ Page {
                                     }
                                 }
                             }
-                            Label {
-                                id: file
-                                font.pixelSize :Theme.fontSizeTiny
-                                text: modelData.path.match(/\.([a-z]+)/)[1] + ", " + modelData.size + "kB"
-                                width: parent.width
-                                color: Theme.secondaryColor
-                                anchors{
-                                    top: parent.top
-                                    left: parent.right
-                                    leftMargin: 5
-                                }
-                            }
                         }
                         Component.onCompleted: {
                             if (page.state === "board"){
@@ -248,7 +247,7 @@ Page {
                     }
                 }
                 Label {
-                    id: text
+                    id: posttext
                     textFormat: Text.RichText
                     text: ""
                     width: parent.width - 10
@@ -256,7 +255,7 @@ Page {
                     color: content.highlighted ? Theme.highlightColor : Theme.primaryColor
                     anchors{
                         top: postdate.bottom
-                        topMargin: threadlist.height
+                        topMargin: thumbs.height
                         left: parent.left
                         leftMargin: 5
                     }
@@ -269,8 +268,8 @@ Page {
                                 .u { text-decoration: underline; }
                               </style>"
                         if (page.state === "board"){
-                            text.text = Threads.truncateOP(styles + modelData.posts[0].comment)} else {
-                            text.text = styles + modelData.comment}
+                            posttext.text = Threads.truncateOP(styles + modelData.posts[0].comment)} else {
+                            posttext.text = styles + modelData.comment}
                     }
                     onLinkActivated: {
                         if (page.state != "board"){
