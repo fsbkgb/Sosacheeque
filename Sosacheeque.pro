@@ -46,7 +46,8 @@ OTHER_FILES += \
     qml/js/posts.js \
     qml/py/newpost.py \
     qml/js/newpost.js \
-    qml/pages/Posts.qml
+    qml/pages/Posts.qml \
+    qml/py/savefile.py
 
 # to disable building translations every time, comment out the
 # following CONFIG line

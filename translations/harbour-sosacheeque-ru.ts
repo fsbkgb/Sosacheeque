@@ -30,11 +30,11 @@
 <context>
     <name>Imageview</name>
     <message>
-        <source>Save as (to do)</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -140,7 +140,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save as (to do)</source>
+        <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

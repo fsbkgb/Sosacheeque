@@ -47,8 +47,8 @@ Page{
                 onClicked: pageStack.push(Qt.openUrlExternally(uri))
             }
             MenuItem {
-                text: qsTr("Save as (to do)")
-                //onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: uri})
+                text: qsTr("Save as")
+                onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: uri})
             }
         }
         MediaPlayer{
