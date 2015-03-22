@@ -191,59 +191,79 @@ Page {
                             postcount.text = "#"+index}
                     }
                 }
-                Row {
+                Column {
                     id:thumbs
                     anchors {
                         top: postdate.bottom
                         left: parent.left
-                        leftMargin: 5
                         topMargin: 5
                     }
-                    spacing: 5
 
-                    Repeater {
+                    Row {
                         id: attachments
-                        model: modelData.posts[0].files
+                        anchors {
+                            left: parent.left
+                            leftMargin: 5
+                        }
+                        spacing: 5
 
-                        Item {
-                            id: container
-                            width: Math.floor((page.width - 5 * thumbs.spacing) / 4)
-                            height: modelData.tn_height > Math.floor((page.width - 5 * thumbs.spacing) / 4) ? Math.floor((page.width - 5 * thumbs.spacing) / 4) + file.height + Theme.paddingMedium : modelData.tn_height + Theme.paddingMedium
-                            Column {
+                        Repeater {
+                            id: picrepeater
+                            model: modelData.posts[0].files
+                            Item {
+                                id: container
+                                width: Math.floor((page.width - 5 * attachments.spacing) / 4)
+                                anchors.leftMargin: attachments.spacing
+                                height: modelData.tn_height > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) + Theme.paddingMedium : modelData.tn_height + Theme.paddingMedium
+
                                 Image {
                                     id: pic
                                     source: "https://2ch." + domain + "/" + board + "/" + modelData.thumbnail
-                                    width: modelData.tn_width > Math.floor((page.width - 5 * thumbs.spacing) / 4) ? Math.floor((page.width - 5 * thumbs.spacing) / 4) : modelData.tn_width
-                                    height: modelData.tn_height > Math.floor((page.width - 5 * thumbs.spacing) / 4) ? Math.floor((page.width - 5 * thumbs.spacing) / 4) : modelData.tn_height
+                                    width: modelData.tn_width > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) : modelData.tn_width
+                                    height: modelData.tn_height > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) : modelData.tn_height
                                     fillMode: Image.PreserveAspectFit
                                     smooth: true
                                     anchors.horizontalCenter: parent.horizontalCenter
                                 }
-                                Label {
-                                    id: file
-                                    font.pixelSize :Theme.fontSizeTiny
-                                    text: modelData.path.match(/\.([a-z]+)/)[1] + ", " + modelData.size + "kB"
-                                    color: Theme.secondaryColor
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                }
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                onClicked: {
-                                    if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
-                                        pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
-                                    }
-                                    else{
-                                        pageStack.push(Qt.resolvedUrl("Imageview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: {
+                                        if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
+                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
+                                        }
+                                        else{
+                                            pageStack.push(Qt.resolvedUrl("Imageview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
+                                        }
                                     }
                                 }
                             }
                         }
-                        Component.onCompleted: {
-                            if (page.state === "board"){
-                                attachments.model = modelData.posts[0].files} else {
-                                attachments.model = modelData.files}
+                    }
+                    Row {
+                        id: filesize
+                        anchors {
+                            left: parent.left
+                            leftMargin: 5
                         }
+                        spacing: 5
+
+                        Repeater {
+                            id: filerepeater
+                            model: modelData.posts[0].files
+                            Label {
+                                id: file
+                                font.pixelSize :Theme.fontSizeTiny
+                                text: modelData.path.match(/\.([a-z]+)/)[1] + ", " + modelData.size + "kB"
+                                color: Theme.secondaryColor
+                                width: Math.floor((page.width - 5 * filesize.spacing) / 4)
+                                horizontalAlignment: TextInput.AlignHCenter
+                            }
+                        }
+                    }
+                    Component.onCompleted: {
+                        if (page.state === "board"){
+                            picrepeater.model = filerepeater.model = modelData.posts[0].files} else {
+                            picrepeater.model = filerepeater.model = modelData.files}
                     }
                 }
                 Label {
