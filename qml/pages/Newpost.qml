@@ -156,8 +156,9 @@ Page {
                                 if (thread === "0" ) {
                                     pageStack.replace(Qt.resolvedUrl("Posts.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false, state: "thread"} )
                                 } else {
-                                    var mainPage = pageStack.find(function(page) { return page.objectName == "mainPage"; })
-                                    mainPage.refreshthread()
+                                    var threadPage = pageStack.find(function(page) { return page.state == "thread"; })
+                                    pageStack.replaceAbove(threadPage, Qt.resolvedUrl("KostylPage.qml"), null, PageStackAction.Immediate)
+                                    threadPage.refreshthread()
                                     pageStack.navigateBack()
                                 }
                             } else {
