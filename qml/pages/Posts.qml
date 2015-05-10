@@ -8,6 +8,7 @@ import "../js/favorites.js" as Favorites
 Page {
     id: page
     objectName: "mainPage"
+    allowedOrientations : Orientation.All
     property string board: ""
     property string thread: ""
     property string url: ""
@@ -279,7 +280,8 @@ Page {
                         left: parent.left
                         leftMargin: 5
                     }
-                    Component.onCompleted: {
+                    onWidthChanged: {
+                        posttext.text = ""
                         var styles = "<style>
                                 a:link { color: " + Theme.highlightColor + "; }
                                 .unkfunc { color: " + Theme.secondaryHighlightColor + "; }

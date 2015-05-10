@@ -1,10 +1,11 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 import "../js/newpost.js" as NewPost
-import io.thp.pyotherside 1.0
+import io.thp.pyotherside 1.4
 
 Page {
     id: page
+    allowedOrientations : Orientation.All
     property string thread: ""
     property string board: ""
     property string captcha: ""
