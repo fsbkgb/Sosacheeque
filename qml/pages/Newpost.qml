@@ -163,6 +163,7 @@ Page {
                                 } else {
                                     clearfields()
                                     var threadPage = pageStack.find(function(page) { return page.state == "thread"; })
+                                    threadPage.comment = ""
                                     pageStack.replaceAbove(threadPage, Qt.resolvedUrl("KostylPage.qml"), null, PageStackAction.Immediate)
                                     threadPage.refreshthread()
                                     pageStack.navigateBack()
