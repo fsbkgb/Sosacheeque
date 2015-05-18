@@ -94,6 +94,10 @@ Page {
                 height: 350
                 placeholderText: qsTr("Comment")
                 text: comment
+                onTextChanged: {
+                    var threadPage = pageStack.find(function(page) { return page.objectName === "mainPage"; })
+                    threadPage.comment = text + "\r\n"
+                }
             }
             BusyIndicator {
                 id: indicator
@@ -157,6 +161,7 @@ Page {
                                 if (thread === "0" ) {
                                     pageStack.replace(Qt.resolvedUrl("Posts.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false, state: "thread"} )
                                 } else {
+                                    clearfields()
                                     var threadPage = pageStack.find(function(page) { return page.state == "thread"; })
                                     pageStack.replaceAbove(threadPage, Qt.resolvedUrl("KostylPage.qml"), null, PageStackAction.Immediate)
                                     threadPage.refreshthread()
@@ -237,6 +242,14 @@ Page {
             NewPost.getCaptcha(domain)
         }
     }
+
+    function clearfields() {
+        status.visible = false
+        NewPost.getCaptcha(domain)
+        cmnt.text = ""
+        fileList.clear()
+    }
+
     Python {
         id: py
 

@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* 18-05-2015 0.7-1
+- запоминание состояния формы ответа
+
 * 11-05-2015 0.6-3
 - ландшафтный режим
 

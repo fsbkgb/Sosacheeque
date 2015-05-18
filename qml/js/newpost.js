@@ -11,6 +11,7 @@ function getCaptcha(domain) {
             captcha = parsed.match(/(\w{32})/)[1]
             capchaindicator.visible = false
             yaca.source = "https://captcha.yandex.net/image?key=" + captcha
+            captcha_value.text = ""
         }
     }
     xhr.open("GET", "https://2ch." + domain + "/makaba/captcha.fcgi");

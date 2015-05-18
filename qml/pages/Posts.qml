@@ -14,6 +14,7 @@ Page {
     property string url: ""
     property string domain: ""
     property string state: ""
+    property string comment: ""
     property int pages
     property int anchor
     property var parsedposts
@@ -50,7 +51,7 @@ Page {
         }
 
         PullDownMenu {
-            visible: page.state ? true : false
+            visible: (page.state === "board" || page.state === "thread") ? true : false
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
@@ -78,7 +79,7 @@ Page {
             }
         }
         PushUpMenu {
-            visible: page.state ? true : false
+            visible: (page.state === "board" || page.state === "thread") ? true : false
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
@@ -93,11 +94,6 @@ Page {
                 visible: page.state === "thread" ? true : false
                 text: qsTr("Get new posts")
                 onClicked: refreshthread ()
-            }
-            MenuItem {
-                visible: page.state === "thread" ? true : false
-                text: qsTr("Reply")
-                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread } )
             }
         }
         delegate: Item {
@@ -326,17 +322,23 @@ Page {
                     MenuItem {
                         visible: replies[1] > 0
                         text: qsTr("View replies")
-                        onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {postnums: replies, thread: thread, board: board, domain: domain, parsedposts: parsedposts} )
+                        onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {postnums: replies, thread: thread, board: board, domain: domain, parsedposts: parsedposts, state: "replies"} )
                     }
                     MenuItem {
                         text: qsTr("Reply")
-                        onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: comm } )
+                        onClicked: {
+                            var replyform = pageStack.nextPage()
+                            replyform.comment = comment + comm
+                            navigateForward()
+                        }
                     }
                     MenuItem {
                         text: qsTr("Reply with quote")
                         onClicked: {
                             var q = comm + "\r\n>" + quote.replace(/<br>/g, "\r\n>").replace(/<\/?[^>]+>/g, "")
-                            pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: q } )
+                            var replyform = pageStack.nextPage()
+                            replyform.comment = comment + q
+                            navigateForward()
                         }
                     }
                 }
@@ -360,6 +362,11 @@ Page {
             Threads.getOne(anchor)
         } else {
             Posts.getPosts(parsedreplies, 0, postnums, thread, board, domain, parsedposts)
+        }
+    }
+    onStatusChanged: {
+        if (status === PageStatus.Active && comment === "" && (state === "thread" || state === "replies")  ) {
+            pageStack.pushAttached(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: comment } )
         }
     }
 
