@@ -11,6 +11,7 @@ Page {
     property var categories
     property bool loading: false
     property var option
+    property string domain: page.option[0].value
 
     BusyIndicator {
         anchors.centerIn: parent
@@ -113,7 +114,7 @@ Page {
                                 }
                                 MouseArea {
                                     anchors.fill: parent
-                                    onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {url: "https://2ch." + page.option[0].value + "/" + modelData.id + "/index.json", board: modelData.id, pages: modelData.pages, domain: page.option[0].value, state: "board"} )
+                                    onClicked: Boards.getOne(modelData.id)
                                     onPressAndHold: {
                                         if (!contextMenu)
                                             contextMenu = contextMenuComponent.createObject(listView)
