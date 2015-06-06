@@ -6,6 +6,7 @@ import "../js/settings.js" as Settings
 
 Page {
     id: page
+    allowedOrientations : Orientation.All
     objectName: "boardsPage"
     property var categories
     property bool loading: false
@@ -40,6 +41,18 @@ Page {
             id: delegate
             height: (brds.implicitHeight + ctgr.implicitHeight  + 15)
 
+            Rectangle {
+                id: lolo
+                width: parent.width
+                height: Theme.paddingLarge * 5
+                color: Theme.secondaryHighlightColor
+            }
+            OpacityRampEffect {
+                sourceItem: lolo
+                direction: OpacityRamp.TopToBottom
+                slope: 2.50
+                offset: 0.01
+            }
             Column {
                 id:brds
                 spacing: 5
@@ -53,26 +66,72 @@ Page {
                         leftMargin: 5
                     }
                 }
-                Repeater {
-                    id: brd
-                    model: modelData
-                    height: childrenRect.height
+                Grid {
+                    columns: Math.floor(page.width / 135)
+                    Repeater {
+                        model: modelData
+                        delegate: Item {
+                            property Item contextMenu
+                            id: myListItem
+                            property bool menuOpen: contextMenu != null && contextMenu.parent === myListItem
+                            width: 135
+                            height: menuOpen ? contextMenu.height + 135 : 135
 
-                    Label {
-                        id: text
-                        text: "/" + modelData.id + "/ – " + modelData.name
-                        horizontalAlignment: Text.AlignLeft
-                        truncationMode: TruncationMode.Fade
-                        width: page.width
-                        color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                        anchors{
-                            topMargin: 5
-                            left: parent.left
-                            leftMargin: 5
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {url: "https://2ch." + page.option[0].value + "/" + modelData.id + "/index.json", board: modelData.id, pages: modelData.pages, domain: page.option[0].value, state: "board"} )
+                            Item{
+                                width: 135
+                                height: 135
+                                anchors.top: parent.top
+                                Image {
+                                    anchors.centerIn: parent
+                                    property string iconnumber: "01"
+                                    Component.onCompleted: {
+                                        var number = Math.floor(Math.random() * (16 - 1 + 1)) + 1
+                                        if (number < 10) {
+                                            iconnumber = "0" + number.toString()
+                                        } else {
+                                            iconnumber = number.toString()
+                                        }
+                                    }
+
+                                    source: "image://theme/icon-launcher-folder-" + iconnumber
+                                    Label {
+                                        text: modelData.id
+                                        anchors.centerIn: parent
+                                    }
+                                }
+                                Label {
+                                    id: boardname
+                                    width: parent.width - 10
+                                    text: modelData.name
+                                    font.pixelSize :Theme.fontSizeTiny
+                                    truncationMode: TruncationMode.Fade
+                                    anchors{
+                                        bottom: parent.bottom
+                                        left: parent.left
+                                        leftMargin: 5
+                                    }
+                                }
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {url: "https://2ch." + page.option[0].value + "/" + modelData.id + "/index.json", board: modelData.id, pages: modelData.pages, domain: page.option[0].value, state: "board"} )
+                                    onPressAndHold: {
+                                        if (!contextMenu)
+                                            contextMenu = contextMenuComponent.createObject(listView)
+                                        contextMenu.show(myListItem)
+                                    }
+                                }
+                                Component {
+                                    id: contextMenuComponent
+                                    ContextMenu {
+                                        MenuItem {
+                                            text: qsTr("Add to favorites")
+                                            onClicked: {
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

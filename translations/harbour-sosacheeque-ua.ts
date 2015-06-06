@@ -15,6 +15,10 @@
         <source>Enter board name</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Favorites</name>
