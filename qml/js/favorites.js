@@ -24,6 +24,6 @@ function del(board, thread) {
     var db = DB.getDatabase();
     db.transaction(function(tx) {
         var rs = tx.executeSql('DELETE FROM favs WHERE board = ? AND thread = ?;', [board, thread]);
-        load();
     });
+    load();
 }

@@ -124,10 +124,14 @@ Page {
                                     id: contextMenuComponent
                                     ContextMenu {
                                         MenuItem {
+                                            visible: modelData.category !== "Избранное"
                                             text: qsTr("Add to favorites")
-                                            onClicked: {
-
-                                            }
+                                            onClicked: Boards.fav(modelData.id, modelData.name)
+                                        }
+                                        MenuItem {
+                                            visible: modelData.category === "Избранное"
+                                            text: qsTr("Remove from favorites")
+                                            onClicked: Boards.unfav(modelData.id)
                                         }
                                     }
                                 }
