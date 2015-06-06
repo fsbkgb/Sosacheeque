@@ -127,7 +127,10 @@ Page {
                                         MenuItem {
                                             visible: modelData.category !== "Избранное"
                                             text: qsTr("Add to favorites")
-                                            onClicked: Boards.fav(modelData.id, modelData.name)
+                                            onClicked: {
+                                                Boards.fav(modelData.id, modelData.name)
+                                                Boards.getAll()
+                                            }
                                         }
                                         MenuItem {
                                             visible: modelData.category === "Избранное"

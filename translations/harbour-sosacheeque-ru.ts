@@ -118,6 +118,10 @@
         <source>Replies</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add board to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SaveFile</name>

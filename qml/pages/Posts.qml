@@ -4,12 +4,14 @@ import "../js/db.js" as DB
 import "../js/threads.js" as Threads
 import "../js/posts.js" as Posts
 import "../js/favorites.js" as Favorites
+import "../js/boards.js" as Boards
 
 Page {
     id: page
     objectName: "mainPage"
     allowedOrientations : Orientation.All
     property string board: ""
+    property string boardname: ""
     property string thread: ""
     property string url: ""
     property string domain: ""
@@ -52,6 +54,15 @@ Page {
 
         PullDownMenu {
             visible: (page.state === "board" || page.state === "thread") ? true : false
+            MenuItem {
+                visible: page.state === "board" ? true : false
+                text: qsTr("Add board to favorites")
+                onClicked: {
+                    Boards.fav(board, boardname)
+                    var boardsPage = pageStack.find(function(page) { return page.objectName === "boardsPage"; })
+                    boardsPage.loadlist()
+                }
+            }
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")

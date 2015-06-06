@@ -41,7 +41,7 @@ function getOne(board) {
             print('HEADERS_RECEIVED');
         } else if(xhr.readyState === XMLHttpRequest.DONE) {
             var parsed = JSON.parse(xhr.responseText);
-            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {url: "https://2ch." + domain + "/" + board + "/index.json", board: board, pages: parsed.pages.length, domain: domain, state: "board"} )
+            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {url: "https://2ch." + domain + "/" + board + "/index.json", board: board, pages: parsed.pages.length, domain: domain, state: "board", boardname: parsed.BoardName} )
         }
     }
     xhr.open("GET", "https://2ch." + domain + "/" + board + "/index.json");
@@ -53,7 +53,6 @@ function fav(id, name) {
     db.transaction( function(tx){
         tx.executeSql('INSERT OR REPLACE INTO favbrds VALUES(?, ?, ?)', [id, name, "Избранное"]);
     });
-    getAll()
 }
 
 function unfav(id) {
