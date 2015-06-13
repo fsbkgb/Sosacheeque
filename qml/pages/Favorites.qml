@@ -6,6 +6,7 @@ import "../js/favorites.js" as Favorites
 
 Page {
     id: page
+    allowedOrientations : Orientation.All
     objectName: "favsPage"
     property string board: ""
     property string thread: ""
@@ -32,51 +33,40 @@ Page {
         }
         delegate: BackgroundItem {
             id: delegate
-            height: pic.implicitHeight > (text.implicitHeight + url.implicitHeight) ? pic.implicitHeight : (text.implicitHeight + url.implicitHeight)
+            Row {
+                spacing: Theme.paddingSmall
+                RemorseItem { id: remorse }
+                Image {
+                    id: pic
+                    source: "https://2ch." + page.option[0].value + "/" + modelData.board + "/" + modelData.tmb
+                    width: 100
+                    height: 100
+                    fillMode: Image.PreserveAspectCrop
+                }
+                Column {
+                    Label {
+                        id: url
+                        text: modelData.board + "/" + modelData.thread
+                        font.pixelSize :Theme.fontSizeTiny
+                        color: Theme.secondaryHighlightColor
 
-            Image {
-                id: pic
-                source: "https://2ch." + page.option[0].value + "/" + modelData.board + "/" + modelData.tmb
-                anchors {
-                    left: parent.left
-                    leftMargin: Theme.paddingSmall
+                    }
+                    Label {
+                        id: text
+                        text: modelData.text
+                        width: page.width - Theme.paddingLarge - pic.width - delbutton.width
+                        font.pixelSize :Theme.fontSizeExtraSmall
+                        color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                        maximumLineCount: 1
+                        horizontalAlignment: Text.AlignLeft
+                        truncationMode: TruncationMode.Fade
+                    }
                 }
-            }
-            Label {
-                id: url
-                text: modelData.board + "/" + modelData.thread
-                width: parent.width
-                font.pixelSize :Theme.fontSizeTiny
-                color: Theme.secondaryHighlightColor
-                anchors {
-                    left: pic.right
-                    leftMargin: Theme.paddingSmall
+                IconButton {
+                    id: delbutton
+                    icon.source: "image://theme/icon-m-clear"
+                    onClicked: remorse.execute(delegate, qsTr("Deleting"), function() { Favorites.del(modelData.board, modelData.thread) }, 5000)
                 }
-
-            }
-            Label {
-                id: text
-                text: modelData.text
-                width: page.width - Theme.paddingLarge - pic.width
-                font.pixelSize :Theme.fontSizeExtraSmall
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                maximumLineCount: 1
-                horizontalAlignment: Text.AlignLeft
-                truncationMode: TruncationMode.Fade
-                anchors {
-                    left: pic.right
-                    leftMargin: Theme.paddingSmall
-                    top: url.bottom
-                    topMargin: Theme.paddingSmall
-                }
-            }
-            IconButton {
-                icon.source: "image://theme/icon-m-clear"
-                anchors {
-                    right: parent.right
-                    verticalCenter: url.verticalCenter
-                }
-                onClicked: Favorites.del(modelData.board, modelData.thread)
             }
             onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {thread: modelData.thread, board: modelData.board, domain: page.option[0].value, anchor: modelData.pc, fromfav: true, state: "thread"} )
         }
