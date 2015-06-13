@@ -146,8 +146,8 @@ Page {
                     }
                     Component.onCompleted: {
                         if (page.state === "board"){
-                            postnum.text = modelData.thread_num} else {
-                            postnum.text = modelData.num}
+                            text = modelData.thread_num} else {
+                            text = modelData.num}
                     }
                 }
                 Text {
@@ -162,8 +162,27 @@ Page {
                     }
                     Component.onCompleted: {
                         if (page.state === "board"){
-                            postdate.text = modelData.posts[0].date} else {
-                            postdate.text = modelData.date}
+                            text = modelData.posts[0].date} else {
+                            text = modelData.date}
+                    }
+                }
+                Label {
+                    id: theme
+                    text: ""
+                    font.bold: true
+                    font.pixelSize :Theme.fontSizeTiny
+                    color: Theme.highlightColor
+                    width: parent.width - postdate.width - 5
+                    truncationMode: TruncationMode.Fade
+                    anchors {
+                        top: postnum.bottom
+                        left: parent.left
+                        leftMargin: 5
+                    }
+                    Component.onCompleted: {
+                        if (page.state === "board"){
+                            text = modelData.posts[0].subject} else {
+                            text = modelData.subject}
                     }
                 }
                 Text {
@@ -178,8 +197,8 @@ Page {
                     }
                     Component.onCompleted: {
                         if (page.state === "board"){
-                            postcount.text = qsTr("Replies: ") + modelData.posts_count} else {
-                            postcount.text = "#"+index}
+                            text = qsTr("Replies: ") + modelData.posts_count} else {
+                            text = "#"+index}
                     }
                 }
                 Column {
@@ -280,8 +299,8 @@ Page {
                                 .u { text-decoration: underline; }
                               </style>"
                         if (page.state === "board"){
-                            posttext.text = Threads.truncateOP(styles + modelData.posts[0].comment)} else {
-                            posttext.text = styles + modelData.comment}
+                            text = Threads.truncateOP(styles + modelData.posts[0].comment)} else {
+                            text = styles + modelData.comment}
                     }
                     onLinkActivated: {
                         if (page.state != "board"){
@@ -307,7 +326,7 @@ Page {
                     visible: false
                     anchors.bottom: parent.bottom
                     anchors.right: parent.right
-                    source: "image://theme/icon-s-message"
+                    source: "image://theme/icon-s-chat"
                     Component.onCompleted: {
                         if (page.state != "board"){
                             var rcount = Posts.checkReplies(modelData.num, parsedposts)
@@ -323,6 +342,55 @@ Page {
                         text: ""
                         font.pixelSize :Theme.fontSizeTiny
                         color: Theme.secondaryColor
+                    }
+                }
+                Row {
+                    anchors.bottom: parent.bottom
+                    spacing: 5
+                    Label {
+                        id: name
+                        textFormat: Text.RichText
+                        text: ""
+                        font.pixelSize :Theme.fontSizeTiny
+                        color: Theme.secondaryColor
+                        anchors.leftMargin: 5
+                        Component.onCompleted: {
+                            if (page.state === "board"){
+                                text = modelData.posts[0].name} else {
+                                text = modelData.name}
+                        }
+                    }
+                    Label {
+                        id: trip
+                        textFormat: Text.RichText
+                        text: ""
+                        font.pixelSize :Theme.fontSizeTiny
+                        color: Theme.secondaryHighlightColor
+                        Component.onCompleted: {
+                            if (page.state === "board"){
+                                text = modelData.posts[0].trip} else {
+                                text = modelData.trip}
+                            if (text === "!!%adm%!!") {
+                                color = Theme.highlightColor
+                                text = "Abu"
+                            }
+                            if (text === "!!%mod%!!") {
+                                color = Theme.highlightColor
+                                text = "Mod"
+                            }
+                        }
+                    }
+                    Image {
+                        id: sage
+                        visible: false
+                        source: "image://theme/icon-s-low-importance"
+                        Component.onCompleted: {
+                            if (page.state !== "board"){
+                                if( modelData.email === "mailto:sage"){
+                                    visible = true
+                                }
+                            }
+                        }
                     }
                 }
             }
