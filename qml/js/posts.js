@@ -81,8 +81,10 @@ function getReplies (postnum, posts) {
 
 function checkReplies (postnum, posts) {
     var linkregxp = 'data-num="' + postnum + '"'
+    var r = 0
     for (var i = 0; i < posts.length; i++) {
         if (posts[i].comment.match(linkregxp))
-            return true
+            r++
     }
+    return r
 }

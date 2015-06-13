@@ -116,7 +116,7 @@ Page {
 
             BackgroundItem {
                 id: content
-                height: (thumbs.height + posttext.height + postnum.height + postdate.height + Theme.paddingLarge)
+                height: (thumbs.height + posttext.height + postnum.height + postdate.height + Theme.paddingLarge + Theme.paddingMedium)
 
                 Text {
                     id: postnum
@@ -143,23 +143,6 @@ Page {
                         slope: 1.66
                         offset: 0.25
                         direction: OpacityRamp.RightToLeft
-                    }
-                    GlassItem {
-                        id: replychecker
-                        color: Theme.highlightColor
-                        visible: false
-                        falloffRadius: 0.2
-                        radius: 0.1
-                        cache: false
-                        anchors.verticalCenter: parent.bottom
-                        anchors.horizontalCenter: parent.right
-                        Component.onCompleted: {
-                            if (page.state != "board"){
-                                if(Posts.checkReplies(modelData.num, parsedposts) === true){
-                                    visible = true
-                                }
-                            }
-                        }
                     }
                     Component.onCompleted: {
                         if (page.state === "board"){
@@ -319,7 +302,29 @@ Page {
                         pageStack.push(Qt.resolvedUrl("Posts.qml"), {thread: modelData.thread_num, board: board, domain: domain, anchor: 1, fromfav: false, state: "thread"} )
                     }
                 }
-
+                Image {
+                    id: replychecker
+                    visible: false
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    source: "image://theme/icon-s-message"
+                    Component.onCompleted: {
+                        if (page.state != "board"){
+                            var rcount = Posts.checkReplies(modelData.num, parsedposts)
+                            if( rcount > 0){
+                                visible = true
+                                repcount.text = rcount
+                            }
+                        }
+                    }
+                    Label {
+                        id: repcount
+                        anchors.right: parent.left
+                        text: ""
+                        font.pixelSize :Theme.fontSizeTiny
+                        color: Theme.secondaryColor
+                    }
+                }
             }
             Component {
                 id: contextMenuComponent
