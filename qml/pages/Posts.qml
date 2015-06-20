@@ -21,6 +21,7 @@ Page {
     property int anchor
     property var parsedposts
     property var parsedreplies: []
+    property var icons: []
     property var postnums
     property var db
     property bool loading: true
@@ -389,6 +390,16 @@ Page {
                             }
                         }
                     }
+                    Image{
+                        source: ""
+                        anchors.verticalCenter: parent.verticalCenter
+                        Component.onCompleted: if (page.state === "board") {source = geticons(0, modelData.posts[0])} else {source = geticons(0, modelData)}
+                    }
+                    Image{
+                        source: ""
+                        anchors.verticalCenter: parent.verticalCenter
+                        Component.onCompleted: if (page.state === "board") {source = geticons(1, modelData.posts[0])} else {source = geticons(1, modelData)}
+                    }
                 }
             }
             Component {
@@ -447,11 +458,22 @@ Page {
     }
     onStatusChanged: {
         if (status === PageStatus.Active && comment === "" && (state === "thread" || state === "replies")  ) {
-            pageStack.pushAttached(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: comment } )
+            pageStack.pushAttached(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: comment, icons: icons } )
         }
     }
 
     function refreshthread () {
         Posts.getNew(listView.count + 1, listView.count, fromfav, board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
+    }
+    function geticons(num, post) {
+        if (post.icon !== undefined) {
+            if (post.icon.match(/\/(\S*\.png)/g)[num] !== undefined) {
+                return "https://2ch." + domain + post.icon.match(/\/(\S*\.png)/g)[num]
+            } else {
+                return ""
+            }
+        } else {
+            return ""
+        }
     }
 }

@@ -33,6 +33,7 @@ function getOne (position) {
                 var post = lalka[i];
                 posti.push(post);
             }
+            page.icons = parsed.icons
             page.loading = false;
         }
         if(xhr.readyState === 4) {

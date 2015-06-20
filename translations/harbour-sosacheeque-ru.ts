@@ -68,6 +68,10 @@
         <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Paginator</name>
@@ -79,6 +83,14 @@
 <context>
     <name>Posts</name>
     <message>
+        <source>Replies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add board to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Choose page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -88,10 +100,6 @@
     </message>
     <message>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Replies: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -107,7 +115,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reply</source>
+        <source>Replies: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -115,15 +123,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Reply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Reply with quote</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Replies</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add board to favorites</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -11,6 +11,7 @@ Page {
     property string captcha: ""
     property string domain: ""
     property string comment: ""
+    property var icons: []
 
     SilicaFlickable {
         anchors.fill: parent
@@ -27,6 +28,18 @@ Page {
             }
 
             ListModel { id: fileList }
+            ComboBox {
+                width: page.width
+                label: qsTr("Icon")
+                menu: ContextMenu {
+                    Repeater {
+                        model: icons
+                        MenuItem {
+                            text: modelData.name
+                        }
+                    }
+                }
+            }
             Row {
                 id: buttons
 
