@@ -41,7 +41,13 @@ function getOne(board) {
             print('HEADERS_RECEIVED');
         } else if(xhr.readyState === XMLHttpRequest.DONE) {
             var parsed = JSON.parse(xhr.responseText);
-            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {url: "https://2ch." + domain + "/" + board + "/index.json", board: board, pages: parsed.pages.length, domain: domain, state: "board", boardname: parsed.BoardName} )
+            var firsticon = [{name: "None", num: -1}]
+            var othericons = parsed.icons
+            var icons = firsticon.concat(othericons)
+            var enable_icons = parsed.enable_icons
+            var enable_names = parsed.enable_names
+            var enable_subject = parsed.enable_subject
+            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {url: "https://2ch." + domain + "/" + board + "/index.json", board: board, pages: parsed.pages.length, domain: domain, state: "board", boardname: parsed.BoardName, icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } )
         }
     }
     xhr.open("GET", "https://2ch." + domain + "/" + board + "/index.json");
