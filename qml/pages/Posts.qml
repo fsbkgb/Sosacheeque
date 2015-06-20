@@ -111,7 +111,12 @@ Page {
             property Item contextMenu
             id: myListItem
             property bool menuOpen: contextMenu != null && contextMenu.parent === myListItem
-            width: ListView.view.width
+            anchors {
+                left: parent.left
+                right: parent.right
+                leftMargin: 5
+                rightMargin: 5
+            }
             height: menuOpen ? contextMenu.height + content.height : content.height
 
             BackgroundItem {
@@ -123,7 +128,6 @@ Page {
                     color: Theme.highlightColor
                     anchors {
                         right: parent.right
-                        rightMargin: 5
                     }
                     Rectangle {
                         id: hr
@@ -158,7 +162,6 @@ Page {
                     anchors {
                         top: postnum.bottom
                         right: parent.right
-                        rightMargin: 5
                     }
                     Component.onCompleted: {
                         if (page.state === "board"){
@@ -172,12 +175,11 @@ Page {
                     font.bold: true
                     font.pixelSize :Theme.fontSizeTiny
                     color: Theme.highlightColor
-                    width: parent.width - postdate.width - 5
+                    width: parent.width - postdate.width
                     truncationMode: TruncationMode.Fade
                     anchors {
                         top: postnum.bottom
                         left: parent.left
-                        leftMargin: 5
                     }
                     Component.onCompleted: {
                         if (page.state === "board"){
@@ -193,7 +195,6 @@ Page {
                     anchors {
                         verticalCenter: postnum.verticalCenter
                         left: parent.left
-                        leftMargin: 5
                     }
                     Component.onCompleted: {
                         if (page.state === "board"){
@@ -213,7 +214,6 @@ Page {
                         id: attachments
                         anchors {
                             left: parent.left
-                            leftMargin: 5
                         }
                         spacing: 5
 
@@ -253,7 +253,6 @@ Page {
                         id: filesize
                         anchors {
                             left: parent.left
-                            leftMargin: 5
                         }
                         spacing: 5
 
@@ -287,7 +286,6 @@ Page {
                         top: postdate.bottom
                         topMargin: thumbs.height
                         left: parent.left
-                        leftMargin: 5
                     }
                     onWidthChanged: {
                         posttext.text = ""
@@ -353,7 +351,6 @@ Page {
                         text: ""
                         font.pixelSize :Theme.fontSizeTiny
                         color: Theme.secondaryColor
-                        anchors.leftMargin: 5
                         Component.onCompleted: {
                             if (page.state === "board"){
                                 text = modelData.posts[0].name} else {
