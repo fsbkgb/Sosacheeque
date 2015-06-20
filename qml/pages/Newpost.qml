@@ -12,6 +12,9 @@ Page {
     property string domain: ""
     property string comment: ""
     property var icons: []
+    property int enable_icons: 0
+    property int enable_names: 0
+    property int enable_subject: 0
 
     SilicaFlickable {
         anchors.fill: parent
@@ -28,16 +31,49 @@ Page {
             }
 
             ListModel { id: fileList }
+            TextField {
+                id: email
+                width: parent.width
+                placeholderText: qsTr("E-mail")
+                EnterKey.onClicked: parent.focus = true
+            }
+            TextField {
+                id: name
+                visible: enable_names === 1 ? true : false
+                width: parent.width
+                placeholderText: qsTr("Name")
+                EnterKey.onClicked: parent.focus = true
+            }
+            TextField {
+                id: subject
+                visible: enable_subject === 1 ? true : false
+                width: parent.width
+                placeholderText: qsTr("Subject")
+                EnterKey.onClicked: parent.focus = true
+            }
+            TextField {
+                id: icon
+                visible: false
+                width: parent.width
+                text: "-1"
+                EnterKey.onClicked: parent.focus = true
+            }
             ComboBox {
+                id: iconslist
+                visible: enable_icons === 1 ? true : false
                 width: page.width
                 label: qsTr("Icon")
                 menu: ContextMenu {
                     Repeater {
                         model: icons
                         MenuItem {
+                            property string iconnum: modelData.num
                             text: modelData.name
                         }
                     }
+                }
+                onCurrentIndexChanged: {
+                    icon.text = iconslist.currentItem.iconnum
                 }
             }
             Row {
@@ -164,7 +200,7 @@ Page {
                         var file_2 = (fileList.get(1) ? fileList.get(1).filepath : "")
                         var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
                         var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
-                        py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, file_1, file_2, file_3, file_4], function(response) {
+                        py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
                             var x = JSON.parse(response)
                             indicator.visible = false
                             status.visible = true

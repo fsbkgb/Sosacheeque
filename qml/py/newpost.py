@@ -8,10 +8,10 @@ if cmd_subfolder not in sys.path:
 
 import requests
 
-def sendpost (domain, board, thread, comment, captcha, captcha_value, image1, image2, image3, image4):
+def sendpost (domain, board, thread, comment, captcha, captcha_value, email, name, subject, icon, image1, image2, image3, image4):
     #url = 'https://posttestserver.com/post.php'
     url = 'https://2ch.' + domain + '/makaba/posting.fcgi?json=1'
-    post = [('task', "post"), ('board', board), ('thread', thread), ('comment', comment), ('captcha', captcha), ('captcha_value', captcha_value)]
+    post = [('task', "post"), ('board', board), ('thread', thread), ('comment', comment), ('captcha', captcha), ('captcha_value', captcha_value), ('email', email), ('name', name), ('subject', subject), ('icon', icon)]
     if image1 != '':
         file1 = open(image1, 'rb')
     else:

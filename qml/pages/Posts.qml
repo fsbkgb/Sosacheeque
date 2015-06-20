@@ -19,6 +19,9 @@ Page {
     property string comment: ""
     property int pages
     property int anchor
+    property int enable_icons: 0
+    property int enable_names: 0
+    property int enable_subject: 0
     property var parsedposts
     property var parsedreplies: []
     property var icons: []
@@ -414,7 +417,7 @@ Page {
                     MenuItem {
                         visible: replies[1] > 0
                         text: qsTr("View replies")
-                        onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {postnums: replies, thread: thread, board: board, domain: domain, parsedposts: parsedposts, state: "replies"} )
+                        onClicked: pageStack.push(Qt.resolvedUrl("Posts.qml"), {postnums: replies, thread: thread, board: board, domain: domain, parsedposts: parsedposts, state: "replies", icons: icons} )
                     }
                     MenuItem {
                         text: qsTr("Reply")
@@ -458,7 +461,7 @@ Page {
     }
     onStatusChanged: {
         if (status === PageStatus.Active && comment === "" && (state === "thread" || state === "replies")  ) {
-            pageStack.pushAttached(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: comment, icons: icons } )
+            pageStack.pushAttached(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: comment, icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } )
         }
     }
 

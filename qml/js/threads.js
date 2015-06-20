@@ -33,7 +33,12 @@ function getOne (position) {
                 var post = lalka[i];
                 posti.push(post);
             }
-            page.icons = parsed.icons
+            var firsticon = [{name: "None", num: -1}]
+            var othericons = parsed.icons
+            page.icons = firsticon.concat(othericons)
+            page.enable_icons = parsed.enable_icons
+            page.enable_names = parsed.enable_names
+            page.enable_subject = parsed.enable_subject
             page.loading = false;
         }
         if(xhr.readyState === 4) {

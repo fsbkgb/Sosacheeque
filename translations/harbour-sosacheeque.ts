@@ -72,6 +72,18 @@
         <source>Icon</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>E-mail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Subject</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Paginator</name>

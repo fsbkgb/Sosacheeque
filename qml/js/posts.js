@@ -61,7 +61,7 @@ function parseLinks (link) {
         var pst = link.match(/#([0-9]+)/)[1]
         var postnums = []
         postnums.push(pst)
-        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {postnums: postnums, thread: trd, board: brd, domain: domain, parsedposts: parsedposts, state: "replies"} )
+        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {postnums: postnums, thread: trd, board: brd, domain: domain, parsedposts: parsedposts, state: "replies", icons: icons} )
     }
     else
     {console.log(link)}
