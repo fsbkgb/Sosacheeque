@@ -5,6 +5,7 @@ import "../js/threads.js" as Threads
 import "../js/posts.js" as Posts
 import "../js/favorites.js" as Favorites
 import "../js/boards.js" as Boards
+import io.thp.pyotherside 1.4
 
 Page {
     id: page
@@ -465,9 +466,32 @@ Page {
         }
     }
 
+    Python {
+        id: py
+
+        Component.onCompleted: {
+            // Add the Python library directory to the import path
+            var pythonpath = Qt.resolvedUrl('../py/').substr('file://'.length);
+            //var pythonpath = Qt.resolvedUrl('.').substr('file://'.length);
+            addImportPath(pythonpath);
+            console.log(pythonpath);
+            importModule('getdata', function() {});
+        }
+        onError: {
+            // when an exception is raised, this error handler will be called
+            console.log('python error: ' + traceback);
+        }
+        onReceived: {
+            // asychronous messages from Python arrive here
+            // in Python, this can be accomplished via pyotherside.send()
+            console.log('got message from python: ' + data);
+        }
+    }
+
     function refreshthread () {
         Posts.getNew(listView.count + 1, listView.count, fromfav, board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
     }
+
     function geticons(num, post) {
         if (post.icon !== undefined) {
             if (post.icon.match(/\/(\S*\.png)/g)[num] !== undefined) {

@@ -1,18 +1,11 @@
 function getPosts(posti, count, postnums, trd, board, domain, thread) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-            print('HEADERS_RECEIVED');
-        } else if(xhr.readyState === XMLHttpRequest.DONE) {
-            var parsed = JSON.parse(xhr.responseText);
-            posti.push(parsed[0]);
-            posti.sort(function(a,b) { return parseInt(a.num) - parseInt(b.num) } );
-            page.parsedreplies = posti;
-            listView.model = page.parsedreplies;
-        }
-    }
-    xhr.open("GET", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + trd + "&num=" + postnums[count]);
-    xhr.send();
+    py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + trd + "&num=" + postnums[count]], function(response) {
+        var parsed = JSON.parse(response);
+        posti.push(parsed[0]);
+        posti.sort(function(a,b) { return parseInt(a.num) - parseInt(b.num) } );
+        page.parsedreplies = posti;
+        listView.model = page.parsedreplies;
+    })
     count++
     if (count < postnums.length) {
         getPosts (posti, count, postnums, trd, board, domain, thread);
@@ -23,31 +16,24 @@ function getPosts(posti, count, postnums, trd, board, domain, thread) {
 
 function getNew(count, position, ffav, board, thread, postcount, thumb, subject, timestamp) {
     page.newpostsloading = true;
-    var xhr = new XMLHttpRequest();
     var posti = []
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-            print('HEADERS_RECEIVED');
-        } else if(xhr.readyState === XMLHttpRequest.DONE) {
-            var parsed = JSON.parse(xhr.responseText);
-            if(parsed.length > 0){
-                page.parsedposts.push(parsed[0])
-                getNew(count + 1, position, ffav, board, thread, postcount, thumb, subject, timestamp)
-            } else {
-                page.parsedposts = page.parsedposts
-                listView.model = page.parsedposts
-                page.newpostsloading = false;
-                listView.positionViewAtIndex(position, ListView.End)
-                if(ffav){
-                    Favorites.save(board, thread, count - 2, thumb, subject, timestamp)
-                    var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
-                    favsPage.loadfavs()
-                }
+    py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + count], function(response) {
+        var parsed = JSON.parse(response);
+        if(parsed.length > 0){
+            page.parsedposts.push(parsed[0])
+            getNew(count + 1, position, ffav, board, thread, postcount, thumb, subject, timestamp)
+        } else {
+            page.parsedposts = page.parsedposts
+            listView.model = page.parsedposts
+            page.newpostsloading = false;
+            listView.positionViewAtIndex(position, ListView.End)
+            if(ffav){
+                Favorites.save(board, thread, count - 2, thumb, subject, timestamp)
+                var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
+                favsPage.loadfavs()
             }
         }
-    }
-    xhr.open("GET", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + count);
-    xhr.send();
+    })
 }
 
 function parseLinks (link) {

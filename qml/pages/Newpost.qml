@@ -310,6 +310,7 @@ Page {
             addImportPath(pythonpath);
             console.log(pythonpath);
             importModule('newpost', function() {});
+            importModule('getdata', function() {});
         }
         onError: {
             // when an exception is raised, this error handler will be called

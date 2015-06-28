@@ -48,7 +48,8 @@ OTHER_FILES += \
     qml/js/newpost.js \
     qml/pages/Posts.qml \
     qml/py/savefile.py \
-    qml/pages/KostylPage.qml
+    qml/pages/KostylPage.qml \
+    qml/py/getdata.py
 
 # to disable building translations every time, comment out the
 # following CONFIG line

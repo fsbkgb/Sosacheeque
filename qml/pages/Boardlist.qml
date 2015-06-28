@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 import "../js/db.js" as DB
 import "../js/boards.js" as Boards
 import "../js/settings.js" as Settings
+import io.thp.pyotherside 1.4
 
 Page {
     id: page
@@ -158,5 +159,27 @@ Page {
         DB.openDB()
         Settings.load()
         Boards.getAll()
+    }
+
+    Python {
+        id: py
+
+        Component.onCompleted: {
+            // Add the Python library directory to the import path
+            var pythonpath = Qt.resolvedUrl('../py/').substr('file://'.length);
+            //var pythonpath = Qt.resolvedUrl('.').substr('file://'.length);
+            addImportPath(pythonpath);
+            console.log(pythonpath);
+            importModule('getdata', function() {});
+        }
+        onError: {
+            // when an exception is raised, this error handler will be called
+            console.log('python error: ' + traceback);
+        }
+        onReceived: {
+            // asychronous messages from Python arrive here
+            // in Python, this can be accomplished via pyotherside.send()
+            console.log('got message from python: ' + data);
+        }
     }
 }

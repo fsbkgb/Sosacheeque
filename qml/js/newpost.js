@@ -1,21 +1,12 @@
 function getCaptcha(domain) {
     yaca.source = ""
     capchaindicator.visible = true
-    var xhr = new XMLHttpRequest();
-    var posti = []
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-            print('HEADERS_RECEIVED');
-        } else if(xhr.readyState === XMLHttpRequest.DONE) {
-            var parsed = xhr.responseText;
-            captcha = parsed.match(/(\w{32})/)[1]
-            capchaindicator.visible = false
-            yaca.source = "https://captcha.yandex.net/image?key=" + captcha
-            captcha_value.text = ""
-        }
-    }
-    xhr.open("GET", "https://2ch." + domain + "/makaba/captcha.fcgi");
-    xhr.send();
+    py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/captcha.fcgi"], function(response) {
+        captcha = response.match(/(\w{32})/)[1]
+        capchaindicator.visible = false
+        yaca.source = "https://captcha.yandex.net/image?key=" + captcha
+        captcha_value.text = ""
+    })
 }
 
 function insertTag (start, end, open, close) {
