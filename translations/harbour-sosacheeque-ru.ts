@@ -23,6 +23,17 @@
         <source>Remove from favorites</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Opening board</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Chooseboard</name>
+    <message>
+        <source>Opening board</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Favorites</name>
@@ -140,6 +151,10 @@
     </message>
     <message>
         <source>Reply with quote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading new posts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -11,6 +11,7 @@ Page {
     objectName: "boardsPage"
     property var categories
     property bool loading: false
+    property bool somethingloading: false
     property var option
     property string domain: page.option[0].value
 
@@ -115,7 +116,10 @@ Page {
                                 }
                                 MouseArea {
                                     anchors.fill: parent
-                                    onClicked: Boards.getOne(modelData.id)
+                                    onClicked: {
+                                        somethingloading = true
+                                        Boards.getOne(modelData.id)
+                                    }
                                     onPressAndHold: {
                                         if (!contextMenu)
                                             contextMenu = contextMenuComponent.createObject(listView)
@@ -148,6 +152,33 @@ Page {
         }
         VerticalScrollDecorator {}
     }
+    Rectangle {
+        anchors{
+            top: parent.top
+        }
+        color: Theme.highlightBackgroundColor
+        width: parent.width
+        height: Theme.paddingLarge * 2
+        visible: page.somethingloading
+        BusyIndicator {
+            id: krooteelka
+            size: BusyIndicatorSize.Small
+            running: true
+            anchors {
+                left: parent.left
+                verticalCenter: parent.verticalCenter
+                leftMargin: Theme.paddingSmall
+            }
+        }
+        Label {
+            text: qsTr("Opening board")
+            anchors {
+                left: krooteelka.right
+                verticalCenter: parent.verticalCenter
+                leftMargin: Theme.paddingSmall
+            }
+        }
+    }
     Component.onCompleted: loadlist()
     onStatusChanged: {
         if (status === PageStatus.Active && pageStack.depth === 1) {
@@ -172,10 +203,10 @@ Page {
             console.log(pythonpath);
             importModule('getdata', function() {});
         }
-        onError: {
+        /*onError: {
             // when an exception is raised, this error handler will be called
             console.log('python error: ' + traceback);
-        }
+        }*/
         onReceived: {
             // asychronous messages from Python arrive here
             // in Python, this can be accomplished via pyotherside.send()

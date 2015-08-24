@@ -29,7 +29,7 @@ Page {
     property var postnums
     property var db
     property bool loading: true
-    property bool newpostsloading: false
+    property bool somethingloading: false
     property bool fromfav
 
     BusyIndicator {
@@ -442,13 +442,31 @@ Page {
             VerticalScrollDecorator {}
         }
     }
-    ProgressBar {
-        width: parent.width
-        indeterminate: true
-        visible: page.newpostsloading
+    Rectangle {
         anchors{
-            bottom: parent.bottom
-            bottomMargin: Theme.paddingLarge * 4
+            top: parent.top
+        }
+        color: Theme.highlightBackgroundColor
+        width: parent.width
+        height: Theme.paddingLarge * 2
+        visible: page.somethingloading
+        BusyIndicator {
+            id: krooteelka
+            size: BusyIndicatorSize.Small
+            running: true
+            anchors {
+                left: parent.left
+                verticalCenter: parent.verticalCenter
+                leftMargin: Theme.paddingSmall
+            }
+        }
+        Label {
+            text: qsTr("Loading new posts")
+            anchors {
+                left: krooteelka.right
+                verticalCenter: parent.verticalCenter
+                leftMargin: Theme.paddingSmall
+            }
         }
     }
     Component.onCompleted: {

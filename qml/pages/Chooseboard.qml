@@ -1,10 +1,12 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 import "../js/boards.js" as Boards
+import io.thp.pyotherside 1.4
 
 Page {
     id: page
     property string domain: ""
+    property bool somethingloading: false
 
     SilicaFlickable {
         anchors{
@@ -22,10 +24,61 @@ Page {
                 focus: true
                 validator: RegExpValidator {regExp: /[a-z]+/}
                 EnterKey.onClicked: {
-                    Boards.getOne(text);
-                    parent.focus = true;
+                    somethingloading = true
+                    Boards.getOne(text)
+                    parent.focus = true
                 }
             }
+        }
+    }
+
+    Rectangle {
+        anchors{
+            top: parent.top
+        }
+        color: Theme.highlightBackgroundColor
+        width: parent.width
+        height: Theme.paddingLarge * 2
+        visible: page.somethingloading
+        BusyIndicator {
+            id: krooteelka
+            size: BusyIndicatorSize.Small
+            running: true
+            anchors {
+                left: parent.left
+                verticalCenter: parent.verticalCenter
+                leftMargin: Theme.paddingSmall
+            }
+        }
+        Label {
+            text: qsTr("Opening board")
+            anchors {
+                left: krooteelka.right
+                verticalCenter: parent.verticalCenter
+                leftMargin: Theme.paddingSmall
+            }
+        }
+    }
+
+    Python {
+        id: py
+
+        Component.onCompleted: {
+            // Add the Python library directory to the import path
+            var pythonpath = Qt.resolvedUrl('../py/').substr('file://'.length);
+            //var pythonpath = Qt.resolvedUrl('.').substr('file://'.length);
+            addImportPath(pythonpath);
+            console.log(pythonpath);
+            importModule('getdata', function() {});
+        }
+        /*onError: {
+            // when an exception is raised, this error handler will be called
+            console.log('python error: ' + traceback);
+        }*/
+        onReceived: {
+            // asychronous messages from Python arrive here
+            // in Python, this can be accomplished via pyotherside.send()
+            console.log('got message from python: ' + data);
         }
     }
 }

@@ -6,8 +6,17 @@ cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(insp
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
 
-import json, requests
+import json, requests, pyotherside
 
 def dyorg (url):
-    resp = requests.get(url)
-    return resp.text
+    try:
+        resp = requests.get(url, timeout = 10.0)
+        return resp.text
+    except requests.exceptions.ConnectionError as e:
+        pyotherside.send("These aren't the domains we're looking for.")
+    except requests.exceptions.ConnectTimeout as e:
+        pyotherside.send("Too slow Mojo!")
+    except requests.exceptions.ReadTimeout as e:
+        pyotherside.send("Waited too long between bytes.")
+    except requests.exceptions.HTTPError as e:
+        pyotherside.send("And you get an HTTPError:", e.message)

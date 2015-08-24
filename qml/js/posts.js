@@ -15,7 +15,7 @@ function getPosts(posti, count, postnums, trd, board, domain, thread) {
 }
 
 function getNew(count, position, ffav, board, thread, postcount, thumb, subject, timestamp) {
-    page.newpostsloading = true;
+    page.somethingloading = true;
     var posti = []
     py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + count], function(response) {
         var parsed = JSON.parse(response);
@@ -25,7 +25,7 @@ function getNew(count, position, ffav, board, thread, postcount, thumb, subject,
         } else {
             page.parsedposts = page.parsedposts
             listView.model = page.parsedposts
-            page.newpostsloading = false;
+            page.somethingloading = false;
             listView.positionViewAtIndex(position, ListView.End)
             if(ffav){
                 Favorites.save(board, thread, count - 2, thumb, subject, timestamp)
