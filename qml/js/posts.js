@@ -1,11 +1,12 @@
 function getPosts(posti, count, postnums, trd, board, domain, thread) {
-    py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + trd + "&num=" + postnums[count]], function(response) {
-        var parsed = JSON.parse(response);
-        posti.push(parsed[0]);
-        posti.sort(function(a,b) { return parseInt(a.num) - parseInt(b.num) } );
-        page.parsedreplies = posti;
-        listView.model = page.parsedreplies;
-    })
+    for (var i = 0; i < thread.length; i++) {
+        if (thread[i].num.toString().match(postnums[count])){
+            posti.push(thread[i])
+            posti.sort(function(a,b) { return parseInt(a.num) - parseInt(b.num) } )
+            page.parsedreplies = posti
+            listView.model = page.parsedreplies
+        }
+    }
     count++
     if (count < postnums.length) {
         getPosts (posti, count, postnums, trd, board, domain, thread);
