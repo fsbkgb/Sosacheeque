@@ -231,7 +231,6 @@ Page {
             }
             TextField {
                 id: captcha_value
-                inputMethodHints: Qt.ImhFormattedNumbersOnly
                 width: parent.width
                 placeholderText: qsTr("Verification")
                 EnterKey.onClicked: parent.focus = true
