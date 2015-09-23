@@ -10,7 +10,7 @@ import requests
 
 def sendpost (domain, board, thread, comment, captcha, captcha_value, email, name, subject, icon, image1, image2, image3, image4):
     url = 'https://2ch.' + domain + '/makaba/posting.fcgi?json=1'
-    post = [('task', "post"), ('board', board), ('thread', thread), ('comment', comment), ('captcha_type', "mailru"), ('captcha_value', captcha_value), ('captcha_id', captcha), ('captcha', ""), ('email', email), ('name', name), ('subject', subject), ('icon', icon)]
+    post = [('task', "post"), ('board', board), ('thread', thread), ('comment', comment), ('captcha_type', "mailru"), ('captcha_value', captcha_value), ('captcha_id', captcha), ('email', email), ('name', name), ('subject', subject), ('icon', icon)]
     if image1 != '':
         file1 = open(image1, 'rb')
     else:

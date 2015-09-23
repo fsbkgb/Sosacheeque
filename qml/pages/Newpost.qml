@@ -176,9 +176,7 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            onClicked: {
-                                NewPost.getCaptcha(domain)
-                            }
+                            NewPost.getCaptcha(domain)
                         }
                     }
                     BusyIndicator {
@@ -287,7 +285,10 @@ Page {
             }
         }
         VerticalScrollDecorator {}
-        Component.onCompleted: {
+    }
+
+    onStatusChanged: {
+        if (page.status === PageStatus.Activating && cmnt.text === "") {
             NewPost.getCaptcha(domain)
         }
     }

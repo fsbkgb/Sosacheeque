@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* 19-09-2015 0.9-4
+- загрузка капчи при открытии формы
+
 * 19-09-2015 0.9-3
 - некапча
 
