@@ -5,7 +5,7 @@ import "../js/threads.js" as Threads
 import "../js/posts.js" as Posts
 import "../js/favorites.js" as Favorites
 import "../js/boards.js" as Boards
-import io.thp.pyotherside 1.4
+import io.thp.pyotherside 1.3
 
 Page {
     id: page

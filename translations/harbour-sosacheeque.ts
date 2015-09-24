@@ -64,23 +64,7 @@
 <context>
     <name>Newpost</name>
     <message>
-        <source>Comment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Verification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>New post</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -93,6 +77,18 @@
     </message>
     <message>
         <source>Subject</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verification (click to [re]load captcha)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -14,20 +14,21 @@ Name:       harbour-sosacheeque
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    My SailfishOS Sosach Reader
 Version:    0.9
-Release:    4
+Release:    5
 Group:      Applications/Social Networks
 License:    WTFPL
 URL:        https://github.com/fsbkgb/Sosacheeque
 Source0:    %{name}-%{version}.tar.bz2
 Source100:  harbour-sosacheeque.yaml
 Requires:   sailfishsilica-qt5 >= 0.10.9
-Requires:   pyotherside-qml-plugin-python3-qt5 >= 1.4
+Requires:   pyotherside-qml-plugin-python3-qt5 >= 1.3
 BuildRequires:  pkgconfig(sailfishapp) >= 1.0.2
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Multimedia)
 BuildRequires:  desktop-file-utils
+AutoReq: no
 
 %description
 2ch.hk client for SailfishOS

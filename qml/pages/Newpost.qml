@@ -1,7 +1,7 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 import "../js/newpost.js" as NewPost
-import io.thp.pyotherside 1.4
+import io.thp.pyotherside 1.3
 
 Page {
     id: page
@@ -78,58 +78,76 @@ Page {
             }
             Row {
                 id: buttons
+                spacing: 3
+                anchors {
+                    left: parent.left
+                    leftMargin: Theme.paddingLarge
+                }
+                property int btnwdth: Math.floor((page.width - Theme.paddingLarge * 2) / 5)
 
                 Button {
-                    width: Math.floor(page.width / 5)
+                    width: buttons.btnwdth
                     Text {
                         text: "<b>B</b>"
                         textFormat: Text.RichText
                         color: Theme.primaryColor
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
+                        }
                     }
                     onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[B]", "[/B]")
                 }
                 Button {
-                    width: Math.floor(page.width / 5)
+                    width: buttons.btnwdth
                     Text {
                         text: "<i>I</i>"
                         textFormat: Text.RichText
                         color: Theme.primaryColor
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
+                        }
                     }
                     onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[I]", "[/I]")
                 }
                 Button {
-                    width: Math.floor(page.width / 5)
+                    width: buttons.btnwdth
                     Text {
                         text: "<u>U</u>"
                         textFormat: Text.RichText
                         color: Theme.primaryColor
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
+                        }
                     }
                     onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[U]", "[/U]")
                 }
                 Button {
-                    width: Math.floor(page.width / 5)
+                    width: buttons.btnwdth
                     Text {
                         text: "<s>S</s>"
                         textFormat: Text.RichText
                         color: Theme.primaryColor
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors {
+                            horizontalCenter: parent.horizontalCenter
+                            verticalCenter: parent.verticalCenter
+                        }
                     }
                     onClicked: NewPost.insertTag (cmnt.selectionStart, cmnt.selectionEnd, "[S]", "[/S]")
                 }
                 Button {
-                    width: Math.floor(page.width / 5)
+                    width: buttons.btnwdth
                     Rectangle {
                         color: "#BBBBBB"
                         anchors {
-                            bottom: parent.verticalCenter
+                            verticalCenter: parent.verticalCenter
                             top: parent.top
                             left: parent.left
                             right: parent.right
-                            bottomMargin: Theme.paddingSmall
-                            topMargin: Theme.paddingSmall
+                            bottomMargin: Theme.paddingMedium
+                            topMargin: Theme.paddingMedium
                             leftMargin: Theme.paddingLarge
                             rightMargin: Theme.paddingLarge
                         }
@@ -162,77 +180,64 @@ Page {
                 width: parent.width
                 text: ""
             }
-            Row {
-                anchors {
-                    left: parent.left
-                    leftMargin: Theme.paddingLarge
-                }
+            Image {
+                id: yaca
+                visible: false
+                width: 234
+                height: 70
+                anchors.horizontalCenter: parent.horizontalCenter
 
-                Image {
-                    id: yaca
-                    width: 234
-                    height: 70
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            NewPost.getCaptcha(domain)
-                        }
-                    }
-                    BusyIndicator {
-                        id: capchaindicator
-                        visible: false
-                        running: true
-                        size: BusyIndicatorSize.Medium
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-                Button {
-                    text: qsTr("Send")
-                    width: page.width - yaca.width - Theme.paddingLarge
-                    onClicked: {
-                        indicator.visible = true
-                        status.visible = false
-                        enabled = false
-                        var file_1 = (fileList.get(0) ? fileList.get(0).filepath : "")
-                        var file_2 = (fileList.get(1) ? fileList.get(1).filepath : "")
-                        var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
-                        var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
-                        py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
-                            var x = JSON.parse(response)
-                            indicator.visible = false
-                            status.visible = true
-                            enabled = true
-                            if (x.Error === null){
-                                status.text = x.Status
-                                if (thread === "0" ) {
-                                    pageStack.replace(Qt.resolvedUrl("Posts.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false, state: "thread"} )
-                                } else {
-                                    clearfields()
-                                    var threadPage = pageStack.find(function(page) { return page.state == "thread"; })
-                                    threadPage.comment = ""
-                                    pageStack.replaceAbove(threadPage, Qt.resolvedUrl("KostylPage.qml"), null, PageStackAction.Immediate)
-                                    threadPage.refreshthread()
-                                    pageStack.navigateBack()
-                                }
-                            } else {
-                                status.text = x.Reason
-                                if (x.Error === -5) {
-                                    NewPost.getCaptcha(domain)
-                                    captcha_value.text = ""
-                                    captcha_value.focus = true
-                                }
-                            }
-                        });
-                    }
+                BusyIndicator {
+                    id: capchaindicator
+                    visible: false
+                    running: true
+                    size: BusyIndicatorSize.Medium
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
             }
             TextField {
                 id: captcha_value
                 width: parent.width
-                placeholderText: qsTr("Verification")
-                EnterKey.onClicked: parent.focus = true
+                placeholderText: qsTr("Verification (click to [re]load captcha)")
+                onClicked: NewPost.getCaptcha(domain)
+                EnterKey.enabled: text.length === 6
+                EnterKey.onClicked: {
+                    indicator.visible = true
+                    status.visible = false
+                    enabled = false
+                    var file_1 = (fileList.get(0) ? fileList.get(0).filepath : "")
+                    var file_2 = (fileList.get(1) ? fileList.get(1).filepath : "")
+                    var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
+                    var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
+                    py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
+                        var x = JSON.parse(response)
+                        indicator.visible = false
+                        status.visible = true
+                        enabled = true
+                        if (x.Error === null){
+                            status.text = x.Status
+                            if (thread === "0" ) {
+                                pageStack.replace(Qt.resolvedUrl("Posts.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false, state: "thread"} )
+                            } else {
+                                clearfields()
+                                var threadPage = pageStack.find(function(page) { return page.state == "thread"; })
+                                threadPage.comment = ""
+                                pageStack.replaceAbove(threadPage, Qt.resolvedUrl("KostylPage.qml"), null, PageStackAction.Immediate)
+                                threadPage.refreshthread()
+                                pageStack.navigateBack()
+                            }
+                        } else {
+                            status.text = x.Reason
+                            if (x.Error === -5) {
+                                NewPost.getCaptcha(domain)
+                                captcha_value.text = ""
+                                captcha_value.focus = true
+                            }
+                        }
+                    })
+                }
             }
+
             Row {
                 spacing: Theme.paddingLarge
                 anchors {
@@ -285,12 +290,6 @@ Page {
             }
         }
         VerticalScrollDecorator {}
-    }
-
-    onStatusChanged: {
-        if (page.status === PageStatus.Activating && cmnt.text === "") {
-            NewPost.getCaptcha(domain)
-        }
     }
 
     function clearfields() {

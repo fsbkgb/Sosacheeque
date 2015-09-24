@@ -1,4 +1,5 @@
 function getCaptcha(domain) {
+    yaca.visible = true
     yaca.source = ""
     capchaindicator.visible = true
     py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/captcha.fcgi?type=mailru"], function(response) {

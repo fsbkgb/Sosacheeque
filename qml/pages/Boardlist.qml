@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 import "../js/db.js" as DB
 import "../js/boards.js" as Boards
 import "../js/settings.js" as Settings
-import io.thp.pyotherside 1.4
+import io.thp.pyotherside 1.3
 
 Page {
     id: page

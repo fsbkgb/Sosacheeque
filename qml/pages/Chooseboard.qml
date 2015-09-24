@@ -1,7 +1,7 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 import "../js/boards.js" as Boards
-import io.thp.pyotherside 1.4
+import io.thp.pyotherside 1.3
 
 Page {
     id: page
