@@ -201,6 +201,7 @@ Page {
                 placeholderText: qsTr("Verification (click to [re]load captcha)")
                 onClicked: NewPost.getCaptcha(domain)
                 EnterKey.enabled: text.length === 6
+                EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: {
                     indicator.visible = true
                     status.visible = false

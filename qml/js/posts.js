@@ -25,7 +25,7 @@ function getNew(count, position, ffav, board, thread, postcount, thumb, subject,
                 page.parsedposts.push(parsed[i])
                 page.parsedposts = page.parsedposts
                 listView.model = page.parsedposts
-                listView.positionViewAtIndex(position, ListView.Beginning)
+                listView.positionViewAtIndex(position, ListView.Contain)
             }
             if(ffav){
                 Favorites.save(board, thread, count - 2, thumb, subject, timestamp)
