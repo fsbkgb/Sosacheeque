@@ -28,6 +28,7 @@ Page {
                     Boards.getOne(text)
                     parent.focus = true
                 }
+                EnterKey.iconSource: "image://theme/icon-m-enter-next"
             }
         }
     }

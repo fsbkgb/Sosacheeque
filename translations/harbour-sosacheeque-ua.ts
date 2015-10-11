@@ -88,7 +88,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Verification (click to [re]load captcha)</source>
+        <source>Post</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verification</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
