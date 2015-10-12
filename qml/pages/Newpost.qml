@@ -184,12 +184,12 @@ Page {
             Image {
                 id: yaca
                 visible: false
-                width: 234
-                height: 70
+                width: 275
+                height: 100
                 anchors.horizontalCenter: parent.horizontalCenter
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: NewPost.getCaptcha(domain)
+                    onClicked: NewPost.getCaptcha(domain, thread)
                 }
 
                 BusyIndicator {
@@ -208,6 +208,7 @@ Page {
                 EnterKey.enabled: text.length === 6
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
                 EnterKey.onClicked: postPost()
+                inputMethodHints: Qt.ImhFormattedNumbersOnly
             }
 
             Row {
@@ -277,7 +278,7 @@ Page {
 
     function clearfields() {
         status.visible = false
-        NewPost.getCaptcha(domain)
+        NewPost.getCaptcha(domain, thread)
         cmnt.text = ""
         fileList.clear()
     }
@@ -310,7 +311,7 @@ Page {
             } else {
                 status.text = x.Reason
                 if (x.Error === -5) {
-                    NewPost.getCaptcha(domain)
+                    NewPost.getCaptcha(domain, thread)
                     captcha_value.text = ""
                     captcha_value.focus = true
                 }

@@ -20,13 +20,3 @@ def dyorg (url):
         pyotherside.send("Waited too long between bytes.")
     except requests.exceptions.HTTPError as e:
         pyotherside.send("And you get an HTTPError:", e.message)
-
-def milo (keyurl, captchaurl):
-    s = requests.session()
-    kek = s.get(keyurl, headers={'referer': "https://2ch.hk"})
-    pok = s.get(captchaurl, headers={'referer': "https://2ch.hk"})
-    if pok.status_code == 200:
-        f = open("/tmp/captcha.jpg", 'wb')
-        f.write(pok.content)
-        f.close()
-    return kek.text

@@ -1,15 +1,17 @@
-function getCaptcha(domain) {
+function getCaptcha(domain, thread) {
+    var url = "https://2ch." + domain + "/makaba/captcha.fcgi?type=2chaptcha"
+    if (thread !== "0") {
+        url = "https://2ch." + domain + "/makaba/captcha.fcgi?type=2chaptcha&action=thread"
+    }
     yaca.visible = true
     captcha_value.visible = true
     yaca.source = ""
     capchaindicator.visible = true
-    py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/captcha.fcgi?type=mailru"], function(response) {
-            var capucha = response.match(/(.{32})/)[1]
-            py.call('getdata.milo', ["https://api-nocaptcha.mail.ru/captcha?public_key=" + capucha + "&_=" + new Date().getTime(), "https://api-nocaptcha.mail.ru/c/1?" + new Date().getTime()], function(response) {
-                captcha = response.match(/id: "(.+)"/)[1]
-                capchaindicator.visible = false
-                yaca.source = "/tmp/captcha.jpg?abc=" + Math.random()
-            })
+    py.call('getdata.dyorg', [url], function(response) {
+            captcha = response.match(/(\w{56})/)[1]
+            capchaindicator.visible = false
+            yaca.source = "https://2ch." + domain + "/makaba/captcha.fcgi?type=2chaptcha&action=image&id=" + captcha
+            captcha_value.text = ""
         })
 }
 
