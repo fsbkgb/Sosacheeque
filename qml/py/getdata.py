@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import json, requests, pyotherside
+import requests
 
 def dyorg (url):
+    session = requests.session()
+    session.headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0'
     try:
-        resp = requests.get(url, timeout = 25.0)
-        return resp.text
+        resp = session.get(url, timeout = 25.0)
+        if resp.status_code == requests.codes.ok:
+            return { 'error':"none", 'response':resp.text }
+        else:
+            return { 'error':resp.status_code, 'response':resp.text }
     except requests.exceptions.ConnectionError as e:
-        pyotherside.send("These aren't the domains we're looking for.")
+        return { 'error':"Connection Error", 'response':resp.text }
     except requests.exceptions.ConnectTimeout as e:
-        pyotherside.send("Too slow Mojo!")
+        return { 'error':"Connection Error", 'response':resp.text }
     except requests.exceptions.ReadTimeout as e:
-        pyotherside.send("Waited too long between bytes.")
-    except requests.exceptions.HTTPError as e:
-        pyotherside.send("And you get an HTTPError:", e.message)
+        return { 'error':"Connection Error", 'response':resp.text }

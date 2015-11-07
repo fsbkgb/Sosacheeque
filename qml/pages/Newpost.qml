@@ -292,6 +292,7 @@ Page {
         var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
         var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
         py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
+            console.log(response)
             var x = JSON.parse(response)
             indicator.visible = false
             status.visible = true

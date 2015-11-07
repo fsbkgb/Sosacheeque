@@ -175,6 +175,14 @@
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show user boards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Get cookies</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Webmview</name>

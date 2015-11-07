@@ -38,12 +38,18 @@ Page {
             TextSwitch {
                 id: userboards
                 checked: false
-                text: "Show user boards"
+                text: qsTr("Show user boards")
                 onCheckedChanged: {
                     Settings.save("userboards", checked ? "show" : "hide" );
                     updatepages ()
                 }
             }
+            /*Button {
+                text: qsTr("Get cookies")
+                anchors.horizontalCenter: parent.horizontalCenter
+                preferredWidth: Theme.buttonWidthLarge
+                onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + page.option[0].value + "/test"} )
+            }*/
         }
     }
     Component.onCompleted: {

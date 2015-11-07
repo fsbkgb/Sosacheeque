@@ -23,6 +23,7 @@ Page {
     property int enable_icons: 0
     property int enable_names: 0
     property int enable_subject: 0
+    property var parsedthreads: []
     property var parsedposts
     property var parsedreplies: []
     property var icons: []
@@ -471,7 +472,7 @@ Page {
     }
     Component.onCompleted: {
         if (state === "board") {
-            Threads.getAll()
+            Threads.getAll(parsedthreads)
         } else if (state === "thread"){
             Threads.getOne(anchor)
         } else {
