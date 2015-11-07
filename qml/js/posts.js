@@ -34,10 +34,11 @@ function getNew(count, position, ffav, board, thread, postcount, thumb, subject,
                     favsPage.loadfavs()
                 }
             }
-            page.somethingloading = false }
+        }
         else {
             console.log(response.error)
         }
+        page.somethingloading = false
     })
 }
 

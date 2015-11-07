@@ -41,11 +41,11 @@ function getOne(board) {
             var enable_icons = parsed.enable_icons
             var enable_names = parsed.enable_names
             var enable_subject = parsed.enable_subject
-            page.somethingloading = false
             pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsed["threads"], board: board, pages: parsed.pages.length, domain: domain, state: "board", boardname: parsed.BoardName, icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } ) }
         else {
             console.log(response.error)
         }
+        page.somethingloading = false
     })
 }
 

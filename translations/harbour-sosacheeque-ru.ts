@@ -49,6 +49,14 @@
         <source>Deleting</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Opening thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading new posts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Imageview</name>
@@ -157,6 +165,10 @@
         <source>Loading new posts</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Opening thread</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SaveFile</name>
@@ -177,10 +189,6 @@
     </message>
     <message>
         <source>Show user boards</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Get cookies</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

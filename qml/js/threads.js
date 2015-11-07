@@ -8,35 +8,41 @@ function getAll(parsedthreads) {
     listView.model = page.parsedposts
 }
 
-function getOne (position) {
-    py.call('getdata.dyorg', ["https://2ch." + domain + "/" + board + "/res/" + thread + ".json"], function(response) {
+function getThread (url) {
+    py.call('getdata.dyorg', [url], function(response) {
         var posti = []
         if (response.error === "none") {
-            var parsed = JSON.parse(response.response);
-            var parsedthread = parsed["threads"][0]["posts"]
-            for(var i = 0; i < parsedthread.length; i++) {
-                posti.push(parsedthread[i]);
-            }
+            var parsed = JSON.parse(response.response)
+            parsedthreads = parsed["threads"][0]["posts"]
             var firsticon = [{name: "None", num: -1}]
             var othericons = parsed.icons
-            page.icons = firsticon.concat(othericons)
-            page.enable_icons = parsed.enable_icons
-            page.enable_names = parsed.enable_names
-            page.enable_subject = parsed.enable_subject
-            page.loading = false;
-            page.parsedposts = posti
-            listView.model = page.parsedposts
-            listView.positionViewAtIndex(position, ListView.End)
-            if(fromfav) {
-                Favorites.save(board, thread, posti.length - 1, posti[0].files ? posti[0].files[0].thumbnail : "", posti[0].subject ? posti[0].subject : posti[0].comment, posti[0].timestamp)
-                var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
-                favsPage.loadfavs()
-            } }
+            var icons = firsticon.concat(othericons)
+            var enable_icons = parsed.enable_icons
+            var enable_names = parsed.enable_names
+            var enable_subject = parsed.enable_subject
+            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.thread_num, board: board, domain: page.option[0].value, anchor: 1, fromfav: false, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject} )
+        }
         else {
             console.log(response.error)
         }
-
+        page.somethingloading = false
     })
+}
+
+function parseThread (position) {
+    var posti = []
+    for(var i = 0; i < parsedthreads.length; i++) {
+        posti.push(parsedthreads[i]);
+    }
+    page.loading = false;
+    page.parsedposts = posti
+    listView.model = page.parsedposts
+    listView.positionViewAtIndex(position, ListView.End)
+    if(fromfav) {
+        Favorites.save(board, thread, posti.length - 1, posti[0].files ? posti[0].files[0].thumbnail : "", posti[0].subject ? posti[0].subject : posti[0].comment, posti[0].timestamp)
+        var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
+        favsPage.loadfavs()
+    }
 }
 
 function truncateOP (text){

@@ -4,6 +4,7 @@ import "../js/db.js" as DB
 import "../js/threads.js" as Threads
 import "../js/posts.js" as Posts
 import "../js/favorites.js" as Favorites
+import "../js/settings.js" as Settings
 import "../js/boards.js" as Boards
 import io.thp.pyotherside 1.3
 
@@ -29,6 +30,7 @@ Page {
     property var icons: []
     property var postnums
     property var db
+    property var option
     property bool loading: true
     property bool somethingloading: false
     property bool fromfav
@@ -322,7 +324,9 @@ Page {
                 }
                 onClicked: {
                     if (page.state === "board") {
-                        pageStack.push(Qt.resolvedUrl("Posts.qml"), {thread: modelData.thread_num, board: board, domain: domain, anchor: 1, fromfav: false, state: "thread"} )
+                        page.somethingloading = true
+                        krooteelkaText.text = qsTr("Opening thread")
+                        Threads.getThread("https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json")
                     }
                 }
                 Image {
@@ -462,6 +466,7 @@ Page {
             }
         }
         Label {
+            id: krooteelkaText
             text: qsTr("Loading new posts")
             anchors {
                 left: krooteelka.right
@@ -471,10 +476,11 @@ Page {
         }
     }
     Component.onCompleted: {
+        Settings.load()
         if (state === "board") {
             Threads.getAll(parsedthreads)
         } else if (state === "thread"){
-            Threads.getOne(anchor)
+            Threads.parseThread(anchor)
         } else {
             Posts.getPosts(parsedreplies, 0, postnums, thread, board, domain, parsedposts)
         }
