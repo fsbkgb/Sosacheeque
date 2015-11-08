@@ -8,7 +8,7 @@ function getCaptcha(domain, thread) {
     yaca.source = ""
     capchaindicator.visible = true
     py.call('getdata.dyorg', [url], function(response) {
-            captcha = response.match(/(\w{56})/)[1]
+            captcha = response.response.match(/(\w{56})/)[1]
             capchaindicator.visible = false
             yaca.source = "https://2ch." + domain + "/makaba/captcha.fcgi?type=2chaptcha&action=image&id=" + captcha
             captcha_value.text = ""

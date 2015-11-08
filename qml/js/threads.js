@@ -8,7 +8,7 @@ function getAll(parsedthreads) {
     listView.model = page.parsedposts
 }
 
-function getThread (url) {
+function getThread (url, anchor, fromfav) {
     py.call('getdata.dyorg', [url], function(response) {
         var posti = []
         if (response.error === "none") {
@@ -20,12 +20,18 @@ function getThread (url) {
             var enable_icons = parsed.enable_icons
             var enable_names = parsed.enable_names
             var enable_subject = parsed.enable_subject
-            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.thread_num, board: board, domain: page.option[0].value, anchor: 1, fromfav: false, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject} )
+            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: board, domain: page.option[0].value, anchor: anchor, fromfav: fromfav, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject} )
+            page.somethingloading = false
+        } else {
+            page.notification = "Error: " + response.error
+            page.somethingloading = false
+            page.someerror = true
+            page.somethingloading = true
+            py.call('getdata.timeout', [2], function() {
+                page.someerror = false
+                page.somethingloading = false
+            })
         }
-        else {
-            console.log(response.error)
-        }
-        page.somethingloading = false
     })
 }
 

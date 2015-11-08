@@ -7,6 +7,8 @@ Page {
     id: page
     property string domain: ""
     property bool somethingloading: false
+    property bool someerror: false
+    property string notification: ""
 
     SilicaFlickable {
         anchors{
@@ -24,8 +26,9 @@ Page {
                 focus: true
                 validator: RegExpValidator {regExp: /[a-z]+/}
                 EnterKey.onClicked: {
+                    notification = qsTr("Opening board")
                     somethingloading = true
-                    Boards.getOne(text)
+                    Boards.getOne(text, "replace", "index")
                     parent.focus = true
                 }
                 EnterKey.iconSource: "image://theme/icon-m-enter-next"
@@ -33,33 +36,7 @@ Page {
         }
     }
 
-    Rectangle {
-        anchors{
-            top: parent.top
-        }
-        color: Theme.highlightBackgroundColor
-        width: parent.width
-        height: Theme.paddingLarge * 2
-        visible: page.somethingloading
-        BusyIndicator {
-            id: krooteelka
-            size: BusyIndicatorSize.Small
-            running: true
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
-                leftMargin: Theme.paddingSmall
-            }
-        }
-        Label {
-            text: qsTr("Opening board")
-            anchors {
-                left: krooteelka.right
-                verticalCenter: parent.verticalCenter
-                leftMargin: Theme.paddingSmall
-            }
-        }
-    }
+    Notifications {}
 
     Python {
         id: py

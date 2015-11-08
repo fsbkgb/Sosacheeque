@@ -11,11 +11,13 @@ Page {
     allowedOrientations : Orientation.All
     objectName: "favsPage"
     property string board: ""
+    property string notification: ""
     property int pc
     property var favs
     property var option
     property var parsedthreads: []
     property bool somethingloading: false
+    property bool someerror: false
 
     SilicaListView {
         anchors{
@@ -72,42 +74,17 @@ Page {
                 }
             }
             onClicked: {
+                notification = qsTr("Opening thread")
                 page.somethingloading = true
-                krooteelkaText.text = qsTr("Opening thread")
                 board = modelData.board
-                Threads.getThread("https://2ch." + page.option[0].value + "/" + board + "/res/" + modelData.thread + ".json")
+                Threads.getThread("https://2ch." + page.option[0].value + "/" + board + "/res/" + modelData.thread + ".json", modelData.pc, true)
             }
         }
         VerticalScrollDecorator {}
     }
-    Rectangle {
-        anchors{
-            top: parent.top
-        }
-        color: Theme.highlightBackgroundColor
-        width: parent.width
-        height: Theme.paddingLarge * 2
-        visible: page.somethingloading
-        BusyIndicator {
-            id: krooteelka
-            size: BusyIndicatorSize.Small
-            running: true
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
-                leftMargin: Theme.paddingSmall
-            }
-        }
-        Label {
-            id: krooteelkaText
-            text: qsTr("Loading new posts")
-            anchors {
-                left: krooteelka.right
-                verticalCenter: parent.verticalCenter
-                leftMargin: Theme.paddingSmall
-            }
-        }
-    }
+
+    Notifications {}
+
     Component.onCompleted: loadfavs ()
     onStatusChanged: {
         if (status === PageStatus.Active && pageStack.depth === 1) {

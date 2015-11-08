@@ -16,11 +16,12 @@ function getPosts(posti, count, postnums, trd, board, domain, thread) {
 }
 
 function getNew(count, position, ffav, board, thread, postcount, thumb, subject, timestamp) {
-    page.somethingloading = true;
+    page.somethingloading = true
     var posti = []
     py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + count], function(response) {
         if (response.error === "none") {
             var parsed = JSON.parse(response.response)
+            console.log("https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + count)
             if(parsed.length > 0){
                 for (var i = 0; i < parsed.length; i++) {
                     page.parsedposts.push(parsed[i])
@@ -34,11 +35,17 @@ function getNew(count, position, ffav, board, thread, postcount, thumb, subject,
                     favsPage.loadfavs()
                 }
             }
+            page.somethingloading = false
+        } else {
+            page.notification = "Error: " + response.error
+            page.somethingloading = false
+            page.someerror = true
+            page.somethingloading = true
+            py.call('getdata.timeout', [2], function() {
+                page.someerror = false
+                page.somethingloading = false
+            })
         }
-        else {
-            console.log(response.error)
-        }
-        page.somethingloading = false
     })
 }
 

@@ -30,9 +30,9 @@ function getAll() {
     })
 }
 
-function getOne(board) {
+function getOne(board, action, pagenum) {
     var categories = []
-    py.call('getdata.dyorg', ["https://2ch." + domain + "/" + board + "/index.json"], function(response) {
+    py.call('getdata.dyorg', ["https://2ch." + domain + "/" + board + "/" + pagenum + ".json"], function(response) {
         if (response.error === "none") {
             var parsed = JSON.parse(response.response);
             var firsticon = [{name: "None", num: -1}]
@@ -40,12 +40,27 @@ function getOne(board) {
             var icons = firsticon.concat(othericons)
             var enable_icons = parsed.enable_icons
             var enable_names = parsed.enable_names
+            var current_page = parsed.current_page
+            if (current_page === 0) {
+                current_page = "index"
+            }
             var enable_subject = parsed.enable_subject
-            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsed["threads"], board: board, pages: parsed.pages.length, domain: domain, state: "board", boardname: parsed.BoardName, icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } ) }
-        else {
-            console.log(response.error)
+            if (action === "replace") {
+                pageStack.replace(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsed["threads"], board: board, pages: parsed.pages.length, domain: domain, state: "board", boardname: parsed.BoardName, icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, currentpage: current_page} )
+            } else {
+                pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsed["threads"], board: board, pages: parsed.pages.length, domain: domain, state: "board", boardname: parsed.BoardName, icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, currentpage: current_page } )
+            }
+            page.somethingloading = false
+        } else {
+            page.notification = "Error: " + response.error
+            page.somethingloading = false
+            page.someerror = true
+            page.somethingloading = true
+            py.call('getdata.timeout', [2], function() {
+                page.someerror = false
+                page.somethingloading = false
+            })
         }
-        page.somethingloading = false
     })
 }
 

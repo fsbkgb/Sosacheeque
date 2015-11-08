@@ -19,6 +19,8 @@ Page {
     property string domain: ""
     property string state: ""
     property string comment: ""
+    property string notification: ""
+    property string currentpage: ""
     property int pages
     property int anchor
     property int enable_icons: 0
@@ -33,6 +35,7 @@ Page {
     property var option
     property bool loading: true
     property bool somethingloading: false
+    property bool someerror: false
     property bool fromfav
 
     BusyIndicator {
@@ -79,7 +82,11 @@ Page {
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Reload page")
-                onClicked: pageStack.replace(Qt.resolvedUrl("Posts.qml"), {url: url, board: board, pages: pages, domain: domain, state: "board"} )
+                onClicked: {
+                    notification = qsTr("Opening board")
+                    somethingloading = true
+                    Boards.getOne(board, "replace", currentpage)
+                }
             }
             MenuItem {
                 visible: page.state === "board" ? true : false
@@ -324,9 +331,9 @@ Page {
                 }
                 onClicked: {
                     if (page.state === "board") {
+                        notification= qsTr("Opening thread")
                         page.somethingloading = true
-                        krooteelkaText.text = qsTr("Opening thread")
-                        Threads.getThread("https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json")
+                        Threads.getThread("https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json", 1, false)
                     }
                 }
                 Image {
@@ -447,34 +454,9 @@ Page {
             VerticalScrollDecorator {}
         }
     }
-    Rectangle {
-        anchors{
-            top: parent.top
-        }
-        color: Theme.highlightBackgroundColor
-        width: parent.width
-        height: Theme.paddingLarge * 2
-        visible: page.somethingloading
-        BusyIndicator {
-            id: krooteelka
-            size: BusyIndicatorSize.Small
-            running: true
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
-                leftMargin: Theme.paddingSmall
-            }
-        }
-        Label {
-            id: krooteelkaText
-            text: qsTr("Loading new posts")
-            anchors {
-                left: krooteelka.right
-                verticalCenter: parent.verticalCenter
-                leftMargin: Theme.paddingSmall
-            }
-        }
-    }
+
+    Notifications {}
+
     Component.onCompleted: {
         Settings.load()
         if (state === "board") {
@@ -516,6 +498,7 @@ Page {
     }
 
     function refreshthread () {
+        notification= qsTr("Loading new posts")
         Posts.getNew(listView.count + 1, listView.count, fromfav, board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
     }
 

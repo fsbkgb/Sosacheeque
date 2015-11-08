@@ -53,10 +53,6 @@
         <source>Opening thread</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Loading new posts</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Imageview</name>
@@ -108,6 +104,10 @@
     <name>Paginator</name>
     <message>
         <source>Choose page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening board</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -162,11 +162,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Opening thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Loading new posts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Opening thread</source>
+        <source>Opening board</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

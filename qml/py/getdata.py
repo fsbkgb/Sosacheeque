@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
+import requests, time
 
 def dyorg (url):
     session = requests.session()
@@ -11,10 +11,13 @@ def dyorg (url):
         if resp.status_code == requests.codes.ok:
             return { 'error':"none", 'response':resp.text }
         else:
-            return { 'error':resp.status_code, 'response':resp.text }
+            return { 'error':resp.status_code, 'response':"" }
     except requests.exceptions.ConnectionError as e:
-        return { 'error':"Connection Error", 'response':resp.text }
+        return { 'error':"connection error", 'response':"" }
     except requests.exceptions.ConnectTimeout as e:
-        return { 'error':"Connection Error", 'response':resp.text }
+        return { 'error':"connection error", 'response':"" }
     except requests.exceptions.ReadTimeout as e:
-        return { 'error':"Connection Error", 'response':resp.text }
+        return { 'error':"connection error", 'response':"" }
+
+def timeout (delay):
+    time.sleep(delay)

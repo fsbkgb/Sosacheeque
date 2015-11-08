@@ -12,8 +12,10 @@ Page {
     property var categories
     property bool loading: false
     property bool somethingloading: false
+    property bool someerror: false
     property var option
     property string domain: page.option[0].value
+    property string notification: ""
 
     BusyIndicator {
         anchors.centerIn: parent
@@ -21,6 +23,7 @@ Page {
         visible: page.loading
         size: BusyIndicatorSize.Large
     }
+
     SilicaListView {
         id: listView
         visible: !page.loading
@@ -117,8 +120,9 @@ Page {
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
+                                        notification = qsTr("Opening board")
                                         somethingloading = true
-                                        Boards.getOne(modelData.id)
+                                        Boards.getOne(modelData.id, "push", "index")
                                     }
                                     onPressAndHold: {
                                         if (!contextMenu)
@@ -152,33 +156,9 @@ Page {
         }
         VerticalScrollDecorator {}
     }
-    Rectangle {
-        anchors{
-            top: parent.top
-        }
-        color: Theme.highlightBackgroundColor
-        width: parent.width
-        height: Theme.paddingLarge * 2
-        visible: page.somethingloading
-        BusyIndicator {
-            id: krooteelka
-            size: BusyIndicatorSize.Small
-            running: true
-            anchors {
-                left: parent.left
-                verticalCenter: parent.verticalCenter
-                leftMargin: Theme.paddingSmall
-            }
-        }
-        Label {
-            text: qsTr("Opening board")
-            anchors {
-                left: krooteelka.right
-                verticalCenter: parent.verticalCenter
-                leftMargin: Theme.paddingSmall
-            }
-        }
-    }
+
+    Notifications {}
+
     Component.onCompleted: loadlist()
     onStatusChanged: {
         if (status === PageStatus.Active && pageStack.depth === 1) {
