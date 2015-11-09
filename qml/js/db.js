@@ -11,7 +11,7 @@ function openDB() {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS settings(key TEXT UNIQUE, value TEXT)');
                     var table2  = tx.executeSql("SELECT * FROM settings");
                     if (table2.rows.length === 0) {
-                        tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["domain", "hk"]);
+                        tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["domain", "pm"]);
                         tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["userboards", "show"]);
                     };
                     try {

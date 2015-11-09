@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* 9-11-2015 0.10-1
+- обработка ошибок соединения
+
 * 12-10-2015 0.9-7
 - двачкапча
 
