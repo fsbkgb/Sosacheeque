@@ -15,37 +15,30 @@ function getPosts(posti, count, postnums, trd, board, domain, thread) {
     }
 }
 
-function getNew(count, position, ffav, board, thread, postcount, thumb, subject, timestamp) {
-    page.somethingloading = true
+function getNew(error, data, count, board, thread, subject) {
     var posti = []
-    py.call('getdata.dyorg', ["https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + count], function(response) {
-        if (response.error === "none") {
-            var parsed = JSON.parse(response.response)
-            if(parsed.length > 0){
-                for (var i = 0; i < parsed.length; i++) {
-                    page.parsedposts.push(parsed[i])
-                    page.parsedposts = page.parsedposts
-                    listView.model = page.parsedposts
-                    listView.positionViewAtIndex(position, ListView.Contain)
-                }
-                if(ffav){
-                    Favorites.save(board, thread, count - 2, thumb, subject, timestamp)
-                    var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
-                    favsPage.loadfavs()
-                }
+    if (error === "none") {
+        var parsed = JSON.parse(data)
+        if(parsed.length > 0){
+            for (var i = 0; i < parsed.length; i++) {
+                page.parsedposts.push(parsed[i])
+                page.parsedposts = page.parsedposts
             }
-            page.somethingloading = false
-        } else {
-            page.notification = "Error: " + response.error
-            page.somethingloading = false
-            page.someerror = true
-            page.somethingloading = true
-            py.call('getdata.timeout', [2], function() {
-                page.someerror = false
-                page.somethingloading = false
-            })
+            listView.model = page.parsedposts
+            listView.positionViewAtIndex(count, ListView.Contain)
+            Favorites.checkfavs(board, thread, count, subject, false)
         }
-    })
+        page.somethingloading = false
+    } else {
+        page.notification = "Error: " + error
+        page.somethingloading = false
+        page.someerror = true
+        page.somethingloading = true
+        py.call('getdata.timeout', [2], function() {
+            page.someerror = false
+            page.somethingloading = false
+        })
+    }
 }
 
 function parseLinks (link) {

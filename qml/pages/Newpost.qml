@@ -341,7 +341,6 @@ Page {
         onReceived: {
             // asychronous messages from Python arrive here
             // in Python, this can be accomplished via pyotherside.send()
-            console.log('got message from python: ' + data);
         }
     }
 }

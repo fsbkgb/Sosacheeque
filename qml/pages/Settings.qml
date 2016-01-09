@@ -41,7 +41,6 @@ Page {
                 text: qsTr("Show user boards")
                 onCheckedChanged: {
                     Settings.save("userboards", checked ? "show" : "hide" );
-                    updatepages ()
                 }
             }
             /*Button {
@@ -61,9 +60,7 @@ Page {
     }
 
     function updatepages () {
-        var boardsPage = pageStack.find(function(page) { return page.objectName == "boardsPage"; })
         var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
-        boardsPage.loadlist()
         favsPage.loadfavs()
     }
 }

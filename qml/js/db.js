@@ -1,7 +1,7 @@
 .import QtQuick.LocalStorage 2.0 as LS
 
 function getDatabase() {
-    return LS.LocalStorage.openDatabaseSync("sosacheequeDBv1", "0.1", "Database of application Sosacheeque", 100000);
+    return LS.LocalStorage.openDatabaseSync("sosacheequeDBv3", "0.3", "Database of application Sosacheeque", 100000);
 }
 
 function openDB() {
@@ -15,23 +15,14 @@ function openDB() {
                         tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["userboards", "show"]);
                     };
                     try {
-                        tx.executeSql('SELECT * FROM favs;');
+                        tx.executeSql('SELECT * FROM favs');
                     } catch(e) {
                         if(e.message.match("no such table")) {
                             console.log("such favs much tabel")
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS favs(board TEXT, thread TEXT, postcount INTEGER, thumb TEXT, subj TEXT, timestamp INTEGER UNIQUE)');
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS favs (board TEXT, thread TEXT, postcount INTEGER, subj TEXT, PRIMARY KEY (board, thread))');
                             tx.executeSql("SELECT * FROM favs");
-                            tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?, ?, ?)', ["mobi", "521312", 1, "thumb/521312/14314630923310s.jpg", "Jolla-тред", 1431463092]);
-                        };
-                    };
-                    try {
-                        tx.executeSql('SELECT * FROM favbrds;');
-                    } catch(e) {
-                        if(e.message.match("no such table")) {
-                            console.log("such favbrds much table")
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS favbrds(id TEXT UNIQUE, name TEXT, category TEXT)');
-                            tx.executeSql("SELECT * FROM favbrds");
-                            tx.executeSql('INSERT INTO favbrds VALUES(?, ?, ?)', ["b", "Бред", "Избранное"]);
+                            tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["mobi", "640244", 1, "Мобильных девайсов на GNU/Linux тхреад"]);
+                            tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["b", "0", 1, "Бред"]);
                         };
                     };
                 });

@@ -22,7 +22,6 @@ OTHER_FILES += \
     translations/*.ts \
     qml/pages/Paginator.qml \
     qml/images/abu.png \
-    qml/pages/Chooseboard.qml \
     README.md \
     qml/pages/Newpost.qml \
     qml/pages/Favorites.qml \

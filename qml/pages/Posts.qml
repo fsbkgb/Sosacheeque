@@ -22,7 +22,6 @@ Page {
     property string notification: ""
     property string currentpage: ""
     property int pages
-    property int anchor
     property int enable_icons: 0
     property int enable_names: 0
     property int enable_subject: 0
@@ -36,7 +35,6 @@ Page {
     property bool loading: true
     property bool somethingloading: false
     property bool someerror: false
-    property bool fromfav
 
     BusyIndicator {
         anchors.centerIn: parent
@@ -77,7 +75,7 @@ Page {
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
-                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {board: board, pages: pages, domain: domain} )
+                onClicked: pageStack.replace(Qt.resolvedUrl("Paginator.qml"), {board: board, pages: pages, domain: domain} )
             }
             MenuItem {
                 visible: page.state === "board" ? true : false
@@ -85,7 +83,7 @@ Page {
                 onClicked: {
                     notification = qsTr("Opening board")
                     somethingloading = true
-                    Boards.getOne(board, "replace", currentpage)
+                    py.call('getdata.dyorg', ["threads_page", "board", "https://2ch." + domain + "/" + board + "/" + currentpage + ".json"], function() {})
                 }
             }
             MenuItem {
@@ -101,7 +99,7 @@ Page {
             MenuItem {
                 visible: page.state === "thread" ? true : false
                 text: qsTr("Add to favorites")
-                onClicked: Favorites.save(board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
+                onClicked: Favorites.save(board, thread, listView.count, parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment)
             }
         }
         PushUpMenu {
@@ -333,7 +331,7 @@ Page {
                     if (page.state === "board") {
                         notification= qsTr("Opening thread")
                         page.somethingloading = true
-                        Threads.getThread("https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json", 1, false)
+                        py.call('getdata.dyorg', ["threads_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json"], function() {})
                     }
                 }
                 Image {
@@ -462,7 +460,7 @@ Page {
         if (state === "board") {
             Threads.getAll(parsedthreads)
         } else if (state === "thread"){
-            Threads.parseThread(anchor)
+            Threads.parseThread()
         } else {
             Posts.getPosts(parsedreplies, 0, postnums, thread, board, domain, parsedposts)
         }
@@ -485,6 +483,22 @@ Page {
             var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
             addImportPath(requestspath);
             importModule('getdata', function() {});
+            if (state === "board") {
+                setHandler('threads_page', function (type, error, data) {
+                    if (type === "board") {
+                        Boards.getOne(error, data, "replace")
+                    } else {
+                        Threads.getThread(error, data)
+                    }
+                })
+            } else if (state === "thread"){
+                setHandler('thread_page', function (type, error, data) {
+                    Posts.getNew(error, data, listView.count, board, thread, parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment)
+                })
+            } else {
+                console.log("pok")
+            }
+
         }
         onError: {
             // when an exception is raised, this error handler will be called
@@ -493,13 +507,13 @@ Page {
         onReceived: {
             // asychronous messages from Python arrive here
             // in Python, this can be accomplished via pyotherside.send()
-            console.log('got message from python: ' + data);
         }
     }
 
     function refreshthread () {
         notification= qsTr("Loading new posts")
-        Posts.getNew(listView.count + 1, listView.count, fromfav, board, thread, listView.count, parsedposts[0].files ? parsedposts[0].files[0].thumbnail : "", parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment, parsedposts[0].timestamp)
+        page.somethingloading = true
+        py.call('getdata.dyorg', ["thread_page", "thread", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + (listView.count+1)], function() {})
     }
 
     function geticons(num, post) {

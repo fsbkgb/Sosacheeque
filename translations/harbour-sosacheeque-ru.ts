@@ -8,29 +8,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter board name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add to favorites</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove from favorites</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Opening board</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>Chooseboard</name>
-    <message>
         <source>Opening board</source>
         <translation type="unfinished"></translation>
     </message>
@@ -46,11 +23,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deleting</source>
+        <source>Opening thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Opening thread</source>
+        <source>Opening board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Load board list</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -18,14 +18,6 @@ CoverBackground {
             iconSource: "image://theme/icon-cover-refresh"
             onTriggered: {
                 pageStack.clear()
-                pageStack.push(Qt.resolvedUrl("../pages/Boardlist.qml"))
-                mainWindow.activate()
-            }
-        }
-        CoverAction {
-            iconSource: "image://theme/icon-cover-favorite"
-            onTriggered: {
-                pageStack.clear()
                 pageStack.push(Qt.resolvedUrl("../pages/Favorites.qml"))
                 mainWindow.activate()
             }

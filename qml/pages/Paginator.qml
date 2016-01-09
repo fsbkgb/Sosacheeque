@@ -5,6 +5,7 @@ import io.thp.pyotherside 1.3
 
 Page {
     id: page
+    allowedOrientations : Orientation.All
     property string board: ""
     property string url: ""
     property string domain: ""
@@ -13,10 +14,11 @@ Page {
     property bool somethingloading: false
     property bool someerror: false
 
-    SilicaListView {
+    SilicaGridView {
         anchors{
             fill: parent
-            margins: 16
+            leftMargin: Theme.horizontalPageMargin
+            rightMargin: Theme.horizontalPageMargin
         }
         id: listView
         model: pages
@@ -24,26 +26,21 @@ Page {
             title: qsTr("Choose page")
         }
 
-        delegate: BackgroundItem {
-            id: delegate
-
-            Label {
-                id: text
-                text: index
-                width: parent.width
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-            }
-            onClicked: {
-                notification = qsTr("Opening board")
-                somethingloading = true
-                if (index == 0)
-                {Boards.getOne(board, "replace", "index")}
-                else
-                {Boards.getOne(board, "replace", index)}
+        delegate: Button {
+               text: index
+               height: Theme.itemSizeSmall
+               width: Theme.itemSizeSmall
+               onClicked: {
+                   notification = qsTr("Opening board")
+                   somethingloading = true
+                   if (index == 0)
+                   {py.call('getdata.dyorg', ["pager_page", "board", "https://2ch." + domain + "/" + board + "/index.json"], function() {})}
+                   else
+                   {py.call('getdata.dyorg', ["pager_page", "board", "https://2ch." + domain + "/" + board + "/" + index + ".json"], function() {})}
+               }
             }
         }
-        VerticalScrollDecorator {}
-    }
+
 
     Notifications {}
 
@@ -59,15 +56,17 @@ Page {
             var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
             addImportPath(requestspath);
             importModule('getdata', function() {});
+            setHandler('pager_page', function (type, error, data) {
+                Boards.getOne(error, data, "replace")
+            });
         }
-        /*onError: {
-        // when an exception is raised, this error handler will be called
-        console.log('python error: ' + traceback);
-    }*/
+        onError: {
+            // when an exception is raised, this error handler will be called
+            console.log('python error: ' + traceback);
+        }
         onReceived: {
             // asychronous messages from Python arrive here
             // in Python, this can be accomplished via pyotherside.send()
-            console.log('got message from python: ' + data);
         }
     }
 }

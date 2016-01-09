@@ -4,7 +4,7 @@ import "pages"
 
 ApplicationWindow
 {
-    initialPage: Component { Boardlist { } }
+    initialPage: Component { Favorites { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     id: mainWindow
 }

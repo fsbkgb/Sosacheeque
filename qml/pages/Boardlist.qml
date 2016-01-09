@@ -16,6 +16,7 @@ Page {
     property var option
     property string domain: page.option[0].value
     property string notification: ""
+    property string error: ""
 
     BusyIndicator {
         anchors.centerIn: parent
@@ -24,152 +25,83 @@ Page {
         size: BusyIndicatorSize.Large
     }
 
-    SilicaListView {
-        id: listView
-        visible: !page.loading
-        model: categories
+    Label {
+        anchors.centerIn: parent
+        visible: page.error !== ""
+        text: page.error
+    }
+
+    Loader {
         anchors.fill: parent
-        header: PageHeader {
+        sourceComponent:  listViewComponent
+    }
+
+    Column {
+        id: headerContainer
+
+        width: parent.width
+
+        PageHeader {
             title: qsTr("Boards")
         }
 
-        PullDownMenu {
-            MenuItem {
-                text: qsTr("Settings")
-                onClicked: pageStack.push(Qt.resolvedUrl("Settings.qml") )
+        TextField {
+            width: parent.width
+            placeholderText: "b"
+            focus: true
+            validator: RegExpValidator {regExp: /[0-9, a-z]+/}
+            EnterKey.onClicked: {
+                notification = qsTr("Opening board")
+                somethingloading = true
+                py.call('getdata.dyorg', ["list_page", "board", "https://2ch." + domain + "/" + text + "/index.json"], function() {})
+                parent.focus = true
             }
-            MenuItem {
-                text: qsTr("Enter board name")
-                onClicked: pageStack.push(Qt.resolvedUrl("Chooseboard.qml"), {domain: page.option[0].value} )
-            }
+            EnterKey.iconSource: "image://theme/icon-m-enter-next"
         }
-        delegate: BackgroundItem {
-            id: delegate
-            height: (brds.implicitHeight + ctgr.implicitHeight  + 15)
+    }
+    Component {
+        id: listViewComponent
 
-            Rectangle {
-                id: lolo
-                width: parent.width
-                height: Theme.paddingLarge * 5
-                color: Theme.secondaryHighlightColor
+        SilicaListView {
+            header:  Item {
+                id: header
+                width: headerContainer.width
+                height: headerContainer.height
+                Component.onCompleted: headerContainer.parent = header
             }
-            OpacityRampEffect {
-                sourceItem: lolo
-                direction: OpacityRamp.TopToBottom
-                slope: 2.50
-                offset: 0.01
-            }
-            Column {
-                id:brds
-                spacing: 5
-
-                Text {
-                    id: ctgr
-                    text: modelData[0].category
-                    color: Theme.highlightColor
+            id: listView
+            visible: !page.loading
+            model: categories
+            anchors.fill: parent
+            delegate: BackgroundItem {
+                id: delegate
+                Label {
+                    id: boardname
+                    width: parent.width - 10
+                    text: modelData.id + " - " + modelData.name
+                    truncationMode: TruncationMode.Fade
                     anchors {
                         left: parent.left
-                        leftMargin: 5
+                        leftMargin: Theme.horizontalPageMargin
                     }
                 }
-                Grid {
-                    columns: Math.floor(page.width / 135)
-                    Repeater {
-                        model: modelData
-                        delegate: Item {
-                            property Item contextMenu
-                            id: myListItem
-                            property bool menuOpen: contextMenu != null && contextMenu.parent === myListItem
-                            width: 135
-                            height: menuOpen ? contextMenu.height + 135 : 135
-
-                            Item{
-                                width: 135
-                                height: 135
-                                anchors.top: parent.top
-                                Image {
-                                    anchors.centerIn: parent
-                                    property string iconnumber: "01"
-                                    Component.onCompleted: {
-                                        var number = Math.floor(Math.random() * (16 - 1 + 1)) + 1
-                                        if (number < 10) {
-                                            iconnumber = "0" + number.toString()
-                                        } else {
-                                            iconnumber = number.toString()
-                                        }
-                                    }
-
-                                    source: "image://theme/icon-launcher-folder-" + iconnumber
-                                    Label {
-                                        text: modelData.id
-                                        anchors.centerIn: parent
-                                    }
-                                }
-                                Label {
-                                    id: boardname
-                                    width: parent.width - 10
-                                    text: modelData.name
-                                    font.pixelSize :Theme.fontSizeTiny
-                                    truncationMode: TruncationMode.Fade
-                                    anchors{
-                                        bottom: parent.bottom
-                                        left: parent.left
-                                        leftMargin: 5
-                                    }
-                                }
-                                MouseArea {
-                                    anchors.fill: parent
-                                    onClicked: {
-                                        notification = qsTr("Opening board")
-                                        somethingloading = true
-                                        Boards.getOne(modelData.id, "push", "index")
-                                    }
-                                    onPressAndHold: {
-                                        if (!contextMenu)
-                                            contextMenu = contextMenuComponent.createObject(listView)
-                                        contextMenu.show(myListItem)
-                                    }
-                                }
-                                Component {
-                                    id: contextMenuComponent
-                                    ContextMenu {
-                                        MenuItem {
-                                            visible: modelData.category !== "Избранное"
-                                            text: qsTr("Add to favorites")
-                                            onClicked: {
-                                                Boards.fav(modelData.id, modelData.name)
-                                                Boards.getAll()
-                                            }
-                                        }
-                                        MenuItem {
-                                            visible: modelData.category === "Избранное"
-                                            text: qsTr("Remove from favorites")
-                                            onClicked: Boards.unfav(modelData.id)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                onClicked: {
+                    notification = qsTr("Opening board")
+                    somethingloading = true
+                    py.call('getdata.dyorg', ["list_page", "board", "https://2ch." + domain + "/" + modelData.id + "/index.json"], function() {})
                 }
             }
         }
-        VerticalScrollDecorator {}
     }
 
     Notifications {}
 
     Component.onCompleted: loadlist()
-    onStatusChanged: {
-        if (status === PageStatus.Active && pageStack.depth === 1) {
-            pageStack.pushAttached(Qt.resolvedUrl("Favorites.qml") );
-        }
-    }
 
     function loadlist () {
-        DB.openDB()
+        page.loading = true
         Settings.load()
-        Boards.getAll()
+        py.call('getdata.dyorg', ["list_page", "boards", "https://2ch." + page.option[0].value + "/makaba/mobile.fcgi?task=get_boards"], function() {})
     }
 
     Python {
@@ -184,15 +116,21 @@ Page {
             var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
             addImportPath(requestspath);
             importModule('getdata', function() {});
+            setHandler('list_page', function (type, error, data) {
+                if (type === "board") {
+                    Boards.getOne(error, data, "replace")
+                } else {
+                    Boards.getAll(error, data)
+                }
+            })
         }
-        /*onError: {
+        onError: {
             // when an exception is raised, this error handler will be called
             console.log('python error: ' + traceback);
-        }*/
+        }
         onReceived: {
             // asychronous messages from Python arrive here
             // in Python, this can be accomplished via pyotherside.send()
-            console.log('got message from python: ' + data);
         }
     }
 }
