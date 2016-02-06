@@ -4,13 +4,13 @@ function getPosts(posti, count, postnums, trd, board, domain, thread) {
             posti.push(thread[i])
             posti.sort(function(a,b) { return parseInt(a.num) - parseInt(b.num) } )
             page.parsedreplies = posti
-            listView.model = page.parsedreplies
         }
     }
     count++
     if (count < postnums.length) {
         getPosts (posti, count, postnums, trd, board, domain, thread);
     } else {
+        listView.model = page.parsedreplies
         page.loading = false;
     }
 }
