@@ -189,7 +189,7 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: NewPost.getCaptcha(domain, thread)
+                    onClicked: NewPost.getCaptcha(domain)
                 }
 
                 BusyIndicator {
@@ -278,7 +278,7 @@ Page {
 
     function clearfields() {
         status.visible = false
-        NewPost.getCaptcha(domain, thread)
+        //NewPost.getCaptcha(domain)
         cmnt.text = ""
         fileList.clear()
     }
@@ -292,7 +292,6 @@ Page {
         var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
         var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
         py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
-            console.log(response)
             var x = JSON.parse(response)
             indicator.visible = false
             status.visible = true
@@ -312,9 +311,7 @@ Page {
             } else {
                 status.text = x.Reason
                 if (x.Error === -5) {
-                    NewPost.getCaptcha(domain, thread)
-                    captcha_value.text = ""
-                    captcha_value.focus = true
+                    NewPost.getCaptcha(domain)
                 }
             }
         })
@@ -333,6 +330,12 @@ Page {
             addImportPath(requestspath);
             importModule('newpost', function() {});
             importModule('getdata', function() {});
+            setHandler('captcha', function (type, error, data) {
+                captcha = data.match(/(\w{56})/)[1]
+                capchaindicator.visible = false
+                yaca.source = "https://2ch." + domain + "/makaba/captcha.fcgi?type=2chaptcha&action=image&id=" + captcha
+                captcha_value.text = ""
+            });
         }
         onError: {
             // when an exception is raised, this error handler will be called
