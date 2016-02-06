@@ -9,16 +9,15 @@ def dyorg (listener, type, url):
     try:
         resp = session.get(url, timeout = 25.0)
         if resp.status_code == requests.codes.ok:
-            #return { 'error':"none", 'response':resp.text }
             pyotherside.send(listener, type, "none", resp.text)
         else:
-            return { 'error':resp.status_code, 'response':"" }
+            pyotherside.send(listener, type, resp.status_code, "")
     except requests.exceptions.ConnectionError as e:
-        return { 'error':"connection error", 'response':"" }
+        pyotherside.send(listener, type, "connection error", "")
     except requests.exceptions.ConnectTimeout as e:
-        return { 'error':"connection error", 'response':"" }
+        pyotherside.send(listener, type, "connection error", "")
     except requests.exceptions.ReadTimeout as e:
-        return { 'error':"connection error", 'response':"" }
+        pyotherside.send(listener, type, "connection error", "")
 
 def timeout (delay):
     time.sleep(delay)
