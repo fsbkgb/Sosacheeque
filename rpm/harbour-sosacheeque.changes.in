@@ -8,6 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* 13-02-2016 0.11-1
+- убраны тормозящие штуки
+- новая стартовая страница
+
 * 9-11-2015 0.10-1
 - обработка ошибок соединения
 

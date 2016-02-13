@@ -491,10 +491,7 @@ Page {
                 setHandler('thread_page', function (type, error, data) {
                     Posts.getNew(error, data, listView.count, board, thread)
                 })
-            } else {
-                console.log("pok")
             }
-
         }
         onError: {
             // when an exception is raised, this error handler will be called

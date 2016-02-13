@@ -32,7 +32,6 @@ function getAll(error, data) {
 }
 
 function getOne(error, data, action) {
-    console.log(action)
     var categories = []
     if (error === "none") {
         var parsed = JSON.parse(data);
