@@ -99,7 +99,7 @@ Page {
             MenuItem {
                 visible: page.state === "thread" ? true : false
                 text: qsTr("Add to favorites")
-                onClicked: Favorites.save(board, thread, listView.count, parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment)
+                onClicked: Favorites.save(board, thread, listView.count, parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment.replace(/<(?:.|\n)*?>/gm, ' ').trim().replace(/\s\s+/g,' '))
             }
         }
         PushUpMenu {
