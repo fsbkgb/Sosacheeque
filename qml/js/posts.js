@@ -15,7 +15,7 @@ function getPosts(posti, count, postnums, trd, board, domain, thread) {
     }
 }
 
-function getNew(error, data, count, board, thread, subject) {
+function getNew(error, data, count, board, thread) {
     var posti = []
     if (error === "none") {
         var parsed = JSON.parse(data)
@@ -26,7 +26,7 @@ function getNew(error, data, count, board, thread, subject) {
             }
             listView.model = page.parsedposts
             listView.positionViewAtIndex(count, ListView.Contain)
-            Favorites.checkfavs(board, thread, count, subject, false)
+            Favorites.checkfavs(board, thread, count, false)
         }
         page.somethingloading = false
     } else {

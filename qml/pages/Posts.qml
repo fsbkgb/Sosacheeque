@@ -493,7 +493,7 @@ Page {
                 })
             } else if (state === "thread"){
                 setHandler('thread_page', function (type, error, data) {
-                    Posts.getNew(error, data, listView.count, board, thread, parsedposts[0].subject ? parsedposts[0].subject : parsedposts[0].comment)
+                    Posts.getNew(error, data, listView.count, board, thread)
                 })
             } else {
                 console.log("pok")

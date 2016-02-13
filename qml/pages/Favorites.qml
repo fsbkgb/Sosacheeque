@@ -44,41 +44,33 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("Boardlist.qml") )
             }
         }
-        delegate: BackgroundItem {
+        delegate: ListItem {
             id: delegate
-            Row {
-                Column {
-                    Label {
-                        id: text
-                        text: modelData.text
-                        width: delbutton.visible === true ? page.width - Theme.horizontalPageMargin * 2 - delbutton.width : page.width - Theme.horizontalPageMargin * 2
-                        font.pixelSize :Theme.fontSizeMedium
-                        color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                        maximumLineCount: 1
-                        horizontalAlignment: Text.AlignLeft
-                        anchors {
-                            left: parent.left
-                            leftMargin: Theme.horizontalPageMargin
-                        }
-                        truncationMode: TruncationMode.Fade
+            Column {
+                Label {
+                    id: text
+                    text: modelData.text
+                    width: page.width - Theme.horizontalPageMargin * 2
+                    font.pixelSize :Theme.fontSizeMedium
+                    color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                    maximumLineCount: 1
+                    horizontalAlignment: Text.AlignLeft
+                    anchors {
+                        left: parent.left
+                        leftMargin: Theme.horizontalPageMargin
                     }
-                    Label {
-                        id: url
-                        text: modelData.thread !== "0" ? "/" + modelData.board + "/" + modelData.thread : "/" + modelData.board
-                        font.pixelSize :Theme.fontSizeTiny
-                        anchors {
-                            left: parent.left
-                            leftMargin: Theme.horizontalPageMargin
-                        }
-                        color: Theme.secondaryHighlightColor
-
-                    }
+                    truncationMode: TruncationMode.Fade
                 }
-                IconButton {
-                    id: delbutton
-                    visible: false
-                    icon.source: "image://theme/icon-m-clear"
-                    onClicked: Favorites.del(modelData.board, modelData.thread)
+                Label {
+                    id: url
+                    text: modelData.thread !== "0" ? "/" + modelData.board + "/" + modelData.thread : "/" + modelData.board
+                    font.pixelSize :Theme.fontSizeTiny
+                    anchors {
+                        left: parent.left
+                        leftMargin: Theme.horizontalPageMargin
+                    }
+                    color: Theme.secondaryHighlightColor
+
                 }
             }
             Rectangle {
@@ -86,29 +78,31 @@ Page {
                 visible: modelData.thread === "0"
                 color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
             }
-
-            onPressAndHold: {
-                delbutton.visible = true
-            }
-
-            onClicked: {
-                if (delbutton.visible === true) {
-                    delbutton.visible = false
-                } else {
-                    board = modelData.board
-                    if (modelData.thread !== "0") {
-                        notification = qsTr("Opening thread")
-                        py.call('getdata.dyorg', ["favorites_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread + ".json"], function() {})
-                    } else {
-                        notification = qsTr("Opening board")
-                        py.call('getdata.dyorg', ["favorites_page", "board", "https://2ch." + domain + "/" + board + "/index.json"], function() {})
-                    }
-                    page.somethingloading = true
+            menu: ContextMenu {
+                MenuItem {
+                    text: "Edit"
+                    onClicked: pageStack.push(Qt.resolvedUrl("EditFav.qml"), {board: modelData.board, thread: modelData.thread, postcount: modelData.pc, title: modelData.text} )
+                }
+                MenuItem {
+                    text: "Remove"
+                    onClicked: Favorites.del(modelData.board, modelData.thread)
                 }
             }
+            onClicked: {
+                board = modelData.board
+                if (modelData.thread !== "0") {
+                    notification = qsTr("Opening thread")
+                    py.call('getdata.dyorg', ["favorites_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread + ".json"], function() {})
+                } else {
+                    notification = qsTr("Opening board")
+                    py.call('getdata.dyorg', ["favorites_page", "board", "https://2ch." + domain + "/" + board + "/index.json"], function() {})
+                }
+                page.somethingloading = true
+            }
         }
-        VerticalScrollDecorator {}
     }
+    VerticalScrollDecorator {}
+
 
     Notifications {}
 

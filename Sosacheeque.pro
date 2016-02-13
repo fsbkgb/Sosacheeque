@@ -60,3 +60,6 @@ TRANSLATIONS += translations/harbour-sosacheeque-ua.ts
 
 HEADERS +=
 
+DISTFILES += \
+    qml/pages/EditFav.qml
+

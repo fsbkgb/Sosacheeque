@@ -13,6 +13,17 @@
     </message>
 </context>
 <context>
+    <name>EditFav</name>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit title</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Favorites</name>
     <message>
         <source>Favorites</source>

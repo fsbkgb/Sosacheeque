@@ -10,15 +10,15 @@ function load() {
     });
 }
 
-function checkfavs (board, thread, postcount, subject, scroll) {
+function checkfavs (board, thread, postcount, scroll) {
     var db = DB.getDatabase();
     db.transaction(function(tx) {
         var check = tx.executeSql('SELECT * FROM favs WHERE board = ? AND thread = ?;', [board, thread])
         var position = 0
         if (check.rows.length === 1) {
             position = check.rows.item(0).postcount - 1
-            console.log(position)
-            save(board, thread, postcount, subject)
+            var title = check.rows.item(0).subj
+            save(board, thread, postcount, title)
         }
         if (scroll === true) {
             listView.positionViewAtIndex(position, ListView.Contain)
