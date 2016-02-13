@@ -11,6 +11,10 @@
         <source>Opening board</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFav</name>
@@ -43,6 +47,14 @@
     </message>
     <message>
         <source>Load board list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

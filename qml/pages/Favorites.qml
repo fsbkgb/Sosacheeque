@@ -80,11 +80,11 @@ Page {
             }
             menu: ContextMenu {
                 MenuItem {
-                    text: "Edit"
+                    text: qsTr("Edit")
                     onClicked: pageStack.push(Qt.resolvedUrl("EditFav.qml"), {board: modelData.board, thread: modelData.thread, postcount: modelData.pc, title: modelData.text} )
                 }
                 MenuItem {
-                    text: "Remove"
+                    text: qsTr("Remove")
                     onClicked: Favorites.del(modelData.board, modelData.thread)
                 }
             }

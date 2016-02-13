@@ -73,7 +73,7 @@ Page {
             visible: !page.loading
             model: categories
             anchors.fill: parent
-            delegate: BackgroundItem {
+            delegate: ListItem {
                 id: delegate
                 Label {
                     id: boardname
@@ -89,6 +89,12 @@ Page {
                     notification = qsTr("Opening board")
                     somethingloading = true
                     py.call('getdata.dyorg', ["list_page", "board", "https://2ch." + domain + "/" + modelData.id + "/index.json"], function() {})
+                }
+                menu: ContextMenu {
+                    MenuItem {
+                        text: qsTr("Add to favorites")
+                        onClicked: Boards.fav(modelData.id, modelData.name)
+                    }
                 }
             }
         }

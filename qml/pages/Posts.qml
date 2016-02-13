@@ -66,11 +66,7 @@ Page {
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Add board to favorites")
-                onClicked: {
-                    Boards.fav(board, boardname)
-                    var boardsPage = pageStack.find(function(page) { return page.objectName === "boardsPage"; })
-                    boardsPage.loadlist()
-                }
+                onClicked: Boards.fav(board, boardname)
             }
             MenuItem {
                 visible: page.state === "board" ? true : false
