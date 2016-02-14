@@ -60,7 +60,7 @@ Page {
             }
             ComboBox {
                 id: iconslist
-                visible: enable_icons === 1 ? true : false
+                visible: enable_icons === 1 ? true : false 
                 width: page.width
                 label: qsTr("Icon")
                 menu: ContextMenu {

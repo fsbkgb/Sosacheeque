@@ -22,18 +22,8 @@ Page {
     property bool somethingloading: false
     property bool someerror: false
 
-
-    SilicaListView {
-        anchors{
-            fill: parent
-        }
-        id: listView
-        model: page.favs
-        header: PageHeader {
-            title: qsTr("Favorites")
-        }
-
-
+    SilicaFlickable {
+        anchors.fill: parent
         PullDownMenu {
             MenuItem {
                 text: qsTr("Settings")
@@ -44,65 +34,85 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("Boardlist.qml") )
             }
         }
-        delegate: ListItem {
-            id: delegate
-            Column {
-                Label {
-                    id: text
-                    text: modelData.text
-                    width: page.width - Theme.horizontalPageMargin * 2
-                    font.pixelSize :Theme.fontSizeMedium
-                    color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                    maximumLineCount: 1
-                    horizontalAlignment: Text.AlignLeft
-                    anchors {
-                        left: parent.left
-                        leftMargin: Theme.horizontalPageMargin
-                    }
-                    truncationMode: TruncationMode.Fade
-                }
-                Label {
-                    id: url
-                    text: modelData.thread !== "0" ? "/" + modelData.board + "/" + modelData.thread : "/" + modelData.board
-                    font.pixelSize :Theme.fontSizeTiny
-                    anchors {
-                        left: parent.left
-                        leftMargin: Theme.horizontalPageMargin
-                    }
-                    color: Theme.secondaryHighlightColor
 
+        SilicaListView {
+            anchors.fill: parent
+            id: listView
+            model: page.favs
+            header: PageHeader {
+                title: qsTr("Favorites")
+            }
+            delegate: ListItem {
+                id: delegate
+                Row {
+                    IconButton {
+                        id: delbutton
+                        visible: false
+                        icon.source: "image://theme/icon-m-clear"
+                        onClicked: Favorites.del(modelData.board, modelData.thread)
+                    }
+                    IconButton {
+                        id: editbutton
+                        visible: false
+                        icon.source: "image://theme/icon-m-edit"
+                        onClicked: pageStack.push(Qt.resolvedUrl("EditFav.qml"), {board: modelData.board, thread: modelData.thread, postcount: modelData.pc, title: modelData.text} )
+                    }
+                    Column {
+                        Label {
+                            id: text
+                            text: modelData.text
+                            width: delbutton.visible === true ? page.width - Theme.horizontalPageMargin * 2 - delbutton.width * 2 : page.width - Theme.horizontalPageMargin * 2
+                            font.pixelSize :Theme.fontSizeMedium
+                            color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                            maximumLineCount: 1
+                            horizontalAlignment: Text.AlignLeft
+                            anchors {
+                                left: parent.left
+                                leftMargin: Theme.horizontalPageMargin
+                            }
+                            truncationMode: TruncationMode.Fade
+                        }
+                        Label {
+                            id: url
+                            text: modelData.thread !== "0" ? "/" + modelData.board + "/" + modelData.thread : "/" + modelData.board
+                            font.pixelSize :Theme.fontSizeTiny
+                            anchors {
+                                left: parent.left
+                                leftMargin: Theme.horizontalPageMargin
+                            }
+                            color: Theme.secondaryHighlightColor
+                        }
+                    }
+                }
+                Rectangle {
+                    anchors.fill: parent
+                    visible: modelData.thread === "0"
+                    color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
+                }
+                onPressAndHold: {
+                    delbutton.visible = true
+                    editbutton.visible = true
+                }
+                onClicked: {
+                    if (delbutton.visible === true) {
+                        delbutton.visible = false
+                        editbutton.visible = false
+                    } else {
+                        board = modelData.board
+                        if (modelData.thread !== "0") {
+                            notification = qsTr("Opening thread")
+                            py.call('getdata.dyorg', ["favorites_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread + ".json"], function() {})
+                        } else {
+                            notification = qsTr("Opening board")
+                            py.call('getdata.dyorg', ["favorites_page", "board", "https://2ch." + domain + "/" + board + "/index.json"], function() {})
+                        }
+                        page.somethingloading = true
+                    }
                 }
             }
-            Rectangle {
-                anchors.fill: parent
-                visible: modelData.thread === "0"
-                color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
-            }
-            menu: ContextMenu {
-                MenuItem {
-                    text: qsTr("Edit")
-                    onClicked: pageStack.push(Qt.resolvedUrl("EditFav.qml"), {board: modelData.board, thread: modelData.thread, postcount: modelData.pc, title: modelData.text} )
-                }
-                MenuItem {
-                    text: qsTr("Remove")
-                    onClicked: Favorites.del(modelData.board, modelData.thread)
-                }
-            }
-            onClicked: {
-                board = modelData.board
-                if (modelData.thread !== "0") {
-                    notification = qsTr("Opening thread")
-                    py.call('getdata.dyorg', ["favorites_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread + ".json"], function() {})
-                } else {
-                    notification = qsTr("Opening board")
-                    py.call('getdata.dyorg', ["favorites_page", "board", "https://2ch." + domain + "/" + board + "/index.json"], function() {})
-                }
-                page.somethingloading = true
-            }
+            VerticalScrollDecorator { flickable: listView }
         }
     }
-    VerticalScrollDecorator {}
-
 
     Notifications {}
 

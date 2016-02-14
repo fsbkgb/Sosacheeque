@@ -38,23 +38,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Load board list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Opening thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Opening board</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Load board list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

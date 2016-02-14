@@ -4,7 +4,7 @@ Version: 0.11
 Release: 1
 # The contents of the Group field should be one of the groups listed here:
 # http://gitorious.org/meego-developer-tools/spectacle/blobs/master/data/GROUPS
-Group: Applications/Social Networks
+Group: Applications/Internet
 URL: https://github.com/fsbkgb/Sosacheeque
 License: WTFPL
 # This must be generated before uploading a package to a remote build service.
