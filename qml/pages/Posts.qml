@@ -21,6 +21,7 @@ Page {
     property string comment: ""
     property string notification: ""
     property string currentpage: ""
+    property string numnum: ""
     property int pages
     property int enable_icons: 0
     property int enable_names: 0
@@ -491,9 +492,15 @@ Page {
                         Threads.getThread(error, data)
                     }
                 })
-            } else if (state === "thread"){
-                setHandler('thread_page', function (type, error, data) {
-                    Posts.getNew(error, data, listView.count, board, thread)
+            } else {
+                numnum = pageStack.depth.toString()
+                console.log(numnum)
+                setHandler('thread_page'+numnum, function (type, error, data) {
+                    if (type === "thread") {
+                        Threads.getThread(error, data)
+                    } else {
+                        Posts.getNew(error, data, listView.count, board, thread)
+                    }
                 })
             }
         }
@@ -510,7 +517,7 @@ Page {
     function refreshthread () {
         notification= qsTr("Loading new posts")
         page.somethingloading = true
-        py.call('getdata.dyorg', ["thread_page", "thread", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + (listView.count+1)], function() {})
+        py.call('getdata.dyorg', ["thread_page"+numnum, "thread", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + (listView.count+1)], function() {})
     }
 
     function geticons(num, post) {

@@ -16,10 +16,11 @@ function getThread (error, data) {
         var firsticon = [{name: "None", num: -1}]
         var othericons = parsed.icons
         var icons = firsticon.concat(othericons)
+        var brd = parsed.Board
         var enable_icons = parsed.enable_icons
         var enable_names = parsed.enable_names
         var enable_subject = parsed.enable_subject
-        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: board, domain: page.option[0].value, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject} )
+        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: brd, domain: page.option[0].value, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject} )
         page.somethingloading = false
     } else {
         page.notification = "Error: " + error

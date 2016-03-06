@@ -207,4 +207,11 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>posts</name>
+    <message>
+        <source>Opening thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

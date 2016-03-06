@@ -59,9 +59,16 @@ function parseLinks (link, thread) {
         if (thread === trd) {
             pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {postnums: postnums, thread: trd, board: brd, domain: domain, parsedposts: parsedposts, state: "replies", icons: icons} )
         } else {
-
+            console.log("kek")
+            notification = qsTr("Opening thread")
+            console.log(numnum)
+            page.somethingloading = true
+            py.call('getdata.dyorg', ['thread_page'+numnum, "thread", "https://2ch." + domain + "/" + brd + "/res/" + trd + ".json"], function() {})
         }
-    } else {Qt.openUrlExternally(link)}
+    } else {
+        console.log("pok")
+        Qt.openUrlExternally(link)
+    }
 }
 
 function getReplies (postnum, posts) {
