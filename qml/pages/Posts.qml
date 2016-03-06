@@ -103,12 +103,16 @@ Page {
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
-                onClicked: pageStack.push(Qt.resolvedUrl("Paginator.qml"), {board: board, pages: pages, domain: domain} )
+                onClicked: pageStack.replace(Qt.resolvedUrl("Paginator.qml"), {board: board, pages: pages, domain: domain} )
             }
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Reload page")
-                onClicked: pageStack.replace(Qt.resolvedUrl("Posts.qml"), {url: url, board: board, pages: pages, domain: domain, state: "board"} )
+                onClicked: {
+                    notification = qsTr("Opening board")
+                    somethingloading = true
+                    py.call('getdata.dyorg', ["threads_page", "board", "https://2ch." + domain + "/" + board + "/" + currentpage + ".json"], function() {})
+                }
             }
             MenuItem {
                 visible: page.state === "thread" ? true : false
