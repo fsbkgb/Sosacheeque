@@ -41,21 +41,27 @@ function getNew(error, data, count, board, thread) {
     }
 }
 
-function parseLinks (link) {
-    var extlink = new RegExp(/^http/)
-    var intlink = new RegExp(/^\/[a-z]+\/res\/[0-9]+\.html#[0-9]+/)
-    if (link.match(extlink))
-    {Qt.openUrlExternally(link)}
-    else if (link.match(intlink)){
-        var brd = link.match(/([a-z]+)/)[1]
-        var trd = link.match(/([0-9]+)/)[1]
-        var pst = link.match(/#([0-9]+)/)[1]
+function parseLinks (link, thread) {
+    var intlink = new RegExp(/(https?:\/\/2ch.(hk|pm)|^)\/[0-9a-z]+\/res\/[0-9]+\.html(#[0-9]+)?/)
+    if (link.match(intlink)){
+        link = link.replace(/https?:\/\/2ch.(hk|pm)/g,"")
+        var brd = link.match(/\/([0-9a-z]+)\//)[1]
+        brd = brd.replace(/\//g,"")
+        var trd = link.match(/([0-9]+\.)/)[1]
+        trd = trd.replace(/\./g,"")
+        try{
+            var pst = link.match(/#([0-9]+)/)[1]
+        } catch (err) {
+            pst = trd
+        }
         var postnums = []
         postnums.push(pst)
-        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {postnums: postnums, thread: trd, board: brd, domain: domain, parsedposts: parsedposts, state: "replies", icons: icons} )
-    }
-    else
-    {console.log(link)}
+        if (thread === trd) {
+            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {postnums: postnums, thread: trd, board: brd, domain: domain, parsedposts: parsedposts, state: "replies", icons: icons} )
+        } else {
+
+        }
+    } else {Qt.openUrlExternally(link)}
 }
 
 function getReplies (postnum, posts) {

@@ -315,7 +315,7 @@ Page {
                     }
                     onLinkActivated: {
                         if (page.state != "board"){
-                            Posts.parseLinks (link)
+                            Posts.parseLinks (link, thread)
                         }
                     }
                 }
