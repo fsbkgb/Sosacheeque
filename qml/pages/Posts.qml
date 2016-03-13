@@ -23,6 +23,7 @@ Page {
     property string currentpage: ""
     property string numnum: ""
     property int pages
+    property int anch
     property int enable_icons: 0
     property int enable_names: 0
     property int enable_subject: 0
@@ -332,7 +333,7 @@ Page {
                     if (page.state === "board") {
                         notification= qsTr("Opening thread")
                         page.somethingloading = true
-                        py.call('getdata.dyorg', ["threads_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json"], function() {})
+                        py.call('getdata.dyorg', ["threads_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json#" + modelData.thread_num], function() {})
                     }
                 }
                 Image {
@@ -485,21 +486,20 @@ Page {
             addImportPath(requestspath);
             importModule('getdata', function() {});
             if (state === "board") {
-                setHandler('threads_page', function (type, error, data) {
+                setHandler('threads_page', function (type, error, data, anchor) {
                     if (type === "board") {
                         Boards.getOne(error, data, "replace")
                     } else {
-                        Threads.getThread(error, data)
+                        Threads.getThread(error, data, anchor)
                     }
                 })
             } else {
                 numnum = pageStack.depth.toString()
-                console.log(numnum)
-                setHandler('thread_page'+numnum, function (type, error, data) {
+                setHandler('thread_page'+numnum, function (type, error, data, anchor) {
                     if (type === "thread") {
-                        Threads.getThread(error, data)
+                        Threads.getThread(error, data, anchor)
                     } else {
-                        Posts.getNew(error, data, listView.count, board, thread)
+                        Posts.getNew(error, data, listView.count, board, thread, parsedposts[parsedposts.length-1].num)
                     }
                 })
             }
@@ -517,7 +517,7 @@ Page {
     function refreshthread () {
         notification= qsTr("Loading new posts")
         page.somethingloading = true
-        py.call('getdata.dyorg', ["thread_page"+numnum, "thread", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + (listView.count+1)], function() {})
+        py.call('getdata.dyorg', ["thread_page"+numnum, "", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + (listView.count+1)], function() {})
     }
 
     function geticons(num, post) {

@@ -101,7 +101,7 @@ Page {
                         board = modelData.board
                         if (modelData.thread !== "0") {
                             notification = qsTr("Opening thread")
-                            py.call('getdata.dyorg', ["favorites_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread + ".json"], function() {})
+                            py.call('getdata.dyorg', ["favorites_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread + ".json#" + modelData.pc], function() {})
                         } else {
                             notification = qsTr("Opening board")
                             py.call('getdata.dyorg', ["favorites_page", "board", "https://2ch." + domain + "/" + board + "/index.json"], function() {})
@@ -130,9 +130,10 @@ Page {
             var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
             addImportPath(requestspath);
             importModule('getdata', function() {});
-            setHandler('favorites_page', function (type, error, data) {
+            setHandler('favorites_page', function (type, error, data, anchor) {
                 if (type === "thread") {
-                    Threads.getThread(error, data)
+                    console.log(anchor)
+                    Threads.getThread(error, data, anchor)
                 } else {
                     Boards.getOne(error, data, "push")
                 }

@@ -8,7 +8,7 @@ function getAll(parsedthreads) {
     listView.model = page.parsedposts
 }
 
-function getThread (error, data) {
+function getThread (error, data, anchor) {
     var posti = []
     if (error === "none") {
         var parsed = JSON.parse(data)
@@ -20,7 +20,7 @@ function getThread (error, data) {
         var enable_icons = parsed.enable_icons
         var enable_names = parsed.enable_names
         var enable_subject = parsed.enable_subject
-        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: brd, domain: page.option[0].value, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject} )
+        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: brd, domain: page.option[0].value, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, anch: anchor} )
         page.somethingloading = false
     } else {
         page.notification = "Error: " + error
@@ -42,7 +42,7 @@ function parseThread () {
     page.loading = false;
     page.parsedposts = posti
     listView.model = page.parsedposts
-    Favorites.checkfavs(board, thread, posti.length, true)
+    Favorites.checkfavs(board, thread, posti[posti.length-1].num, true)
 }
 
 function truncateOP (text){

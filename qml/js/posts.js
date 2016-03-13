@@ -15,7 +15,7 @@ function getPosts(posti, count, postnums, trd, board, domain, thread) {
     }
 }
 
-function getNew(error, data, count, board, thread) {
+function getNew(error, data, count, board, thread, lastpost) {
     var posti = []
     if (error === "none") {
         var parsed = JSON.parse(data)
@@ -26,7 +26,7 @@ function getNew(error, data, count, board, thread) {
             }
             listView.model = page.parsedposts
             listView.positionViewAtIndex(count, ListView.Contain)
-            Favorites.checkfavs(board, thread, count, false)
+            Favorites.checkfavs(board, thread, lastpost, false)
         }
         page.somethingloading = false
     } else {
@@ -59,11 +59,9 @@ function parseLinks (link, thread) {
         if (thread === trd) {
             pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {postnums: postnums, thread: trd, board: brd, domain: domain, parsedposts: parsedposts, state: "replies", icons: icons} )
         } else {
-            console.log("kek")
             notification = qsTr("Opening thread")
-            console.log(numnum)
             page.somethingloading = true
-            py.call('getdata.dyorg', ['thread_page'+numnum, "thread", "https://2ch." + domain + "/" + brd + "/res/" + trd + ".json"], function() {})
+            py.call('getdata.dyorg', ['thread_page'+numnum, "thread", "https://2ch." + domain + "/" + brd + "/res/" + trd + ".json#" + pst], function() {})
         }
     } else {
         console.log("pok")
