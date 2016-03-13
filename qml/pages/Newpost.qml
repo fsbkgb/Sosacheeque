@@ -325,7 +325,6 @@ Page {
             var pythonpath = Qt.resolvedUrl('../py/').substr('file://'.length);
             //var pythonpath = Qt.resolvedUrl('.').substr('file://'.length);
             addImportPath(pythonpath);
-            console.log(pythonpath);
             var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
             addImportPath(requestspath);
             importModule('newpost', function() {});
