@@ -17,6 +17,7 @@ function checkfavs (board, thread, lastpost, scroll) {
         var position = 0
         if (check.rows.length === 1) {
             var title = check.rows.item(0).subj
+            anch = check.rows.item(0).postcount
             save(board, thread, lastpost, title)
         }
         if (scroll === true) {
