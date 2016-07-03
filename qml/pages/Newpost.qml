@@ -330,7 +330,7 @@ Page {
             importModule('newpost', function() {});
             importModule('getdata', function() {});
             setHandler('captcha', function (type, error, data) {
-                captcha = data.match(/(\w{56})/)[1]
+                captcha = data.match(/(\w{64})/)[1]
                 capchaindicator.visible = false
                 yaca.source = "https://2ch." + domain + "/makaba/captcha.fcgi?type=2chaptcha&action=image&id=" + captcha
                 captcha_value.text = ""
