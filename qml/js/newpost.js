@@ -1,5 +1,5 @@
 function getCaptcha(domain) {
-    var url = "https://2ch." + domain + "/makaba/captcha.fcgi?type=2chaptcha"
+    var url = "https://2ch." + domain + "/api/captcha/2chaptcha/service_id"
     yaca.visible = true
     captcha_value.visible = true
     yaca.source = ""

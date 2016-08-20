@@ -332,7 +332,7 @@ Page {
             setHandler('captcha', function (type, error, data) {
                 captcha = data.match(/(\w{64})/)[1]
                 capchaindicator.visible = false
-                yaca.source = "https://2ch." + domain + "/makaba/captcha.fcgi?type=2chaptcha&action=image&id=" + captcha
+                yaca.source = "https://2ch." + domain + "/api/captcha/2chaptcha/image/" + captcha
                 captcha_value.text = ""
             });
         }
