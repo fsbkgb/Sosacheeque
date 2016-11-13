@@ -243,7 +243,7 @@ Page {
 
                                 Image {
                                     id: pic
-                                    source: "https://2ch." + domain + "/" + board + "/" + modelData.thumbnail
+                                    source: "https://2ch." + domain + modelData.thumbnail
                                     width: modelData.tn_width > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) : modelData.tn_width
                                     height: modelData.tn_height > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) : modelData.tn_height
                                     fillMode: Image.PreserveAspectFit
@@ -254,10 +254,10 @@ Page {
                                     anchors.fill: parent
                                     onClicked: {
                                         if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
-                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
+                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + modelData.path} )
                                         }
                                         else{
-                                            pageStack.push(Qt.resolvedUrl("Imageview.qml"), {uri: "https://2ch." + domain + "/" + board + "/" + modelData.path} )
+                                            pageStack.push(Qt.resolvedUrl("Imageview.qml"), {uri: "https://2ch." + domain + modelData.path} )
                                         }
                                     }
                                 }
