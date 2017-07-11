@@ -251,14 +251,14 @@ Page {
                 }
                 Button {
                     Text {
-                        text: qsTr("Post")
+                        text: captcha === "" ? qsTr("Get captcha") : qsTr("Post")
                         color: Theme.primaryColor
                         anchors {
                             horizontalCenter: parent.horizontalCenter
                             verticalCenter: parent.verticalCenter
                         }
                     }
-                    onClicked: postPost()
+                    onClicked: captcha === "" ? NewPost.getCaptcha(domain) : postPost()
                 }
             }
             Repeater {
