@@ -11,6 +11,9 @@ function getAll(parsedthreads) {
 function getThread (error, data, anchor, action) {
     var posti = []
     if (error === "none") {
+        if (action === "replace") {
+            pageStack.navigateBack(PageStackAction.Immediate)
+        }
         var parsed = JSON.parse(data)
         parsedthreads = parsed["threads"][0]["posts"]
         var firsticon = [{name: "None", num: -1}]
@@ -20,13 +23,7 @@ function getThread (error, data, anchor, action) {
         var enable_icons = parsed.enable_icons
         var enable_names = parsed.enable_names
         var enable_subject = parsed.enable_subject
-        if (action === "push") {
-            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: brd, domain: page.option[0].value, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, anch: anchor} )
-        } else if (action === "replace") {
-            pageStack.pop(PageStackAction.Immediate)
-            console.log("yyyyyyyyyyyyyyyyyyyyyyy")
-            pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: brd, domain: page.option[0].value, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, anch: anchor} )
-        }
+        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: brd, domain: page.option[0].value, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, anch: anchor} )
         page.somethingloading = false
     } else {
         page.notification = "Error: " + error

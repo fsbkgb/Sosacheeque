@@ -274,6 +274,7 @@ Page {
                 TextField {
                     width: parent.width
                     text: modelData
+                    validator: RegExpValidator {regExp: /[0-9, a-z, A-Z]+/}
                     readOnly: true
                     onClicked: {
                         fileList.remove(index)
@@ -315,7 +316,7 @@ Page {
                 if (thread === "0" ) {
                     notification= qsTr("Opening thread")
                     page.somethingloading = true
-                    py.call('getdata.dyorg', ["threads_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + x.Target + ".json#" + x.Target], function() {})
+                    py.call('getdata.dyorg', ["new_thread_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + x.Target + ".json#" + x.Target], function() {})
                 } else {
                     clearfields()
                     var threadPage = pageStack.find(function(page) { return page.state == "thread"; })
@@ -351,7 +352,7 @@ Page {
                 yaca.source = "https://2ch." + domain + "/api/captcha/2chaptcha/image/" + captcha
                 captcha_value.text = ""
             });
-            setHandler('threads_page', function (type, error, data, anchor) {
+            setHandler('new_thread_page', function (type, error, data, anchor) {
                 Threads.getThread(error, data, anchor, "replace")
             });
         }
