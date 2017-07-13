@@ -253,7 +253,7 @@ Page {
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
-                                        if(modelData.path.match(/\.([a-z]+)/)[1] === "webm"){
+                                        if(modelData.path.match(/\.([a-z0-9]+)/)[1] === "webm" || "mp4"){
                                             pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + modelData.path} )
                                         }
                                         else{
@@ -277,7 +277,7 @@ Page {
                             Label {
                                 id: file
                                 font.pixelSize :Theme.fontSizeTiny
-                                text: modelData.path.match(/\.([a-z]+)/)[1] + ", " + modelData.size + "kB"
+                                text: modelData.path.match(/\.([a-z0-9]+)/)[1] + ", " + modelData.size + "kB"
                                 color: Theme.secondaryColor
                                 width: Math.floor((page.width - 5 * filesize.spacing) / 4)
                                 horizontalAlignment: TextInput.AlignHCenter
