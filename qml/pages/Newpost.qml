@@ -1,6 +1,9 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 import "../js/newpost.js" as NewPost
+import "../js/threads.js" as Threads
+import "../js/settings.js" as Settings
+import "../js/db.js" as DB
 import io.thp.pyotherside 1.3
 
 Page {
@@ -11,10 +14,15 @@ Page {
     property string captcha: ""
     property string domain: ""
     property string comment: ""
+    property string notification: ""
     property var icons: []
+    property var parsedthreads: []
+    property var option
     property int enable_icons: 0
     property int enable_names: 0
     property int enable_subject: 0
+    property bool somethingloading: false
+    property bool someerror: false
 
     SilicaFlickable {
         anchors.fill: parent
@@ -276,6 +284,12 @@ Page {
         VerticalScrollDecorator {}
     }
 
+    Notifications {}
+
+    Component.onCompleted: {
+        Settings.load()
+    }
+
     function clearfields() {
         status.visible = false
         //NewPost.getCaptcha(domain)
@@ -299,7 +313,9 @@ Page {
             if (x.Error === null){
                 status.text = x.Status
                 if (thread === "0" ) {
-                    pageStack.replace(Qt.resolvedUrl("Posts.qml"), {thread: x.Target, board: board, domain: domain, anchor: 0, fromfav: false, state: "thread"} )
+                    notification= qsTr("Opening thread")
+                    page.somethingloading = true
+                    py.call('getdata.dyorg', ["threads_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + x.Target + ".json#" + x.Target], function() {})
                 } else {
                     clearfields()
                     var threadPage = pageStack.find(function(page) { return page.state == "thread"; })
@@ -334,6 +350,9 @@ Page {
                 capchaindicator.visible = false
                 yaca.source = "https://2ch." + domain + "/api/captcha/2chaptcha/image/" + captcha
                 captcha_value.text = ""
+            });
+            setHandler('threads_page', function (type, error, data, anchor) {
+                Threads.getThread(error, data, anchor, "replace")
             });
         }
         onError: {

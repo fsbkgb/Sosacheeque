@@ -99,6 +99,10 @@
         <source>Get captcha</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Opening thread</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Paginator</name>
