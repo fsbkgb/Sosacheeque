@@ -274,7 +274,7 @@ Page {
                 TextField {
                     width: parent.width
                     text: modelData
-                    validator: RegExpValidator {regExp: /[0-9, a-z, A-Z]+/}
+                    validator: RegExpValidator {regExp: /[\x00-\x7F]+/}
                     readOnly: true
                     onClicked: {
                         fileList.remove(index)
