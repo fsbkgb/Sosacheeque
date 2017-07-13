@@ -214,6 +214,10 @@
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Tap to load media</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>posts</name>

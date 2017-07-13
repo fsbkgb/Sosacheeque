@@ -6,6 +6,7 @@ Page{
     id: page
     allowedOrientations : Orientation.All
     property string uri: ""
+    property string filesize: ""
 
     Loader {
         id: busyIndicatorLoader
@@ -29,11 +30,11 @@ Page{
                     size: BusyIndicatorSize.Large
                     running: true
                 }
-                /*Label {
+                Label {
                     anchors.centerIn: parent
                     font.pixelSize: Theme.fontSizeSmall
-                    text: Math.round(mediaPlayer.progress * 100) + "%"
-                }*/
+                    text: Math.round(mediaPlayer.bufferProgress * 100) + "%"
+                }
             }
         }
         Component { id: failedLoading; Label { text: qsTr("Error") } }
@@ -51,17 +52,42 @@ Page{
                 onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: uri})
             }
         }
-        MediaPlayer{
-            id: mediaPlayer
-            autoLoad: true
-            autoPlay: true
-            source: uri
-        }
-        VideoOutput {
-            id: videoOutput
-            anchors.centerIn: parent
-            source: mediaPlayer
+        Item {
             anchors.fill: parent
+            MediaPlayer{
+                id: mediaPlayer
+                autoLoad: false
+                source: uri
+                loops: MediaPlayer.Infinite
+            }
+            VideoOutput {
+                id: videoOutput
+                anchors.centerIn: parent
+                source: mediaPlayer
+                anchors.fill: parent
+            }
+            MouseArea {
+                id: playArea
+                anchors.fill: parent
+                onClicked: {
+                    if (mediaPlayer.playbackState === MediaPlayer.PlayingState) {
+                        mediaPlayer.pause();
+                    } else if (mediaPlayer.playbackState === MediaPlayer.PausedState) {
+                        mediaPlayer.play();
+                    } else if (mediaPlayer.playbackState === MediaPlayer.StoppedState) {
+                        mediaPlayer.play();
+                    }
+                    info.visible = false
+                }
+                Text {
+                    id: info
+                    anchors.fill: parent
+                    text: qsTr("Tap to load media") + " (" + filesize + " kB)"
+                    color: Theme.highlightColor
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                }
+            }
         }
     }
 }

@@ -253,10 +253,9 @@ Page {
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
-                                        if(modelData.path.match(/\.([a-z0-9]+)/)[1] === "webm" || "mp4"){
-                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + modelData.path} )
-                                        }
-                                        else{
+                                        if (modelData.path.match(/webm|mp4/)) {
+                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + modelData.path, filesize: modelData.size} )
+                                        } else {
                                             pageStack.push(Qt.resolvedUrl("Imageview.qml"), {uri: "https://2ch." + domain + modelData.path} )
                                         }
                                     }
