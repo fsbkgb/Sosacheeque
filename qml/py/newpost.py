@@ -6,7 +6,7 @@ import requests, pyotherside
 def sendpost (domain, board, thread, comment, captcha, captcha_value, email, name, subject, icon, image1, image2, image3, image4):
     url = 'https://2ch.' + domain + '/makaba/posting.fcgi?json=1'
     #url ='http://posttestserver.com/post.php'
-    post = [('task', "post"), ('board', board), ('thread', thread), ('comment', comment), ('captcha_type', "2chaptcha"), ('2chaptcha_value', captcha_value), ('2chaptcha_id', captcha), ('email', email), ('name', name), ('subject', subject), ('icon', icon)]
+    post = [('task', "post"), ('board', board), ('thread', thread), ('comment', comment), ('captcha_type', "recaptcha"), ('2chaptcha_value', captcha_value), ('g-recaptcha-response', captcha), ('email', email), ('name', name), ('subject', subject), ('icon', icon)]
     multiple_files = {}
     if image1 != '':
         file1 = open(image1, 'rb')

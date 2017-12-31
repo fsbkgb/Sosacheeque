@@ -220,6 +220,13 @@
     </message>
 </context>
 <context>
+    <name>Webview</name>
+    <message>
+        <source>IM NOT A ROBOT</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>posts</name>
     <message>
         <source>Opening thread</source>

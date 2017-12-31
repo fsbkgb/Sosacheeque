@@ -9,6 +9,7 @@ import io.thp.pyotherside 1.3
 Page {
     id: page
     allowedOrientations : Orientation.All
+    property string state: "postform"
     property string thread: ""
     property string board: ""
     property string captcha: ""
