@@ -7,9 +7,20 @@ Page {
     allowedOrientations : Orientation.All
     property string uri: ""
 
+    PageHeader {
+        id: head
+        height: Theme.itemSizeLarge
+        title: qsTr("Captcha")
+    }
+
     SilicaWebView {
         id: webView
-        anchors.fill: parent
+        anchors {
+                     top: head.bottom
+                     left: parent.left
+                     right: parent.right
+                     bottom: parent.bottom
+                 }
     }
 
 

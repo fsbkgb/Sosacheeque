@@ -225,6 +225,10 @@
         <source>IM NOT A ROBOT</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Captcha</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>posts</name>

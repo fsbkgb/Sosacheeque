@@ -10,7 +10,8 @@ CoverBackground {
         }
         fillMode: Image.PreserveAspectFit
         smooth: true
-        source: "../images/abu.png"
+        source: "../images/dvlogo.png"
+        opacity: 0.05
     }
     CoverActionList {
         id: coverAction
