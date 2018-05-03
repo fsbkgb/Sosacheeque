@@ -88,7 +88,7 @@ Page {
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("New thread")
-                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: "0", comment: "", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } )
+                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, captcha_type: captcha_type, board: board, thread: "0", comment: "", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } )
             }
             MenuItem {
                 visible: page.state === "thread" ? true : false
