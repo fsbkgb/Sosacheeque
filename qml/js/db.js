@@ -14,6 +14,9 @@ function openDB() {
                         tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["domain", "hk"]);
                         tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["userboards", "show"]);
                     };
+                    if (table2.rows.length === 2) {
+                        tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["captcha", "2ch"]);
+                    };
                     try {
                         tx.executeSql('SELECT * FROM favs');
                     } catch(e) {
@@ -21,7 +24,7 @@ function openDB() {
                             console.log("such favs much tabel")
                             tx.executeSql('CREATE TABLE IF NOT EXISTS favs (board TEXT, thread TEXT, postcount INTEGER, subj TEXT, PRIMARY KEY (board, thread))');
                             tx.executeSql("SELECT * FROM favs");
-                            tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["mobi", "1153419", 1, "Мобильных девайсов на GNU/Linux тхреад"]);
+                            tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["mobi", "1336031", 1, "Мобильных девайсов на GNU/Linux тхреад"]);
                             tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["b", "0", 1, "Бред"]);
                         };
                     };

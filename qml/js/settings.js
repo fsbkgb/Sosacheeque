@@ -2,7 +2,7 @@ function load() {
     var setts = []
     var db = DB.getDatabase();
     db.transaction(function(tx) {
-        var rs = tx.executeSql('SELECT * FROM settings ORDER BY key ASC');
+        var rs = tx.executeSql('SELECT * FROM settings ORDER BY key DESC');
         for(var i = 0; i < rs.rows.length; i++) {
             setts.push({"key" : rs.rows.item(i).key, "value" : rs.rows.item(i).value})
         }

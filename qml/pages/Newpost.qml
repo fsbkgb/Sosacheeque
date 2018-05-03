@@ -13,6 +13,7 @@ Page {
     property string thread: ""
     property string board: ""
     property string captcha: ""
+    property string captcha_type: ""
     property string domain: ""
     property string comment: ""
     property string notification: ""
@@ -198,7 +199,7 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: NewPost.getCaptcha(domain)
+                    onClicked: NewPost.getCaptcha(domain, captcha_type)
                 }
 
                 BusyIndicator {
@@ -267,7 +268,7 @@ Page {
                             verticalCenter: parent.verticalCenter
                         }
                     }
-                    onClicked: captcha === "" ? NewPost.getCaptcha(domain) : postPost()
+                    onClicked: captcha === "" ? NewPost.getCaptcha(domain, captcha_type) : postPost()
                 }
             }
             Repeater {
@@ -307,7 +308,7 @@ Page {
         var file_2 = (fileList.get(1) ? fileList.get(1).filepath : "")
         var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
         var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
-        py.call('newpost.sendpost', [domain, board, thread, cmnt.text, captcha, captcha_value.text, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
+        py.call('newpost.sendpost', [domain, captcha_type, board, thread, cmnt.text, captcha, captcha_value.text, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
             var x = JSON.parse(response)
             indicator.visible = false
             status.visible = true

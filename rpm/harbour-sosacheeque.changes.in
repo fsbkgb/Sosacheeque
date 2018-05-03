@@ -8,6 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* 3-5-2018 0.11-11
+- выбор типа капчи
+- увеличены таймауты
+
 * 8-1-2018 0.11-10
 - заголовок на странице с капчей
 - лого

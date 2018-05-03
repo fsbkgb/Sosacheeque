@@ -12,7 +12,7 @@ def dyorg (listener, type, url):
     else:
         anchor = 0
     try:
-        resp = session.get(url, timeout = 25.0)
+        resp = session.get(url, timeout = 40.0)
         if resp.status_code == requests.codes.ok:
             pyotherside.send(listener, type, "none", resp.text, anchor)
         else:

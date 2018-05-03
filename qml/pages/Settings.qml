@@ -31,10 +31,26 @@ Page {
                 }
                 onCurrentItemChanged: {
                     Settings.save("domain", currentItem.text)
-                    domain.value = page.option[0].value
+                    domain.value = page.option[1].value
                     updatepages ()
                 }
             }
+            ComboBox {
+                id: captcha
+                width: page.width
+                label: qsTr("Captcha")
+                currentIndex: -1
+                menu: ContextMenu {
+                    MenuItem { text: "2ch" }
+                    MenuItem { text: "google" }
+                }
+                onCurrentItemChanged: {
+                    Settings.save("captcha", currentItem.text)
+                    captcha.value = page.option[2].value
+                    updatepages ()
+                }
+            }
+
             TextSwitch {
                 id: userboards
                 checked: false
@@ -53,10 +69,11 @@ Page {
     }
     Component.onCompleted: {
         Settings.load()
-        domain.value = page.option[0].value
-        if (page.option[1].value === "show") {
+        if (page.option[0].value === "show") {
             userboards.checked = true
         }
+        domain.value = page.option[1].value
+        captcha.value = page.option[2].value
     }
 
     function updatepages () {

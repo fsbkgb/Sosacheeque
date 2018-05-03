@@ -14,7 +14,7 @@ Page {
     objectName: "favsPage"
     property string board: ""
     property string notification: ""
-    property string domain: page.option[0].value
+    property string domain: page.option[1].value
     property int pc
     property var favs
     property var option

@@ -17,6 +17,7 @@ Page {
     property string thread: ""
     property string url: ""
     property string domain: ""
+    property string captcha_type: page.option[2].value
     property string state: ""
     property string comment: ""
     property string notification: ""
@@ -468,7 +469,7 @@ Page {
     }
     onStatusChanged: {
         if (status === PageStatus.Active && comment === "" && (state === "thread" || state === "replies")  ) {
-            pageStack.pushAttached(Qt.resolvedUrl("Newpost.qml"), {domain: domain, board: board, thread: thread, comment: comment, icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } )
+            pageStack.pushAttached(Qt.resolvedUrl("Newpost.qml"), {domain: domain, captcha_type: captcha_type,  board: board, thread: thread, comment: comment, icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } )
         }
     }
 

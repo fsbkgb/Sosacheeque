@@ -14,7 +14,7 @@ Page {
     property bool somethingloading: false
     property bool someerror: false
     property var option
-    property string domain: page.option[0].value
+    property string domain: page.option[1].value
     property string notification: ""
     property string error: ""
 
@@ -107,7 +107,7 @@ Page {
     function loadlist () {
         page.loading = true
         Settings.load()
-        py.call('getdata.dyorg', ["list_page", "boards", "https://2ch." + page.option[0].value + "/makaba/mobile.fcgi?task=get_boards"], function() {})
+        py.call('getdata.dyorg', ["list_page", "boards", "https://2ch." + page.option[1].value + "/makaba/mobile.fcgi?task=get_boards"], function() {})
     }
 
     Python {

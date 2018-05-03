@@ -199,6 +199,10 @@
         <source>Show user boards</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Captcha</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Webmview</name>
