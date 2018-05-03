@@ -194,8 +194,8 @@ Page {
             Image {
                 id: yaca
                 visible: false
-                width: 275
-                height: 100
+                height: 164
+                fillMode: Image.PreserveAspectFit
                 anchors.horizontalCenter: parent.horizontalCenter
                 MouseArea {
                     anchors.fill: parent
