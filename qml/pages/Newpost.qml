@@ -330,7 +330,7 @@ Page {
             } else {
                 status.text = x.Reason
                 if (x.Error === -5) {
-                    NewPost.getCaptcha(domain)
+                    NewPost.getCaptcha(domain, captcha_type)
                 }
             }
         })
