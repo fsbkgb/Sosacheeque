@@ -4,7 +4,7 @@ import Sailfish.Silica 1.0
 Page {
     id: imagePage
     allowedOrientations : Orientation.All
-    property alias uri: imageItem.source
+    property string uri: ""
 
     SilicaFlickable {
         id: picFlick
@@ -29,7 +29,7 @@ Page {
             id: busyIndicatorLoader
             anchors.centerIn: parent
             sourceComponent: {
-                switch (imageItem.status) {
+                switch (staticImage.status) {
                 case Image.Loading: return busyIndicatorComponent
                 case Image.Error: return failedLoading
                 default: return undefined
@@ -51,7 +51,7 @@ Page {
                     Label {
                         anchors.centerIn: parent
                         font.pixelSize: Theme.fontSizeSmall
-                        text: Math.round(imageItem.progress * 100) + "%"
+                        text: Math.round(staticImage.progress * 100) + "%"
                     }
                 }
             }
@@ -88,8 +88,21 @@ Page {
             smooth: !(picFlick.movingVertically || picFlick.movingHorizontally)
             anchors.centerIn: parent
 
+            Image {
+                visible: !(uri.match(/gif/))
+                id: staticImage
+                source: uri
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+                anchors.fill: parent
+                sourceSize.width: 4000
+                sourceSize.height: 4000
+            }
+
             AnimatedImage {
-                id: imageItem
+                visible: uri.match(/gif/)
+                id: animootedImage
+                source: uri
                 fillMode: Image.PreserveAspectFit
                 smooth: true
                 anchors.fill: parent
