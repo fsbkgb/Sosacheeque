@@ -8,7 +8,10 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
-* 7-1-2018 0.12-1
+* 7-1-2019 0.12-2
+- незначительные фиксы
+
+* 7-1-2019 0.12-1
 - костыль от черных картинок
 - кэширование
 

@@ -62,15 +62,23 @@ Page {
             }
             ListItem {
                 Row {
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
                     Label {
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        verticalAlignment: Text.AlignVCenter
                         leftPadding: Theme.paddingLarge
                         text: qsTr("Cache size")
                     }
                     Label {
                         id: cachsize
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        verticalAlignment: Text.AlignVCenter
                         leftPadding: Theme.paddingMedium
                         color: Theme.highlightColor
-                        text: "123"
+                        text: ""
                     }
                 }
                 menu: ContextMenu {
