@@ -53,10 +53,6 @@
 <context>
     <name>Imageview</name>
     <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
@@ -181,6 +177,10 @@
 <context>
     <name>SaveFile</name>
     <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
@@ -203,13 +203,17 @@
         <source>Captcha</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cache size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Webmview</name>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Open in browser</source>
         <translation type="unfinished"></translation>

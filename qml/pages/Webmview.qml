@@ -1,55 +1,44 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 import QtMultimedia 5.0
+import io.thp.pyotherside 1.3
 
 Page{
     id: page
     allowedOrientations : Orientation.All
-    property string uri: ""
+    property string domain: ""
+    property string path: ""
+    property string file: ""
     property string filesize: ""
+    property string progress: "0 %"
 
-    Loader {
-        id: busyIndicatorLoader
-        anchors.centerIn: parent
-        sourceComponent: {
-            switch (mediaPlayer.status) {
-            case MediaPlayer.Loading: return busyIndicatorComponent
-            case MediaPlayer.InvalidMedia: return failedLoading
-            default: return undefined
-            }
-        }
-
-        Component {
-            id: busyIndicatorComponent
-
-            Item {
-                width: busyIndicator.width
-                height: busyIndicator.height
-                BusyIndicator {
-                    id: busyIndicator
-                    size: BusyIndicatorSize.Large
-                    running: true
-                }
-                Label {
-                    anchors.centerIn: parent
-                    font.pixelSize: Theme.fontSizeSmall
-                    text: Math.round(mediaPlayer.bufferProgress * 100) + "%"
-                }
-            }
-        }
-        Component { id: failedLoading; Label { text: qsTr("Error") } }
-    }
     SilicaFlickable {
         anchors.fill: parent
 
         PullDownMenu {
             MenuItem {
                 text: qsTr("Open in browser")
-                onClicked: pageStack.push(Qt.openUrlExternally(uri))
+                onClicked: pageStack.push(Qt.openUrlExternally("https://2ch." + domain + path))
             }
             MenuItem {
                 text: qsTr("Save as")
-                onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: uri})
+                onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: file})
+            }
+        }
+        Item {
+            anchors.fill: parent
+
+            BusyIndicator {
+                visible: false
+                id: busyIndicator
+                size: BusyIndicatorSize.Large
+                running: true
+                anchors.centerIn: parent
+                Label {
+                    anchors.centerIn: parent
+                    font.pixelSize: Theme.fontSizeSmall
+                    text: progress
+                }
             }
         }
         Item {
@@ -57,7 +46,7 @@ Page{
             MediaPlayer{
                 id: mediaPlayer
                 autoLoad: false
-                source: uri
+                source: file
                 loops: MediaPlayer.Infinite
             }
             VideoOutput {
@@ -75,7 +64,7 @@ Page{
                     } else if (mediaPlayer.playbackState === MediaPlayer.PausedState) {
                         mediaPlayer.play();
                     } else if (mediaPlayer.playbackState === MediaPlayer.StoppedState) {
-                        mediaPlayer.play();
+                        cache (domain, path);
                     }
                     info.visible = false
                 }
@@ -89,5 +78,37 @@ Page{
                 }
             }
         }
+    }
+
+    Python {
+        id: py
+
+        Component.onCompleted: {
+            // Add the Python library directory to the import path
+            var pythonpath = Qt.resolvedUrl('../py/').substr('file://'.length);
+            //var pythonpath = Qt.resolvedUrl('.').substr('file://'.length);
+            addImportPath(pythonpath);
+            var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
+            addImportPath(requestspath);
+            importModule('savefile', function() {});
+        }
+        onError: {
+            // when an exception is raised, this error handler will be called
+            console.log('python error: ' + traceback);
+        }
+        onReceived: {
+            // asychronous messages from Python arrive here
+            // in Python, this can be accomplished via pyotherside.send()
+            page.progress = data + " %"
+        }
+    }
+
+    function cache(domain, path) {
+        busyIndicator.visible = true
+        py.call('savefile.cache', [domain, path], function(response) {
+            page.file = response
+            busyIndicator.visible = false
+            mediaPlayer.play()
+        });
     }
 }

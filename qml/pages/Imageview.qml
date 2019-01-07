@@ -1,10 +1,14 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
+import io.thp.pyotherside 1.3
 
 Page {
     id: imagePage
     allowedOrientations : Orientation.All
-    property string uri: ""
+    property string domain: ""
+    property string path: ""
+    property string file: ""
+    property string progress: "0 %"
 
     SilicaFlickable {
         id: picFlick
@@ -22,41 +26,26 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: qsTr("Save as")
-                onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: uri})
+                onClicked: pageStack.push(Qt.resolvedUrl("SaveFile.qml"), {uri: file})
             }
         }
-        Loader {
-            id: busyIndicatorLoader
-            anchors.centerIn: parent
-            sourceComponent: {
-                switch (staticImage.status) {
-                case Image.Loading: return busyIndicatorComponent
-                case Image.Error: return failedLoading
-                default: return undefined
+
+        Item {
+            anchors.fill: parent
+
+            BusyIndicator {
+                id: busyIndicator
+                size: BusyIndicatorSize.Large
+                running: true
+                anchors.centerIn: parent
+                Label {
+                    anchors.centerIn: parent
+                    font.pixelSize: Theme.fontSizeSmall
+                    text: progress
                 }
             }
-
-            Component {
-                id: busyIndicatorComponent
-
-                Item {
-                    width: busyIndicator.width
-                    height: busyIndicator.height
-
-                    BusyIndicator {
-                        id: busyIndicator
-                        size: BusyIndicatorSize.Large
-                        running: true
-                    }
-                    Label {
-                        anchors.centerIn: parent
-                        font.pixelSize: Theme.fontSizeSmall
-                        text: Math.round(staticImage.progress * 100) + "%"
-                    }
-                }
-            }
-            Component { id: failedLoading; Label { text: qsTr("Error") } }
         }
+
         PinchArea {
             width: Math.max(picFlick.contentWidth, picFlick.width)
             height: Math.max(picFlick.contentHeight, picFlick.height)
@@ -89,9 +78,9 @@ Page {
             anchors.centerIn: parent
 
             Image {
-                visible: !(uri.match(/gif/))
+                visible: false
                 id: staticImage
-                source: uri
+                source: file
                 fillMode: Image.PreserveAspectFit
                 smooth: true
                 anchors.fill: parent
@@ -100,13 +89,45 @@ Page {
             }
 
             AnimatedImage {
-                visible: uri.match(/gif/)
+                visible: false
                 id: animootedImage
-                source: uri
+                source: file
                 fillMode: Image.PreserveAspectFit
                 smooth: true
                 anchors.fill: parent
             }
         }
+        Component.onCompleted: cache (domain, path)
+    }
+
+    Python {
+        id: py
+
+        Component.onCompleted: {
+            // Add the Python library directory to the import path
+            var pythonpath = Qt.resolvedUrl('../py/').substr('file://'.length);
+            //var pythonpath = Qt.resolvedUrl('.').substr('file://'.length);
+            addImportPath(pythonpath);
+            var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
+            addImportPath(requestspath);
+            importModule('savefile', function() {});
+        }
+        onError: {
+            // when an exception is raised, this error handler will be called
+            console.log('python error: ' + traceback);
+        }
+        onReceived: {
+            // asychronous messages from Python arrive here
+            // in Python, this can be accomplished via pyotherside.send()
+            imagePage.progress = data + " %"
+        }
+    }
+
+    function cache(domain, path) {
+        py.call('savefile.cache', [domain, path], function(response) {
+            imagePage.file = response
+            if (response.match(/gif/)) {animootedImage.visible = true} else {staticImage.visible = true}
+            busyIndicator.visible = false
+        });
     }
 }

@@ -1,43 +1,87 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
 import io.thp.pyotherside 1.3
+import Qt.labs.folderlistmodel 2.1
 
 Dialog {
-    id: page
-    property string uri: ""
-    property var dirs: []
-    property string dir: "."
+    id: cac_fileSelect
 
-    onAccepted: py.call('savefile.save', [dir, uri.match(/\d+\.[a-z]+/)[0], uri] );
+    property string setRootFolder: '/home/nemo'
+    property string setFolder: '/home/nemo'
+    property string uri: ""
+    property bool setShowHidden: false
+    property string selectedFileName: ""
+
+    FolderListModel {
+        id: folderModel
+        folder: setFolder
+        rootFolder: setRootFolder
+        showHidden: setShowHidden
+        showFiles: false
+        showDotAndDotDot: true
+        showOnlyReadable: true
+    }
 
     SilicaListView {
-        id: saveform
-        header: PageHeader {
-            title: qsTr("Save")
+        id: listView
+        model: folderModel
+        anchors.fill: parent
+
+        header: DialogHeader {
+            acceptText: qsTr("Save")
+            cancelText: qsTr("Cancel")
         }
-        model: dirs
-        anchors{
-            fill: parent
-        }
-        delegate: BackgroundItem {
-            id: directory
-            width: ListView.view.width
-            height: Theme.itemSizeSmall
+
+        delegate: ListItem {
+            id: item
+
+            Image {
+                id: itemIcon
+                source: folderModel.isFolder(index) ? "image://theme/icon-m-folder" : "image://theme/icon-m-other"
+                height: parent.height -Theme.paddingMedium
+                width: height
+                anchors.left: parent.left
+            }
+
             Label {
-                text: modelData
-                color: directory.highlighted ? Theme.highlightColor : Theme.primaryColor
-                anchors{
-                    left: parent.left
-                    leftMargin: 10
+                id: itemName
+                text: model.fileName
+                color: Theme.primaryColor
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: itemIcon.right
+                    right: parent.right
+                    margins: Theme.paddingMedium
                 }
             }
+
             onClicked: {
-                dir = dir + "/" + modelData
-                cd (dir)
+                if (folderModel.isFolder(index)) {
+                    if (fileName == "..") {
+                        folderModel.folder = folderModel.parentFolder
+                    } else if (fileName != ".") {
+                        folderModel.folder += "/" + fileName
+                    }
+                } else {
+                    selectedFileName = folderModel.folder + "/" + model.fileName
+                    console.log(selectedFileName)
+                    cac_fileSelect.accept();
+                }
             }
         }
-        Component.onCompleted: cd (dir)
+
+        VerticalScrollDecorator {}
     }
+
+    onDone: {
+        if (selectedFileName == "") {
+            selectedFileName = folderModel.folder;
+        }
+    }
+
+    onAccepted: py.call('savefile.save', [selectedFileName.slice(7), uri.match(/\d+\.[a-z]+/)[0], uri] );
+
     Python {
         id: py
 
@@ -59,11 +103,5 @@ Dialog {
             // in Python, this can be accomplished via pyotherside.send()
             console.log('got message from python: ' + data);
         }
-    }
-
-    function cd(dir) {
-        py.call('savefile.getdirs', [dir], function(response) {
-            page.dirs = response
-        });
     }
 }

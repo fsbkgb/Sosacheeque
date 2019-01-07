@@ -13,8 +13,8 @@ Name:       harbour-sosacheeque
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    My SailfishOS Sosach Reader
-Version:    0.11
-Release:    13
+Version:    0.12
+Release:    1
 Group:      Applications/Internet
 License:    WTFPL
 URL:        https://github.com/fsbkgb/Sosacheeque

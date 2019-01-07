@@ -1,5 +1,6 @@
 import QtQuick 2.1
 import Sailfish.Silica 1.0
+import io.thp.pyotherside 1.3
 import "../js/db.js" as DB
 import "../js/settings.js" as Settings
 
@@ -59,6 +60,26 @@ Page {
                     Settings.save("userboards", checked ? "show" : "hide" );
                 }
             }
+            ListItem {
+                Row {
+                    Label {
+                        leftPadding: Theme.paddingLarge
+                        text: qsTr("Cache size")
+                    }
+                    Label {
+                        id: cachsize
+                        leftPadding: Theme.paddingMedium
+                        color: Theme.highlightColor
+                        text: "123"
+                    }
+                }
+                menu: ContextMenu {
+                    MenuItem {
+                        text: qsTr("Clear")
+                        onClicked: py.call('savefile.clearcache', [], function() {calccache()})
+                    }
+                }
+            }
             /*Button {
                 text: qsTr("Get cookies")
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -74,10 +95,40 @@ Page {
         }
         domain.value = page.option[1].value
         captcha.value = page.option[2].value
+        calccache()
     }
 
     function updatepages () {
-        var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
+        var favsPage = pageStack.find(function(page) { return page.objectName === "favsPage"; })
         favsPage.loadfavs()
+    }
+
+    Python {
+        id: py
+
+        Component.onCompleted: {
+            // Add the Python library directory to the import path
+            var pythonpath = Qt.resolvedUrl('../py/').substr('file://'.length);
+            //var pythonpath = Qt.resolvedUrl('.').substr('file://'.length);
+            addImportPath(pythonpath);
+            var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
+            addImportPath(requestspath);
+            importModule('savefile', function() {});
+        }
+        onError: {
+            // when an exception is raised, this error handler will be called
+            console.log('python error: ' + traceback);
+        }
+        onReceived: {
+            // asychronous messages from Python arrive here
+            // in Python, this can be accomplished via pyotherside.send()
+            console.log('got message from python: ' + data);
+        }
+    }
+
+    function calccache() {
+        py.call('savefile.calccache', [], function(response) {
+            cachsize.text = response
+        });
     }
 }

@@ -255,9 +255,9 @@ Page {
                                     anchors.fill: parent
                                     onClicked: {
                                         if (modelData.path.match(/webm|mp4/)) {
-                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {uri: "https://2ch." + domain + modelData.path, filesize: modelData.size} )
+                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {domain: domain, path: modelData.path, filesize: modelData.size} )
                                         } else {
-                                            pageStack.push(Qt.resolvedUrl("Imageview.qml"), {uri: "https://2ch." + domain + modelData.path} )
+                                            pageStack.push(Qt.resolvedUrl("Imageview.qml"), {domain: domain, path: modelData.path} )
                                         }
                                     }
                                 }
