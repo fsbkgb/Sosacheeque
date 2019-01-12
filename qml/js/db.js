@@ -17,6 +17,9 @@ function openDB() {
                     if (table2.rows.length === 2) {
                         tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["captcha", "2ch"]);
                     };
+                    if (table2.rows.length === 3) {
+                        tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["usercode", ""]);
+                    };
                     try {
                         tx.executeSql('SELECT * FROM favs');
                     } catch(e) {

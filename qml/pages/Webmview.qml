@@ -11,6 +11,7 @@ Page{
     property string file: ""
     property string filesize: ""
     property string progress: "0 %"
+    property string cooka: ""
 
     SilicaFlickable {
         anchors.fill: parent
@@ -64,7 +65,7 @@ Page{
                     } else if (mediaPlayer.playbackState === MediaPlayer.PausedState) {
                         mediaPlayer.play();
                     } else if (mediaPlayer.playbackState === MediaPlayer.StoppedState) {
-                        cache (domain, path);
+                        cache (domain, path, cooka);
                     }
                     info.visible = false
                 }
@@ -103,9 +104,9 @@ Page{
         }
     }
 
-    function cache(domain, path) {
+    function cache(domain, path, cooka) {
         busyIndicator.visible = true
-        py.call('savefile.cache', [domain, path], function(response) {
+        py.call('savefile.cache', [domain, path, cooka], function(response) {
             page.file = response
             busyIndicator.visible = false
             mediaPlayer.play()

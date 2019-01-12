@@ -6,14 +6,15 @@ import os, shutil, requests, re, pyotherside
 def save (dst, filename, src):
     copyfile(src, dst + "/" + filename)
 
-def cache (domain, path):
+def cache (domain, path, usercode):
     cachedir = "/home/nemo/.cache/harbour-sosacheeque/harbour-sosacheeque/.media"
     filedir = re.search(r"(\/[0-9,a-z]+){3}", path).group(0)
     filepath = cachedir + path
     if not os.path.isfile(filepath):
         if not os.path.exists(cachedir + filedir):
             os.makedirs(cachedir + filedir)
-        response = requests.get("https://2ch." + domain + path, stream=True)
+        cookies = {'ageallow': '1', 'usercode_auth': usercode}
+        response = requests.get("https://2ch." + domain + path, stream=True, cookies=cookies)
         if response.status_code == 200:
             dl = 0
             total_length = int(response.headers.get('content-length'))

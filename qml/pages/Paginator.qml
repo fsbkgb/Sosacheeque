@@ -10,6 +10,7 @@ Page {
     property string url: ""
     property string domain: ""
     property string notification: ""
+    property string cooka: ""
     property int pages
     property bool somethingloading: false
     property bool someerror: false
@@ -34,9 +35,9 @@ Page {
                    notification = qsTr("Opening board")
                    somethingloading = true
                    if (index == 0)
-                   {py.call('getdata.dyorg', ["pager_page", "board", "https://2ch." + domain + "/" + board + "/index.json"], function() {})}
+                   {py.call('getdata.dyorg', ["pager_page", "board", "https://2ch." + domain + "/" + board + "/index.json", cooka], function() {})}
                    else
-                   {py.call('getdata.dyorg', ["pager_page", "board", "https://2ch." + domain + "/" + board + "/" + index + ".json"], function() {})}
+                   {py.call('getdata.dyorg', ["pager_page", "board", "https://2ch." + domain + "/" + board + "/" + index + ".json", cooka], function() {})}
                }
             }
         }

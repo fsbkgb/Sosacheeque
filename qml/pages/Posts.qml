@@ -17,7 +17,8 @@ Page {
     property string thread: ""
     property string url: ""
     property string domain: ""
-    property string captcha_type: page.option[2].value
+    property string captcha_type: page.option[3].value
+    property string cooka: page.option[0].value !== null ? page.option[0].value : ""
     property string state: ""
     property string comment: ""
     property string notification: ""
@@ -74,7 +75,7 @@ Page {
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("Choose page")
-                onClicked: pageStack.replace(Qt.resolvedUrl("Paginator.qml"), {board: board, pages: pages, domain: domain} )
+                onClicked: pageStack.replace(Qt.resolvedUrl("Paginator.qml"), {board: board, pages: pages, domain: domain, cooka: cooka} )
             }
             MenuItem {
                 visible: page.state === "board" ? true : false
@@ -82,13 +83,13 @@ Page {
                 onClicked: {
                     notification = qsTr("Opening board")
                     somethingloading = true
-                    py.call('getdata.dyorg', ["threads_page", "board", "https://2ch." + domain + "/" + board + "/" + currentpage + ".json"], function() {})
+                    py.call('getdata.dyorg', ["threads_page", "board", "https://2ch." + domain + "/" + board + "/" + currentpage + ".json", cooka], function() {})
                 }
             }
             MenuItem {
                 visible: page.state === "board" ? true : false
                 text: qsTr("New thread")
-                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, captcha_type: captcha_type, board: board, thread: "0", comment: "", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject } )
+                onClicked: pageStack.push(Qt.resolvedUrl("Newpost.qml"), {domain: domain, captcha_type: captcha_type, board: board, thread: "0", comment: "", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, cooka: cooka } )
             }
             MenuItem {
                 visible: page.state === "thread" ? true : false
@@ -114,7 +115,7 @@ Page {
                 onClicked: {
                     notification = qsTr("Opening board")
                     somethingloading = true
-                    py.call('getdata.dyorg', ["threads_page", "board", "https://2ch." + domain + "/" + board + "/" + currentpage + ".json"], function() {})
+                    py.call('getdata.dyorg', ["threads_page", "board", "https://2ch." + domain + "/" + board + "/" + currentpage + ".json", cooka], function() {})
                 }
             }
             MenuItem {
@@ -244,20 +245,21 @@ Page {
 
                                 Image {
                                     id: pic
-                                    source: "https://2ch." + domain + modelData.thumbnail
+                                    source: ""
                                     width: modelData.tn_width > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) : modelData.tn_width
                                     height: modelData.tn_height > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) : modelData.tn_height
                                     fillMode: Image.PreserveAspectFit
                                     smooth: true
                                     anchors.horizontalCenter: parent.horizontalCenter
+                                    Component.onCompleted: py.call('savefile.cache', [domain, modelData.thumbnail, cooka], function(response) {source = response})
                                 }
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
                                         if (modelData.path.match(/webm|mp4/)) {
-                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {domain: domain, path: modelData.path, filesize: modelData.size} )
+                                            pageStack.push(Qt.resolvedUrl("Webmview.qml"), {domain: domain, path: modelData.path, filesize: modelData.size, cooka: cooka} )
                                         } else {
-                                            pageStack.push(Qt.resolvedUrl("Imageview.qml"), {domain: domain, path: modelData.path} )
+                                            pageStack.push(Qt.resolvedUrl("Imageview.qml"), {domain: domain, path: modelData.path, cooka: cooka} )
                                         }
                                     }
                                 }
@@ -333,7 +335,7 @@ Page {
                     if (page.state === "board") {
                         notification= qsTr("Opening thread")
                         page.somethingloading = true
-                        py.call('getdata.dyorg', ["threads_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json#" + modelData.thread_num], function() {})
+                        py.call('getdata.dyorg', ["threads_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread_num + ".json#" + modelData.thread_num, cooka], function() {})
                     }
                 }
                 Image {
@@ -484,6 +486,7 @@ Page {
             var requestspath = Qt.resolvedUrl('../py/requests').substr('file://'.length);
             addImportPath(requestspath);
             importModule('getdata', function() {});
+            importModule('savefile', function() {});
             if (state === "board") {
                 setHandler('threads_page', function (type, error, data, anchor) {
                     if (type === "board") {
@@ -516,7 +519,7 @@ Page {
     function refreshthread () {
         notification= qsTr("Loading new posts")
         page.somethingloading = true
-        py.call('getdata.dyorg', ["thread_page"+numnum, "", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + (listView.count+1)], function() {})
+        py.call('getdata.dyorg', ["thread_page"+numnum, "", "https://2ch." + domain + "/makaba/mobile.fcgi?task=get_thread&board=" + board + "&thread=" + thread + "&post=" + (listView.count+1), cooka], function() {})
     }
 
     function geticons(num, post) {

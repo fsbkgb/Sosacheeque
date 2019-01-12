@@ -6,7 +6,7 @@ function getCaptcha(domain, captcha_type) {
         captcha_value.visible = true
         yaca.source = ""
         capchaindicator.visible = true
-        py.call('getdata.dyorg', ["captcha", "none", url], function() {})
+        py.call('getdata.dyorg', ["captcha", "none", url, ""], function() {})
         captcha_value.text = ""
         captcha_value.focus = true
     } else {

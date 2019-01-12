@@ -14,7 +14,8 @@ Page {
     property bool somethingloading: false
     property bool someerror: false
     property var option
-    property string domain: page.option[1].value
+    property string domain: page.option[2].value
+    property string cooka: page.option[0].value !== null ? page.option[0].value : ""
     property string notification: ""
     property string error: ""
 
@@ -53,7 +54,7 @@ Page {
             EnterKey.onClicked: {
                 notification = qsTr("Opening board")
                 somethingloading = true
-                py.call('getdata.dyorg', ["list_page", "board", "https://2ch." + domain + "/" + text + "/index.json"], function() {})
+                py.call('getdata.dyorg', ["list_page", "board", "https://2ch." + domain + "/" + text + "/index.json", cooka], function() {})
                 parent.focus = true
             }
             EnterKey.iconSource: "image://theme/icon-m-enter-next"
@@ -88,7 +89,7 @@ Page {
                 onClicked: {
                     notification = qsTr("Opening board")
                     somethingloading = true
-                    py.call('getdata.dyorg', ["list_page", "board", "https://2ch." + domain + "/" + modelData.id + "/index.json"], function() {})
+                    py.call('getdata.dyorg', ["list_page", "board", "https://2ch." + domain + "/" + modelData.id + "/index.json", cooka], function() {})
                 }
                 menu: ContextMenu {
                     MenuItem {
@@ -107,7 +108,7 @@ Page {
     function loadlist () {
         page.loading = true
         Settings.load()
-        py.call('getdata.dyorg', ["list_page", "boards", "https://2ch." + page.option[1].value + "/makaba/mobile.fcgi?task=get_boards"], function() {})
+        py.call('getdata.dyorg', ["list_page", "boards", "https://2ch." + page.option[2].value + "/makaba/mobile.fcgi?task=get_boards", cooka], function() {})
     }
 
     Python {

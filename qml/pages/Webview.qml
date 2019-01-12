@@ -10,17 +10,17 @@ Page {
     PageHeader {
         id: head
         height: Theme.itemSizeLarge
-        title: qsTr("Captcha")
+        title: uri.match("captcha") ? qsTr("Captcha") : qsTr("Cookie")
     }
 
     SilicaWebView {
         id: webView
         anchors {
-                     top: head.bottom
-                     left: parent.left
-                     right: parent.right
-                     bottom: parent.bottom
-                 }
+            top: head.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
     }
 
 
@@ -34,9 +34,10 @@ Page {
             anchors.centerIn: parent
             height: parent.height
             width: parent.width
-            color: "black"
+            color: Theme.colorScheme === Theme.DarkOnLight ? "white" : "black"
             Button {
                 anchors.centerIn: parent
+                visible: uri.match("captcha")
                 Text {
                     text: qsTr("IM NOT A ROBOT")
                     color: Theme.primaryColor
@@ -46,9 +47,26 @@ Page {
                     }
                 }
                 onClicked: webView.experimental.evaluateJavaScript("document.getElementById('g-recaptcha-response').value;", function(result) {
-                    console.log(result)
-                    var newpostPage = pageStack.find(function(page) { return page.state == "postform"; })
+                    var newpostPage = pageStack.find(function(page) { return page.state === "postform"; })
                     newpostPage.captcha = result
+                    pageStack.navigateBack()
+                })
+            }
+            Button {
+                anchors.centerIn: parent
+                visible: !uri.match("captcha")
+                Text {
+                    text: qsTr("Save cookies")
+                    color: Theme.primaryColor
+                    anchors {
+                        horizontalCenter: parent.horizontalCenter
+                        verticalCenter: parent.verticalCenter
+                    }
+                }
+                onClicked: webView.experimental.evaluateJavaScript("document.cookie;", function(result) {
+                    var usercode = result.match(/usercode_auth=([a-z,0-9]{32})/)[1]
+                    var settsPage = pageStack.find(function(page) { return page.objectName === "settsPage"; })
+                    settsPage.savecooka(usercode)
                     pageStack.navigateBack()
                 })
             }

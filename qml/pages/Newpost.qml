@@ -17,6 +17,7 @@ Page {
     property string domain: ""
     property string comment: ""
     property string notification: ""
+    property string cooka: ""
     property var icons: []
     property var parsedthreads: []
     property var option
@@ -318,10 +319,10 @@ Page {
                 if (thread === "0" ) {
                     notification= qsTr("Opening thread")
                     page.somethingloading = true
-                    py.call('getdata.dyorg', ["new_thread_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + x.Target + ".json#" + x.Target], function() {})
+                    py.call('getdata.dyorg', ["new_thread_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + x.Target + ".json#" + x.Target, cooka], function() {})
                 } else {
                     clearfields()
-                    var threadPage = pageStack.find(function(page) { return page.state == "thread"; })
+                    var threadPage = pageStack.find(function(page) { return page.state === "thread"; })
                     threadPage.comment = ""
                     pageStack.replaceAbove(threadPage, Qt.resolvedUrl("KostylPage.qml"), null, PageStackAction.Immediate)
                     threadPage.refreshthread()

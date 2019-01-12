@@ -61,10 +61,9 @@ function parseLinks (link, thread) {
         } else {
             notification = qsTr("Opening thread")
             page.somethingloading = true
-            py.call('getdata.dyorg', ['thread_page'+numnum, "thread", "https://2ch." + domain + "/" + brd + "/res/" + trd + ".json#" + pst], function() {})
+            py.call('getdata.dyorg', ['thread_page'+numnum, "thread", "https://2ch." + domain + "/" + brd + "/res/" + trd + ".json#" + pst, ""], function() {})
         }
     } else {
-        console.log("pok")
         Qt.openUrlExternally(link)
     }
 }

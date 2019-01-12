@@ -14,7 +14,8 @@ Page {
     objectName: "favsPage"
     property string board: ""
     property string notification: ""
-    property string domain: page.option[1].value
+    property string domain: page.option[2].value
+    property string cooka: page.option[0].value !== null ? page.option[0].value : ""
     property int pc
     property var favs
     property var option
@@ -101,10 +102,10 @@ Page {
                         board = modelData.board
                         if (modelData.thread !== "0") {
                             notification = qsTr("Opening thread")
-                            py.call('getdata.dyorg', ["favorites_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread + ".json#" + modelData.pc], function() {})
+                            py.call('getdata.dyorg', ["favorites_page", "thread", "https://2ch." + domain + "/" + board + "/res/" + modelData.thread + ".json#" + modelData.pc, cooka], function() {})
                         } else {
                             notification = qsTr("Opening board")
-                            py.call('getdata.dyorg', ["favorites_page", "board", "https://2ch." + domain + "/" + board + "/index.json"], function() {})
+                            py.call('getdata.dyorg', ["favorites_page", "board", "https://2ch." + domain + "/" + board + "/index.json", cooka], function() {})
                         }
                         page.somethingloading = true
                     }

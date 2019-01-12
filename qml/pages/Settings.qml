@@ -6,6 +6,7 @@ import "../js/settings.js" as Settings
 
 Page {
     property var option
+    objectName: "settsPage"
     id: page
     PageHeader {
         title: qsTr("Settings")
@@ -32,7 +33,7 @@ Page {
                 }
                 onCurrentItemChanged: {
                     Settings.save("domain", currentItem.text)
-                    domain.value = page.option[1].value
+                    domain.value = page.option[2].value
                     updatepages ()
                 }
             }
@@ -47,17 +48,8 @@ Page {
                 }
                 onCurrentItemChanged: {
                     Settings.save("captcha", currentItem.text)
-                    captcha.value = page.option[2].value
+                    captcha.value = page.option[0].value
                     updatepages ()
-                }
-            }
-
-            TextSwitch {
-                id: userboards
-                checked: false
-                text: qsTr("Show user boards")
-                onCheckedChanged: {
-                    Settings.save("userboards", checked ? "show" : "hide" );
                 }
             }
             ListItem {
@@ -88,22 +80,56 @@ Page {
                     }
                 }
             }
-            /*Button {
-                text: qsTr("Get cookies")
-                anchors.horizontalCenter: parent.horizontalCenter
-                preferredWidth: Theme.buttonWidthLarge
-                onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + page.option[0].value + "/test"} )
-            }*/
+            ListItem {
+                Row {
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    Label {
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: Theme.paddingLarge
+                        text: qsTr("Cookies")
+                    }
+                    Label {
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: Theme.paddingMedium
+                        color: Theme.highlightColor
+                        text: page.option[0].value !== null ? qsTr("Ok") : qsTr("None")
+                    }
+                }
+                menu: ContextMenu {
+                    MenuItem {
+                        text: page.option[0].value !== null ? qsTr("Refresh") : qsTr("Get")
+                        onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + page.option[2].value + "/test"} )
+                    }
+                }
+            }
+            TextSwitch {
+                id: userboards
+                checked: false
+                text: qsTr("Show user boards")
+                onCheckedChanged: {
+                    Settings.save("userboards", checked ? "show" : "hide" );
+                }
+            }
         }
     }
     Component.onCompleted: {
         Settings.load()
-        if (page.option[0].value === "show") {
+        if (page.option[1].value === "show") {
             userboards.checked = true
         }
-        domain.value = page.option[1].value
-        captcha.value = page.option[2].value
+        domain.value = page.option[2].value
+        captcha.value = page.option[3].value
         calccache()
+    }
+
+    function savecooka (cooka) {
+        Settings.save("usercode", cooka)
+        Settings.load()
     }
 
     function updatepages () {

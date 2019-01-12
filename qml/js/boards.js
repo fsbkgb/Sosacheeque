@@ -5,7 +5,7 @@ function getAll(error, data) {
         var parsed = JSON.parse(data);
         for (var category in parsed) {
             if (parsed.hasOwnProperty(category)) {
-                if (page.option[0].value === "hide" & category === "Пользовательские") {} else {
+                if (page.option[1].value === "hide" & category === "Пользовательские") {} else {
                     categories.push(parsed[category])
                 }
             }

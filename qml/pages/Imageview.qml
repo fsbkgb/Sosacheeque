@@ -9,6 +9,7 @@ Page {
     property string path: ""
     property string file: ""
     property string progress: "0 %"
+    property string cooka: ""
 
     SilicaFlickable {
         id: picFlick
@@ -97,7 +98,7 @@ Page {
                 anchors.fill: parent
             }
         }
-        Component.onCompleted: cache (domain, path)
+        Component.onCompleted: cache (domain, path, cooka)
     }
 
     Python {
@@ -123,8 +124,8 @@ Page {
         }
     }
 
-    function cache(domain, path) {
-        py.call('savefile.cache', [domain, path], function(response) {
+    function cache(domain, path, cooka) {
+        py.call('savefile.cache', [domain, path, cooka], function(response) {
             imagePage.file = response
             if (response.match(/gif/)) {animootedImage.visible = true} else {staticImage.visible = true}
             busyIndicator.visible = false
