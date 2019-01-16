@@ -51,6 +51,7 @@ Page {
             placeholderText: "b"
             focus: true
             validator: RegExpValidator {regExp: /[0-9, a-z]+/}
+            inputMethodHints: Qt.ImhNoAutoUppercase
             EnterKey.onClicked: {
                 notification = qsTr("Opening board")
                 somethingloading = true

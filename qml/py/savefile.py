@@ -4,7 +4,7 @@
 import os, shutil, requests, re, pyotherside
 
 def save (dst, filename, src):
-    copyfile(src, dst + "/" + filename)
+    shutil.copyfile(src, dst + "/" + filename)
 
 def cache (domain, path, usercode):
     cachedir = "/home/nemo/.cache/harbour-sosacheeque/harbour-sosacheeque/.media"
@@ -18,7 +18,6 @@ def cache (domain, path, usercode):
         if response.status_code == 200:
             dl = 0
             total_length = int(response.headers.get('content-length'))
-            pyotherside.send(total_length)
             f = open(filepath, 'wb')
             for data in response.iter_content(chunk_size=40960):
                 dl += len(data)
