@@ -1,6 +1,6 @@
 function load() {
     var favs = []
-    var db = DB.getDatabase();
+    var db = DB.openDB();
     db.transaction(function(tx) {
         var rs = tx.executeSql('SELECT * FROM favs ORDER BY board ASC, thread ASC');
         for(var i = 0; i < rs.rows.length; i++) {
@@ -11,7 +11,7 @@ function load() {
 }
 
 function checkfavs (board, thread, lastpost, scroll) {
-    var db = DB.getDatabase();
+    var db = DB.openDB();
     db.transaction(function(tx) {
         var check = tx.executeSql('SELECT * FROM favs WHERE board = ? AND thread = ?;', [board, thread])
         var position = 0
@@ -32,7 +32,7 @@ function checkfavs (board, thread, lastpost, scroll) {
 }
 
 function save(board, thread, lastpost, subject) {
-    var db = DB.getDatabase();
+    var db = DB.openDB();
     db.transaction( function(tx){
         tx.executeSql('INSERT OR REPLACE INTO favs VALUES(?, ?, ?, ?)', [board, thread, lastpost, subject]);
     });
@@ -42,7 +42,7 @@ function save(board, thread, lastpost, subject) {
 
 function del(board, thread) {
     var favs = []
-    var db = DB.getDatabase();
+    var db = DB.openDB();
     db.transaction(function(tx) {
         var rs = tx.executeSql('DELETE FROM favs WHERE board = ? AND thread = ?;', [board, thread]);
     });

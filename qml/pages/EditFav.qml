@@ -11,7 +11,6 @@ Dialog {
     property string title: ""
 
     onAccepted: {
-        DB.openDB()
         Favorites.save(board, thread, postcount, subject.text)
     }
 

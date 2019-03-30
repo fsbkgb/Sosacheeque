@@ -1,6 +1,6 @@
 function load() {
     var setts = []
-    var db = DB.getDatabase();
+    var db = DB.openDB();
     db.transaction(function(tx) {
         var rs = tx.executeSql('SELECT * FROM settings ORDER BY key DESC');
         for(var i = 0; i < rs.rows.length; i++) {
@@ -11,7 +11,7 @@ function load() {
 }
 
 function save(key, value) {
-    var db = DB.getDatabase();
+    var db = DB.openDB();
     db.transaction( function(tx){
         tx.executeSql('REPLACE INTO settings VALUES(?, ?)', [key, value]);
     });

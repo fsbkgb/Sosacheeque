@@ -149,7 +149,7 @@ Page {
     }
 
     function loadfavs () {
-        DB.openDB()
+        DB.initDB()
         Settings.load()
         Favorites.load()
     }
