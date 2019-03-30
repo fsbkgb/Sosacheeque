@@ -48,7 +48,7 @@ Page {
                 }
                 onCurrentItemChanged: {
                     Settings.save("captcha", currentItem.text)
-                    captcha.value = page.option[0].value
+                    captcha.value = page.option[3].value
                     updatepages ()
                 }
             }

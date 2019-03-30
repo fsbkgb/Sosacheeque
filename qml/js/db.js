@@ -1,32 +1,24 @@
 .import QtQuick.LocalStorage 2.0 as LS
 
 function openDB() {
-    return LS.LocalStorage.openDatabaseSync("sosacheequeDBv3", "0.3", "Database of application Sosacheeque", 100000);
+    var baza = LS.LocalStorage.openDatabaseSync("sosacheequeDBv3", "", "Database of application Sosacheeque", 100000);
+    console.log(baza.version)
+    return baza
 }
 
 function initDB() {
     var db = openDB();
     db.transaction(
                 function(tx) {
+
                     try {
                         tx.executeSql('SELECT * FROM settings');
                     } catch(e) {
                         if(e.message.match("no such table")) {
                             tx.executeSql('CREATE TABLE IF NOT EXISTS settings(key TEXT UNIQUE, value TEXT)');
-                            var table2  = tx.executeSql("SELECT * FROM settings");
-                            if (table2.rows.length === 0) {
-                                tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["domain", "hk"]);
-                                tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["userboards", "show"]);
-                                table2  = tx.executeSql("SELECT * FROM settings");
-                            };
-                            if (table2.rows.length === 2) {
-                                tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["captcha", "2ch"]);
-                                table2  = tx.executeSql("SELECT * FROM settings");
-                            };
-                            if (table2.rows.length === 3) {
-                                tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["usercode", ""]);
-                                table2  = tx.executeSql("SELECT * FROM settings");
-                            };
+                            tx.executeSql('SELECT * FROM settings');
+                            tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["domain", "hk"]);
+                            tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["userboards", "show"]);
                         };
                     };
 
@@ -40,11 +32,47 @@ function initDB() {
                             tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["b", "0", 1, "Бред"]);
                         };
                     };
+
                 });
     updateDB();
 }
 
 function updateDB() {
 
+    var db = openDB();
+
+    db.transaction(
+                function(tx) {
+                    var table  = tx.executeSql("SELECT * FROM settings");
+                    if (table.rows.length === 2) {
+                        tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["captcha", "2ch"]);
+                        table  = tx.executeSql("SELECT * FROM settings");
+                    };
+                    if (table.rows.length === 3) {
+                        tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["usercode", ""]);
+                        table  = tx.executeSql("SELECT * FROM settings");
+                    };
+                });
+
+    if(db.version === ""){
+        console.log("пук")
+        db.changeVersion("","0.3")
+    }
+
+    db = openDB();
+
+    /*if(db.version === "0.3"){
+        try {
+            db.changeVersion("0.3","0.4",function(){
+                db.transaction(
+                            function(tx) {
+                                tx.executeSql('ALTER TABLE favs ADD COLUMN tracked TEXT');
+                            }
+                            );
+            });
+        } catch (e) {
+            console.log("changeVersion exception: " + e);
+        }
+    }*/
 }
 
