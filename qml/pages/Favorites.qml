@@ -102,8 +102,10 @@ Page {
                     color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
                 }
                 onPressAndHold: {
-                    delbutton.visible = true
-                    editbutton.visible = true
+                    if (page.state !== "history"){
+                        delbutton.visible = true
+                        editbutton.visible = true
+                    }
                 }
                 onClicked: {
                     if (delbutton.visible === true) {
