@@ -20,7 +20,6 @@ Page {
     property string cooka: ""
     property var icons: []
     property var parsedthreads: []
-    property var option
     property int enable_icons: 0
     property int enable_names: 0
     property int enable_subject: 0
@@ -78,8 +77,8 @@ Page {
                     Repeater {
                         model: icons
                         MenuItem {
-                            property string iconnum: modelData.num
-                            text: modelData.name
+                            property string iconnum: enable_icons === 1 ? modelData.num : ""
+                            text: enable_icons === 1 ? modelData.name : ""
                         }
                     }
                 }
@@ -290,13 +289,8 @@ Page {
 
     Notifications {}
 
-    Component.onCompleted: {
-        Settings.load()
-    }
-
     function clearfields() {
         status.visible = false
-        //NewPost.getCaptcha(domain)
         cmnt.text = ""
         fileList.clear()
     }

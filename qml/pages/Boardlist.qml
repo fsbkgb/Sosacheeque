@@ -13,9 +13,8 @@ Page {
     property bool loading: false
     property bool somethingloading: false
     property bool someerror: false
-    property var option
-    property string domain: page.option[2].value
-    property string cooka: page.option[0].value !== null ? page.option[0].value : ""
+    property string domain: Settings.load("domain")
+    property string cooka: Settings.load("usercode") !== null ? Settings.load("usercode") : ""
     property string notification: ""
     property string error: ""
 
@@ -108,8 +107,7 @@ Page {
 
     function loadlist () {
         page.loading = true
-        Settings.load()
-        py.call('getdata.dyorg', ["list_page", "boards", "https://2ch." + page.option[2].value + "/makaba/mobile.fcgi?task=get_boards", cooka], function() {})
+        py.call('getdata.dyorg', ["list_page", "boards", "https://2ch." + Settings.load("domain") + "/makaba/mobile.fcgi?task=get_boards", cooka], function() {})
     }
 
     Python {
@@ -127,7 +125,7 @@ Page {
                 if (type === "board") {
                     Boards.getOne(error, data, "replace")
                 } else {
-                    Boards.getAll(error, data)
+                    Boards.getAll(error, data, Settings.load("userboards"))
                 }
             })
         }

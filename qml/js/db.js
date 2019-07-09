@@ -2,7 +2,6 @@
 
 function openDB() {
     var baza = LS.LocalStorage.openDatabaseSync("sosacheequeDBv3", "", "Database of application Sosacheeque", 100000);
-    console.log(baza.version)
     return baza
 }
 

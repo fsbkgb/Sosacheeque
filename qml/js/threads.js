@@ -8,7 +8,7 @@ function getAll(parsedthreads) {
     listView.model = page.parsedposts
 }
 
-function getThread (error, data, anchor, action) {
+function getThread (error, data, anchor, action, domain) {
     var posti = []
     if (error === "none") {
         if (action === "replace") {
@@ -23,7 +23,7 @@ function getThread (error, data, anchor, action) {
         var enable_icons = parsed.enable_icons
         var enable_names = parsed.enable_names
         var enable_subject = parsed.enable_subject
-        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: brd, domain: page.option[2].value, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, anch: anchor} )
+        pageStack.push(Qt.resolvedUrl("../pages/Posts.qml"), {parsedthreads: parsedthreads, thread: parsed.current_thread, board: brd, domain: domain, state: "thread", icons: icons, enable_icons: enable_icons, enable_names: enable_names, enable_subject: enable_subject, anch: anchor} )
         page.somethingloading = false
     } else {
         page.notification = "Error: " + error

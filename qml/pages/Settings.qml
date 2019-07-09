@@ -5,7 +5,6 @@ import "../js/db.js" as DB
 import "../js/settings.js" as Settings
 
 Page {
-    property var option
     objectName: "settsPage"
     id: page
     PageHeader {
@@ -33,7 +32,7 @@ Page {
                 }
                 onCurrentItemChanged: {
                     Settings.save("domain", currentItem.text)
-                    domain.value = page.option[2].value
+                    domain.value = Settings.load("domain")
                     updatepages ()
                 }
             }
@@ -48,7 +47,7 @@ Page {
                 }
                 onCurrentItemChanged: {
                     Settings.save("captcha", currentItem.text)
-                    captcha.value = page.option[3].value
+                    captcha.value = Settings.load("captcha")
                     updatepages ()
                 }
             }
@@ -97,13 +96,13 @@ Page {
                         verticalAlignment: Text.AlignVCenter
                         leftPadding: Theme.paddingMedium
                         color: Theme.highlightColor
-                        text: page.option[0].value !== null ? qsTr("Ok") : qsTr("None")
+                        text: Settings.load("usercode") !== null ? qsTr("Ok") : qsTr("None")
                     }
                 }
                 menu: ContextMenu {
                     MenuItem {
-                        text: page.option[0].value !== null ? qsTr("Refresh") : qsTr("Get")
-                        onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + page.option[2].value + "/test"} )
+                        text: Settings.load("usercode") !== null ? qsTr("Refresh") : qsTr("Get")
+                        onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + Settings.load("domain") + "/test"} )
                     }
                 }
             }
@@ -118,18 +117,16 @@ Page {
         }
     }
     Component.onCompleted: {
-        Settings.load()
-        if (page.option[1].value === "show") {
+        if (Settings.load("userboards") === "show") {
             userboards.checked = true
         }
-        domain.value = page.option[2].value
-        captcha.value = page.option[3].value
+        domain.value = Settings.load("domain")
+        captcha.value = Settings.load("captcha")
         calccache()
     }
 
     function savecooka (cooka) {
         Settings.save("usercode", cooka)
-        Settings.load()
     }
 
     function updatepages () {

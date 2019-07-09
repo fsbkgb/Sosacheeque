@@ -1,11 +1,11 @@
-function getAll(error, data) {
+function getAll(error, data, userboards) {
     var categories = []
     var parsedboards = []
     if (error === "none") {
         var parsed = JSON.parse(data);
         for (var category in parsed) {
             if (parsed.hasOwnProperty(category)) {
-                if (page.option[1].value === "hide" & category === "Пользовательские") {} else {
+                if (userboards === "hide" & category === "Пользовательские") {} else {
                     categories.push(parsed[category])
                 }
             }

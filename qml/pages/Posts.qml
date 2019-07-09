@@ -17,8 +17,8 @@ Page {
     property string thread: ""
     property string url: ""
     property string domain: ""
-    property string captcha_type: page.option[3].value
-    property string cooka: page.option[0].value !== null ? page.option[0].value : ""
+    property string captcha_type: Settings.load("captcha")
+    property string cooka: Settings.load("usercode") !== null ? Settings.load("usercode") : ""
     property string state: ""
     property string comment: ""
     property string notification: ""
@@ -35,7 +35,6 @@ Page {
     property var icons: []
     property var postnums
     property var db
-    property var option
     property bool loading: true
     property bool somethingloading: false
     property bool someerror: false
@@ -460,7 +459,6 @@ Page {
     Notifications {}
 
     Component.onCompleted: {
-        Settings.load()
         if (state === "board") {
             Threads.getAll(parsedthreads)
         } else if (state === "thread"){
@@ -492,7 +490,7 @@ Page {
                     if (type === "board") {
                         Boards.getOne(error, data, "replace")
                     } else {
-                        Threads.getThread(error, data, anchor, "push")
+                        Threads.getThread(error, data, anchor, "push", domain)
                     }
                 })
             } else {

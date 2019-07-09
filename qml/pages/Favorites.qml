@@ -14,12 +14,11 @@ Page {
     objectName: "favsPage"
     property string board: ""
     property string notification: ""
-    property string domain: page.option[2].value
-    property string cooka: page.option[0].value !== null ? page.option[0].value : ""
+    property string domain: Settings.load("domain")
+    property string cooka: Settings.load("usercode") !== null ? Settings.load("usercode") : ""
     property string state: ""
     property int pc
     property var favs
-    property var option
     property var parsedthreads: []
     property bool somethingloading: false
     property bool someerror: false
@@ -163,7 +162,6 @@ Page {
 
     function loadfavs () {
         DB.initDB()
-        Settings.load()
         Favorites.load(page.state)
     }
 }

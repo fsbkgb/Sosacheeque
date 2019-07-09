@@ -9,7 +9,6 @@ function load(state) {
             rs = tx.executeSql('SELECT * FROM favs WHERE inhistory = 1 ORDER BY visited DESC');
         }
         for(var i = 0; i < rs.rows.length; i++) {
-            console.log(rs.rows.item(i).inhistory)
             favs.push({"board" : rs.rows.item(i).board, "thread" : rs.rows.item(i).thread, "pc" : rs.rows.item(i).postcount, "text" : rs.rows.item(i).subj})
         }
         page.favs = favs
