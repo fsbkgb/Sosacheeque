@@ -42,10 +42,16 @@ function parseThread () {
     for(var i = 0; i < parsedthreads.length; i++) {
         posti.push(parsedthreads[i]);
     }
+    var title = "No title"
+    if (posti[0].subject) {
+        title = posti[0].subject
+    } else if (posti[0].comment) {
+        title = posti[0].comment.replace(/<(?:.|\n)*?>/gm, ' ').trim().replace(/\s\s+/g,' ')
+    }
     page.loading = false;
     page.parsedposts = posti
     listView.model = page.parsedposts
-    Favorites.checkfavs(board, thread, posti[posti.length-1].num, true)
+    Favorites.checkfavs(board, thread, posti[posti.length-1].num, true, title)
 }
 
 function truncateOP (text){

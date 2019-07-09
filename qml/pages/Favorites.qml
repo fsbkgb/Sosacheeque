@@ -16,6 +16,7 @@ Page {
     property string notification: ""
     property string domain: page.option[2].value
     property string cooka: page.option[0].value !== null ? page.option[0].value : ""
+    property string state: ""
     property int pc
     property var favs
     property var option
@@ -34,6 +35,16 @@ Page {
                 text: qsTr("Load board list")
                 onClicked: pageStack.push(Qt.resolvedUrl("Boardlist.qml") )
             }
+            MenuItem {
+                text: qsTr("History")
+                visible: page.state !== "history"
+                onClicked: pageStack.replace(Qt.resolvedUrl("Favorites.qml"), {state: "history"} )
+            }
+            MenuItem {
+                text: qsTr("Favorites")
+                visible: page.state === "history"
+                onClicked: pageStack.replace(Qt.resolvedUrl("Favorites.qml"), {state: ""} )
+            }
         }
 
         SilicaListView {
@@ -41,7 +52,7 @@ Page {
             id: listView
             model: page.favs
             header: PageHeader {
-                title: qsTr("Favorites")
+                title: page.state === "history" ? qsTr("History") : qsTr("Favorites")
             }
             delegate: ListItem {
                 id: delegate
@@ -151,6 +162,6 @@ Page {
     function loadfavs () {
         DB.initDB()
         Settings.load()
-        Favorites.load()
+        Favorites.load(page.state)
     }
 }

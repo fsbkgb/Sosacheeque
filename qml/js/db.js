@@ -55,24 +55,28 @@ function updateDB() {
                 });
 
     if(db.version === ""){
-        console.log("пук")
         db.changeVersion("","0.3")
     }
 
-    db = openDB();
-
-    /*if(db.version === "0.3"){
+    if(db.version === "0.3"){
         try {
-            db.changeVersion("0.3","0.4",function(){
-                db.transaction(
-                            function(tx) {
-                                tx.executeSql('ALTER TABLE favs ADD COLUMN tracked TEXT');
-                            }
-                            );
+            db.changeVersion("0.3","0.4",function(tx){
+                tx.executeSql('ALTER TABLE favs ADD COLUMN inhistory INTEGER');
             });
         } catch (e) {
             console.log("changeVersion exception: " + e);
         }
-    }*/
-}
+    }
 
+    if(db.version === "0.4"){
+        try {
+            db.changeVersion("0.4","0.5",function(tx){
+                tx.executeSql('ALTER TABLE favs ADD COLUMN visited INTEGER');
+            });
+        } catch (e) {
+            console.log("changeVersion exception: " + e);
+        }
+    }
+
+    db = openDB();
+}
