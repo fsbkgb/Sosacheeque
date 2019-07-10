@@ -51,7 +51,7 @@ function parseThread () {
     page.loading = false;
     page.parsedposts = posti
     listView.model = page.parsedposts
-    Favorites.checkfavs(board, thread, posti[posti.length-1].num, true, title)
+    Favorites.checkfavs(board, thread, posti[posti.length-1].num, true, title, historysize)
 }
 
 function truncateOP (text){

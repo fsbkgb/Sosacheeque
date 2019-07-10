@@ -26,7 +26,7 @@ function getNew(error, data, count, board, thread, lastpost) {
             }
             listView.model = page.parsedposts
             listView.positionViewAtIndex(count, ListView.Contain)
-            Favorites.checkfavs(board, thread, lastpost, false, "")
+            Favorites.checkfavs(board, thread, lastpost, false, "", "")
         }
         page.somethingloading = false
     } else {

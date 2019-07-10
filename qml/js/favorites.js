@@ -15,7 +15,7 @@ function load(state) {
     });
 }
 
-function checkfavs (board, thread, lastpost, scroll, header) {
+function checkfavs (board, thread, lastpost, scroll, header, hsize) {
     var db = DB.openDB();
     db.transaction(function(tx) {
         var check = tx.executeSql('SELECT * FROM favs WHERE board = ? AND thread = ?;', [board, thread])
@@ -27,9 +27,14 @@ function checkfavs (board, thread, lastpost, scroll, header) {
             if (check.rows.item(0).inhistory === 1) {
                 inhistory = 1
             }
-            save(board, thread, lastpost, title, inhistory)
+            if (inhistory === 1 && hsize === "0") {} else {
+                save(board, thread, lastpost, title, inhistory)
+            }
         } else {
-            save(board, thread, lastpost, header, 1)
+            if (hsize !== "0") {
+                save(board, thread, lastpost, header, 1)
+            }
+            checkhsize(hsize)
         }
 
         if (scroll === true) {
@@ -60,4 +65,17 @@ function del(board, thread) {
         var rs = tx.executeSql('DELETE FROM favs WHERE board = ? AND thread = ?;', [board, thread]);
     });
     load();
+}
+
+function checkhsize(hsize) {
+    var db = DB.openDB();
+    db.transaction(function(tx) {
+        var rs = []
+        rs = tx.executeSql('SELECT * FROM favs WHERE inhistory = 1 ORDER BY visited ASC');
+        if (parseInt(hsize) < rs.rows.length) {
+            for(var i = 0; i < rs.rows.length-parseInt(hsize); i++) {
+                tx.executeSql('DELETE FROM favs WHERE board = ? AND thread = ?;', [rs.rows.item(i).board, rs.rows.item(i).thread]);
+            }
+        }
+    });
 }

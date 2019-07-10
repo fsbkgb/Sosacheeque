@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 import io.thp.pyotherside 1.3
 import "../js/db.js" as DB
 import "../js/settings.js" as Settings
+import "../js/favorites.js" as Favorites
 
 Page {
     objectName: "settsPage"
@@ -33,7 +34,6 @@ Page {
                 onCurrentItemChanged: {
                     Settings.save("domain", currentItem.text)
                     domain.value = Settings.load("domain")
-                    updatepages ()
                 }
             }
             ComboBox {
@@ -48,7 +48,25 @@ Page {
                 onCurrentItemChanged: {
                     Settings.save("captcha", currentItem.text)
                     captcha.value = Settings.load("captcha")
-                    updatepages ()
+                }
+            }
+            ComboBox {
+                id: historysize
+                width: page.width
+                label: qsTr("History size")
+                currentIndex: -1
+                menu: ContextMenu {
+                    MenuItem { text: "0" }
+                    MenuItem { text: "10" }
+                    MenuItem { text: "20" }
+                    MenuItem { text: "50" }
+                }
+                onCurrentItemChanged: {
+                    Settings.save("histsize", currentItem.text)
+                    historysize.value = Settings.load("histsize")
+                    Favorites.checkhsize(currentItem.text)
+                    var favsPage = pageStack.find(function(page) { return page.objectName === "favsPage"; })
+                    favsPage.loadfavs()
                 }
             }
             ListItem {
@@ -122,16 +140,12 @@ Page {
         }
         domain.value = Settings.load("domain")
         captcha.value = Settings.load("captcha")
+        historysize.value = Settings.load("histsize")
         calccache()
     }
 
     function savecooka (cooka) {
         Settings.save("usercode", cooka)
-    }
-
-    function updatepages () {
-        var favsPage = pageStack.find(function(page) { return page.objectName === "favsPage"; })
-        favsPage.loadfavs()
     }
 
     Python {

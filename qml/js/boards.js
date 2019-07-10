@@ -68,6 +68,6 @@ function fav(id, name) {
     db.transaction( function(tx){
         tx.executeSql('INSERT OR REPLACE INTO favs VALUES(?, ?, ?, ?)', [id, "0", 1, name]);
     });
-    var favsPage = pageStack.find(function(page) { return page.objectName == "favsPage"; })
+    var favsPage = pageStack.find(function(page) { return page.objectName === "favsPage"; })
     favsPage.loadfavs()
 }

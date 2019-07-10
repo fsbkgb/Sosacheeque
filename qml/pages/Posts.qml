@@ -19,6 +19,7 @@ Page {
     property string domain: ""
     property string captcha_type: Settings.load("captcha")
     property string cooka: Settings.load("usercode") !== null ? Settings.load("usercode") : ""
+    property string historysize: Settings.load("histsize")
     property string state: ""
     property string comment: ""
     property string notification: ""
@@ -327,7 +328,7 @@ Page {
                         var replies = Posts.getReplies(modelData.num, parsedposts)
                         if (!contextMenu)
                             contextMenu = contextMenuComponent.createObject(listView, {replies: replies, comm: ">>" + modelData.num, quote: modelData.comment})
-                        contextMenu.show(myListItem)
+                        contextMenu.open(myListItem)
                     }
                 }
                 onClicked: {

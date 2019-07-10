@@ -77,5 +77,15 @@ function updateDB() {
         }
     }
 
+    if(db.version === "0.5"){
+        try {
+            db.changeVersion("0.5","0.6",function(tx){
+                tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["histsize", "20"]);
+            });
+        } catch (e) {
+            console.log("changeVersion exception: " + e);
+        }
+    }
+
     db = openDB();
 }
