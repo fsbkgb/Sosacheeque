@@ -497,7 +497,7 @@ Page {
                 numnum = pageStack.depth.toString()
                 setHandler('thread_page'+numnum, function (type, error, data, anchor) {
                     if (type === "thread") {
-                        Threads.getThread(error, data, anchor, "push")
+                        Threads.getThread(error, data, anchor, "push", domain)
                     } else {
                         Posts.getNew(error, data, listView.count, board, thread, parsedposts[parsedposts.length-1].num)
                     }

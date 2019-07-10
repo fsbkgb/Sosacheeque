@@ -144,7 +144,7 @@ Page {
             importModule('getdata', function() {});
             setHandler('favorites_page', function (type, error, data, anchor) {
                 if (type === "thread") {
-                    Threads.getThread(error, data, anchor, "push")
+                    Threads.getThread(error, data, anchor, "push", domain)
                 } else {
                     Boards.getOne(error, data, "push")
                 }

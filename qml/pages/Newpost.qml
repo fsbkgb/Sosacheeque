@@ -350,7 +350,7 @@ Page {
                 captcha_value.text = ""
             });
             setHandler('new_thread_page', function (type, error, data, anchor) {
-                Threads.getThread(error, data, anchor, "replace")
+                Threads.getThread(error, data, anchor, "replace", domain)
             });
         }
         onError: {
