@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* 21-7-2019 0.13-1
+- история посещенных тредов
+
 * 16-1-2019 0.12-4
 - фикс сохранения файлов
 - фикс прогресса загрузки
