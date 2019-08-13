@@ -57,6 +57,8 @@ function updateDB() {
         db.changeVersion("","0.3")
     }
 
+    db = openDB();
+
     if(db.version === "0.3"){
         try {
             db.changeVersion("0.3","0.4",function(tx){
@@ -66,6 +68,8 @@ function updateDB() {
             console.log("changeVersion exception: " + e);
         }
     }
+
+    db = openDB();
 
     if(db.version === "0.4"){
         try {
@@ -77,6 +81,8 @@ function updateDB() {
         }
     }
 
+    db = openDB();
+
     if(db.version === "0.5"){
         try {
             db.changeVersion("0.5","0.6",function(tx){
@@ -87,5 +93,6 @@ function updateDB() {
         }
     }
 
-    db = openDB();
+    loadfavs ()
+
 }
