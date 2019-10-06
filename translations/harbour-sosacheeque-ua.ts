@@ -134,6 +134,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Opening board</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>New thread</source>
         <translation type="unfinished"></translation>
     </message>
@@ -154,6 +158,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Opening thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>View replies</source>
         <translation type="unfinished"></translation>
     </message>
@@ -166,15 +174,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Opening thread</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Loading new posts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Opening board</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

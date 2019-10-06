@@ -219,40 +219,33 @@ Page {
                             text = "#"+index}
                     }
                 }
-                Column {
+                Grid {
                     id:thumbs
+                    columns: 4
+                    spacing: Theme.paddingMedium
                     anchors {
                         top: postdate.bottom
                         left: parent.left
-                        topMargin: 5
+                        topMargin: Theme.paddingMedium
                     }
-
-                    Row {
-                        id: attachments
-                        anchors {
-                            left: parent.left
-                        }
-                        spacing: 5
-
-                        Repeater {
-                            id: picrepeater
-                            model: modelData.posts[0].files
-                            Item {
-                                id: container
-                                width: Math.floor((page.width - 5 * attachments.spacing) / 4)
-                                anchors.leftMargin: attachments.spacing
-                                height: modelData.tn_height > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) + Theme.paddingMedium : modelData.tn_height + Theme.paddingMedium
-
-                                Image {
-                                    id: pic
-                                    source: ""
-                                    width: modelData.tn_width > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) : modelData.tn_width
-                                    height: modelData.tn_height > Math.floor((page.width - 5 * attachments.spacing) / 4) ? Math.floor((page.width - 5 * attachments.spacing) / 4) : modelData.tn_height
-                                    fillMode: Image.PreserveAspectFit
-                                    smooth: true
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    Component.onCompleted: py.call('savefile.cache', [domain, modelData.thumbnail, cooka], function(response) {source = response})
+                    Repeater {
+                        id: picrepeater
+                        model: page.state === "board" ? modelData.posts[0].files : modelData.files
+                        property var picWidth: ""
+                        property var cellWidth: content.width / 4 > picWidth ? picWidth : content.width / 4
+                        property var cellHeight: cellWidth + Theme.paddingLarge + Theme.paddingMedium
+                        Column {
+                            Image {
+                                source: ""
+                                width: picrepeater.cellWidth < picrepeater.picWidth ? picrepeater.cellWidth - Theme.paddingMedium : picrepeater.picWidth
+                                height: width
+                                anchors {
+                                    left: parent.left
+                                    leftMargin: picrepeater.cellWidth < picrepeater.picWidth ? Theme.paddingMedium / 2 : (picrepeater.cellWidth - picrepeater.picWidth) / 2
                                 }
+                                fillMode: Image.PreserveAspectCrop
+                                smooth: true
+                                Component.onCompleted: py.call('savefile.cache', [domain, modelData.thumbnail, cooka], function(response) {source = response})
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: {
@@ -263,33 +256,29 @@ Page {
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }
-                    Row {
-                        id: filesize
-                        anchors {
-                            left: parent.left
-                        }
-                        spacing: 5
 
-                        Repeater {
-                            id: filerepeater
-                            model: modelData.posts[0].files
-                            Label {
-                                id: file
+                            }
+                            Text {
                                 font.pixelSize :Theme.fontSizeTiny
-                                text: modelData.path.match(/\.([a-z0-9]+)/)[1] + ", " + modelData.size + "kB"
+                                anchors.horizontalCenter: parent.horizontalCenter
                                 color: Theme.secondaryColor
-                                width: Math.floor((page.width - 5 * filesize.spacing) / 4)
-                                horizontalAlignment: TextInput.AlignHCenter
+                                text: modelData.path.match(/\.([a-z0-9]+)/)[1] + ", " + modelData.size + "kB"
                             }
                         }
-                    }
-                    Component.onCompleted: {
-                        if (page.state === "board"){
-                            picrepeater.model = filerepeater.model = modelData.posts[0].files} else {
-                            picrepeater.model = filerepeater.model = modelData.files}
+                        Component.onCompleted: {
+                            if (model.length > 0) {
+                                var thumbsize = 0
+                                for (var i = 0; i < model.length; i++) {
+                                    if (thumbsize < model[i].tn_height) {
+                                        thumbsize = model[i].tn_height
+                                    }
+                                    if (thumbsize < model[i].tn_width) {
+                                        thumbsize = model[i].tn_width
+                                    }
+                                }
+                                picWidth = thumbsize
+                            }
+                        }
                     }
                 }
                 Label {
@@ -301,7 +290,7 @@ Page {
                     color: content.highlighted ? Theme.highlightColor : Theme.primaryColor
                     anchors{
                         top: postdate.bottom
-                        topMargin: thumbs.height
+                        topMargin: thumbs.height + Theme.paddingMedium
                         left: parent.left
                     }
                     onWidthChanged: {
