@@ -258,10 +258,6 @@
 <context>
     <name>Webview</name>
     <message>
-        <source>IM NOT A ROBOT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Captcha</source>
         <translation type="unfinished"></translation>
     </message>
@@ -270,7 +266,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>IM NOT A ROBOT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Save cookies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tap me one more time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

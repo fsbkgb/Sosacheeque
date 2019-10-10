@@ -1,11 +1,16 @@
 import QtQuick 2.0
 import QtWebKit 3.0
 import Sailfish.Silica 1.0
+import com.shortcut 0.1
 
 Page {
     id: webViewPage
     allowedOrientations : Orientation.All
     property string uri: ""
+
+    Shortcut {
+        id: sendkeys
+    }
 
     PageHeader {
         id: head
@@ -21,6 +26,7 @@ Page {
             right: parent.right
             bottom: parent.bottom
         }
+        experimental.userAgent: "Mozilla/5.0 (Maemo; Linux; U; Sailfish; Mobile; rv:38.0) Gecko/38.0 Firefox/38.0"
     }
 
 
@@ -39,6 +45,7 @@ Page {
                 anchors.centerIn: parent
                 visible: uri.match("captcha")
                 Text {
+                    id: notarobot
                     text: qsTr("IM NOT A ROBOT")
                     color: Theme.primaryColor
                     anchors {
@@ -46,11 +53,22 @@ Page {
                         verticalCenter: parent.verticalCenter
                     }
                 }
-                onClicked: webView.experimental.evaluateJavaScript("document.getElementById('g-recaptcha-response').value;", function(result) {
-                    var newpostPage = pageStack.find(function(page) { return page.state === "postform"; })
-                    newpostPage.captcha = result
-                    pageStack.navigateBack()
-                })
+                onClicked: {
+                    webView.experimental.evaluateJavaScript("document.getElementById('g-recaptcha-response').value;", function(result) {
+                        if (result === "") {
+                            sendkeys.simulateKey(Qt.Key_C, Qt.ControlModifier,"c")
+                            webView.experimental.evaluateJavaScript("document.getElementById('g-recaptcha-response').focus();", function() {
+                                sendkeys.simulateKey(Qt.Key_V, Qt.ControlModifier,"v")
+                            })
+                            notarobot.text = qsTr("Tap me one more time")
+                        } else {
+                            Clipboard.text = ""
+                            var newpostPage = pageStack.find(function(page) { return page.state === "postform"; })
+                            newpostPage.captcha = result
+                            pageStack.navigateBack()
+                        }
+                    })
+                }
             }
             Button {
                 anchors.centerIn: parent

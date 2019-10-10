@@ -15,7 +15,8 @@ TARGET = harbour-sosacheeque
 CONFIG += sailfishapp
 
 SOURCES += \
-    src/harbour-sosacheeque.cpp
+    src/harbour-sosacheeque.cpp \
+    src/shortcut.cpp
 
 OTHER_FILES += \
     qml/cover/CoverPage.qml \
@@ -58,7 +59,8 @@ CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/harbour-sosacheeque-ru.ts
 TRANSLATIONS += translations/harbour-sosacheeque-ua.ts
 
-HEADERS +=
+HEADERS += \
+    src/shortcut.h
 
 DISTFILES += \
     qml/pages/EditFav.qml

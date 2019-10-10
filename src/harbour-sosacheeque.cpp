@@ -33,7 +33,8 @@
 #endif
 
 #include <sailfishapp.h>
-
+#include "shortcut.h"
+#include <QtQml>
 
 int main(int argc, char *argv[])
 {
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
     //   - SailfishApp::pathTo(QString) to get a QUrl to a resource file
     //
     // To display the view, call "show()" (will show fullscreen on device).
+    qmlRegisterType<ShortCut>("com.shortcut", 0, 1, "Shortcut");
 
     return SailfishApp::main(argc, argv);
 }
