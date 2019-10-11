@@ -274,7 +274,10 @@ Page {
                             verticalCenter: parent.verticalCenter
                         }
                     }
-                    onClicked: captcha === "" ? NewPost.getCaptcha(domain, captcha_type) : postPost()
+                    onClicked: {
+                        focus = true
+                        captcha === "" ? NewPost.getCaptcha(domain, captcha_type) : postPost()
+                    }
                 }
             }
             Repeater {
