@@ -117,12 +117,12 @@ Page {
                         text: Settings.load("usercode") !== null ? qsTr("Ok") : qsTr("None")
                     }
                 }
-                menu: ContextMenu {
+                /*menu: ContextMenu {
                     MenuItem {
                         text: Settings.load("usercode") !== null ? qsTr("Refresh") : qsTr("Get")
                         onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {uri: "https://2ch." + Settings.load("domain") + "/test"} )
                     }
-                }
+                }*/
             }
             TextSwitch {
                 id: userboards

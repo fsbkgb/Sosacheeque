@@ -103,6 +103,10 @@
         <source>Opening thread</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Get Cookies</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Paginator</name>
@@ -216,14 +220,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Get</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cookies</source>
         <translation type="unfinished"></translation>
     </message>
@@ -275,6 +271,10 @@
     </message>
     <message>
         <source>Tap me one more time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

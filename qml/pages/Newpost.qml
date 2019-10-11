@@ -33,6 +33,12 @@ Page {
         PageHeader {
             title: qsTr("New post")
         }
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Get Cookies")
+                onClicked: pageStack.push(Qt.resolvedUrl("Webview.qml"), {board: board, domain: domain, uri: "https://2ch." + domain + "/" + board + "/res/" + thread + ".html", captcha: captcha, captcha_type: captcha_type, comment: cmnt.text, thread: thread} )
+            }
+        }
         Column {
             id: postform
             anchors{
