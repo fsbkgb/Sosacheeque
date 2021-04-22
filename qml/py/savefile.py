@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import os, shutil, requests, re, pyotherside
+from pathlib import Path
 
 def save (dst, filename, src):
     shutil.copyfile(src, dst + "/" + filename)
 
 def cache (domain, path, usercode):
-    cachedir = "/home/nemo/.cache/harbour-sosacheeque/harbour-sosacheeque/.media"
+    cachedir = str(Path.home())+"/.cache/harbour-sosacheeque/harbour-sosacheeque/.media"
     filedir = re.search(r"(\/[0-9,a-z]+){3}", path).group(0)
     filepath = cachedir + path
     if not os.path.isfile(filepath):
@@ -28,7 +29,7 @@ def cache (domain, path, usercode):
     return filepath
 
 def calccache ():
-    cachedir = "/home/nemo/.cache/harbour-sosacheeque/harbour-sosacheeque/.media"
+    cachedir = str(Path.home())+"/.cache/harbour-sosacheeque/harbour-sosacheeque/.media"
     total_size = 0
     for dirpath, dirnames, filenames in os.walk(cachedir):
         for f in filenames:
@@ -43,7 +44,7 @@ def sizeof_fmt (num):
         num /= 1024.0
 
 def clearcache ():
-    cachedir = "/home/nemo/.cache/harbour-sosacheeque/harbour-sosacheeque/.media"
+    cachedir = str(Path.home())+"/.cache/harbour-sosacheeque/harbour-sosacheeque/.media"
     for the_folder in os.listdir(cachedir):
         folder_path = os.path.join(cachedir, the_folder)
         shutil.rmtree(folder_path)
