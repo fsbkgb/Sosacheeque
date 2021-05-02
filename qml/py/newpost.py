@@ -2,18 +2,22 @@
 # -*- coding: utf-8 -*-
 
 import requests, pyotherside
+from hashlib import sha256
 
-def sendpost (domain, cap_type, board, thread, comment, captcha, captcha_value, email, name, subject, icon, image1, image2, image3, image4):
+def sendpost (domain, cap_type, board, thread, comment, captcha, string7, email, name, subject, icon, image1, image2, image3, image4):
     url = 'https://2ch.' + domain + '/makaba/posting.fcgi?json=1'
-    #url ='http://posttestserver.com/post.php'
-    if cap_type == "2ch":
-        captcha_type = "2chaptcha"
-        captcha_id = "2chaptcha_id"
+    #url ='http://ptsv2.com/'
+    r = str(bytes([95, 114, 101, 115, 112, 111, 110, 115, 101]), 'utf-8')
+    if cap_type == "2ch" and thread != "0":
+        c_type = "app"
+        c_id = c_type + r + "_id"
+        c_hash = hash(captcha, string7)
     else:
-        captcha_type = "recaptcha"
-        captcha_id = "g-recaptcha-response"
+        c_type = "recaptcha"
+        c_id = "g-recaptcha-response"
+        c_hash = ""
 
-    post = [('task', "post"), ('board', board), ('thread', thread), ('comment', comment), ('captcha_type', captcha_type), ('2chaptcha_value', captcha_value), (captcha_id, captcha), ('email', email), ('name', name), ('subject', subject), ('icon', icon)]
+    post = [('task', "post"), ('board', board), ('thread', thread), ('comment', comment), ('captcha_type', c_type), (c_id, captcha), (c_type + r, c_hash), ('email', email), ('name', name), ('subject', subject), ('icon', icon)]
     multiple_files = {}
     if image1 != '':
         file1 = open(image1, 'rb')
@@ -38,3 +42,6 @@ def sendpost (domain, cap_type, board, thread, comment, captcha, captcha_value, 
     r = session.post(url, data=post, files=multiple_files)
     pyotherside.send(r.status_code)
     return r.text
+
+def hash (spasiba, abu):
+    return sha256((spasiba + '|' + abu).encode('utf-8')).hexdigest()

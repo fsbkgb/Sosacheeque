@@ -92,10 +92,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Verification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Get captcha</source>
         <translation type="unfinished"></translation>
     </message>

@@ -163,6 +163,7 @@ Page {
     function loadfavs () {
         try {
             Favorites.load(page.state)
+            Settings.load("string3")
         } catch (e) {
             DB.initDB()
         }

@@ -93,6 +93,19 @@ function updateDB() {
         }
     }
 
+    if(db.version === "0.6"){
+        console.log("puk")
+        try {
+            db.changeVersion("0.6","0.7",function(tx){
+                tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["string1", "bTRTUEQ3aTFlNmtEcEN6QzBiVkdjb0hTazlTUE84eTk6dVZQc2U4aExxWFFpYmpTbVBvZEtHM0oy"]);
+                tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["string3", "cXhzMmhIZloK"]);
+                tx.executeSql('REPLACE INTO settings VALUES(?, ?)', ["captcha", "2ch"]);
+            });
+        } catch (e) {
+            console.log("changeVersion exception: " + e);
+        }
+    }
+
     loadfavs ()
 
 }

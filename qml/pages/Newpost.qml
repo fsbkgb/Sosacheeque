@@ -18,6 +18,9 @@ Page {
     property string comment: ""
     property string notification: ""
     property string cooka: ""
+    property string string1: Settings.load("string1")
+    property string string3: Settings.load("string3")
+    property string string7: ""
     property var icons: []
     property var parsedthreads: []
     property int enable_icons: 0
@@ -197,36 +200,6 @@ Page {
                 text: ""
             }
 
-            Image {
-                id: yaca
-                visible: false
-                height: 164
-                fillMode: Image.PreserveAspectFit
-                anchors.horizontalCenter: parent.horizontalCenter
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: NewPost.getCaptcha(domain, captcha_type)
-                }
-
-                BusyIndicator {
-                    id: capchaindicator
-                    visible: false
-                    running: true
-                    size: BusyIndicatorSize.Medium
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-            }
-            TextField {
-                id: captcha_value
-                visible: false
-                width: parent.width
-                placeholderText: qsTr("Verification")
-                EnterKey.enabled: text.length === 6
-                EnterKey.iconSource: "image://theme/icon-m-enter-next"
-                EnterKey.onClicked: postPost()
-                inputMethodHints: Qt.ImhFormattedNumbersOnly
-            }
-
             Row {
                 spacing: Theme.paddingLarge
                 anchors {
@@ -276,7 +249,7 @@ Page {
                     }
                     onClicked: {
                         focus = true
-                        captcha === "" ? NewPost.getCaptcha(domain, captcha_type) : postPost()
+                        captcha === "" ? NewPost.getCaptcha("https://2ch." + domain + "/api/captcha", captcha_type, thread) : postPost()
                     }
                 }
             }
@@ -312,7 +285,7 @@ Page {
         var file_2 = (fileList.get(1) ? fileList.get(1).filepath : "")
         var file_3 = (fileList.get(2) ? fileList.get(2).filepath : "")
         var file_4 = (fileList.get(3) ? fileList.get(3).filepath : "")
-        py.call('newpost.sendpost', [domain, captcha_type, board, thread, cmnt.text, captcha, captcha_value.text, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
+        py.call('newpost.sendpost', [domain, captcha_type, board, thread, cmnt.text, captcha, string7, email.text, name.text, subject.text, icon.text, file_1, file_2, file_3, file_4], function(response) {
             var x = JSON.parse(response)
             indicator.visible = false
             status.visible = true
@@ -334,7 +307,7 @@ Page {
             } else {
                 status.text = x.Reason
                 if (x.Error === -5) {
-                    NewPost.getCaptcha(domain, captcha_type)
+                    captcha = ""
                 }
             }
         })
@@ -354,9 +327,6 @@ Page {
             importModule('getdata', function() {});
             setHandler('captcha', function (type, error, data) {
                 captcha = data.match(/(\w{64})/)[1]
-                capchaindicator.visible = false
-                yaca.source = "https://2ch." + domain + "/api/captcha/2chaptcha/image/" + captcha
-                captcha_value.text = ""
             });
             setHandler('new_thread_page', function (type, error, data, anchor) {
                 Threads.getThread(error, data, anchor, "replace", domain)
@@ -369,6 +339,7 @@ Page {
         onReceived: {
             // asychronous messages from Python arrive here
             // in Python, this can be accomplished via pyotherside.send()
+            console.log("pyotherside.send: " + data)
         }
     }
 }
