@@ -27,7 +27,7 @@ function initDB() {
                         if(e.message.match("no such table")) {
                             tx.executeSql('CREATE TABLE IF NOT EXISTS favs (board TEXT, thread TEXT, postcount INTEGER, subj TEXT, PRIMARY KEY (board, thread))');
                             tx.executeSql('SELECT * FROM favs');
-                            tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["mobi", "1336031", 1, "Мобильных девайсов на GNU/Linux тхреад"]);
+                            tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["mobi", "1785994", 1, "Мобильных девайсов на GNU/Linux тхреад"]);
                             tx.executeSql('INSERT INTO favs VALUES(?, ?, ?, ?)', ["b", "0", 1, "Бред"]);
                         };
                     };
@@ -94,7 +94,6 @@ function updateDB() {
     }
 
     if(db.version === "0.6"){
-        console.log("puk")
         try {
             db.changeVersion("0.6","0.7",function(tx){
                 tx.executeSql('INSERT INTO settings VALUES(?, ?)', ["string1", "bTRTUEQ3aTFlNmtEcEN6QzBiVkdjb0hTazlTUE84eTk6dVZQc2U4aExxWFFpYmpTbVBvZEtHM0oy"]);
